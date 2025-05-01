@@ -1,0 +1,20 @@
+{
+  "buildFiles": [
+    "/Users/ACER/development/flutter/packages/flutter_tools/gradle/src/main/groovy/CMakeLists.txt"
+  ],
+  "cleanCommandsComponents": [
+    [
+      "/Users/ACER/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+      "-C",
+      "/Users/ACER/Documents/workspace/software_studio/lab-test/lab-flutter-basics-dart-meals-app/android/app/.cxx/Debug/733o2m46/x86_64",
+      "clean"
+    ]
+  ],
+  "buildTargetsCommandComponents": [
+    "/Users/ACER/Library/Android/sdk/cmake/3.22.1/bin/ninja",
+    "-C",
+    "/Users/ACER/Documents/workspace/software_studio/lab-test/lab-flutter-basics-dart-meals-app/android/app/.cxx/Debug/733o2m46/x86_64",
+    "{LIST_OF_TARGETS_TO_BUILD}"
+  ],
+  "libraries": {}
+}
