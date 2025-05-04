@@ -1,62 +1,42 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/widgets/filters_page.dart';
-import 'package:flutter_app/widgets/home_page.dart';
-import 'package:flutter_app/widgets/meal_details_page.dart';
-import 'package:flutter_app/widgets/meals_page.dart';
+import 'package:flutter_app/pages/main_page.dart';
+import 'package:flutter_app/pages/preference_page.dart';
+import 'package:flutter_app/pages/simple_cast_page.dart';
+import 'package:flutter_app/pages/complex_cast_page.dart';
+import 'package:flutter_app/pages/result_page.dart';
+import 'package:flutter_app/pages/maps_page.dart';
 import 'package:go_router/go_router.dart';
 
 final routerConfig = GoRouter(
   routes: <RouteBase>[
     GoRoute(
-      path: '/categories',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-          child: HomePage(selectedTab: HomeTab.categories)),
-      routes: <RouteBase>[
-        GoRoute(
-          path: 'filters',
-          builder: (context, state) => const FiltersPage(),
-        ),
-        GoRoute(
-          path: ':categoryId/meals',
-          builder: (context, state) =>
-              MealsPage(categoryId: state.pathParameters['categoryId']!),
-          routes: <RouteBase>[
-            GoRoute(
-              path: ':mealId',
-              builder: (context, state) =>
-                  MealDetailsPage(mealId: state.pathParameters['mealId']!),
-            ),
-          ],
-        ),
-      ],
+      path: '/',
+      builder: (context, state) => const MainPage(),
     ),
     GoRoute(
-      path: '/favorites',
-      pageBuilder: (context, state) => const NoTransitionPage<void>(
-          child: HomePage(selectedTab: HomeTab.favorites)),
+      path: '/preference',
+      builder: (context, state) => const PreferencePage(),
+    ),
+    GoRoute(
+      path: '/simple-cast',
+      builder: (context, state) => const SimpleCastPage(),
+    ),
+    GoRoute(
+      path: '/complex-cast',
+      builder: (context, state) => const ComplexCastPage(),
+    ),
+    GoRoute(
+      path: '/result',
+      builder: (context, state) => const ResultPage(),
       routes: <RouteBase>[
         GoRoute(
-          path: 'filters',
-          builder: (context, state) => const FiltersPage(),
-        ),
-        GoRoute(
-          path: ':mealId',
-          builder: (context, state) =>
-              MealDetailsPage(mealId: state.pathParameters['mealId']!),
+          path: 'maps',
+          builder: (context, state) => const MapsPage(),
         ),
       ],
     ),
   ],
-  initialLocation: '/categories',
-  debugLogDiagnostics: true,
-  redirect: (context, state) {
-    final currentPath = state.uri.path;
-    if (currentPath == '/') {
-      return '/categories';
-    }
-    // No redirection needed for other routes
-    return null;
-  },
+  initialLocation: '/',
   errorBuilder: (context, state) => Scaffold(
     body: Center(
       child: Text('Page not found: ${state.uri.path}'),
@@ -66,43 +46,31 @@ final routerConfig = GoRouter(
 
 class NavigationService {
   late final GoRouter _router;
-
   NavigationService() {
     _router = routerConfig;
   }
 
-  String _currentPath(BuildContext context) {
-    return GoRouterState.of(context).uri.path;
+  void goMain() {
+    _router.go('/');
   }
 
-  void goHome({required HomeTab tab}) {
-    _router.go('/${tab.name}');
+  void goPreference() {
+    _router.go('/preference');
   }
 
-  // To work  with the web browser history, do not use Navigator.push() or pop() directly
-  void pushFiltersOnHome({required BuildContext context}) {
-    var path = _currentPath(context);
-    switch (path) {
-      case '/categories':
-        _router.go('/categories/filters');
-        return;
-      case '/favorites':
-        _router.go('/favorites/filters');
-        return;
-    }
-    throw Exception('Cannot push filters on the path: $path');
+  void goSimpleCast() {
+    _router.go('/simple-cast');
   }
 
-  void goMealsOnCategory({required String categoryId}) {
-    _router.go('/categories/$categoryId/meals');
+  void goComplexCast() {
+    _router.go('/complex-cast');
   }
 
-  void goMealDetailsOnCategory(
-      {required String categoryId, required String mealId}) {
-    _router.go('/categories/$categoryId/meals/$mealId');
+  void goResult() {
+    _router.go('/result');
   }
 
-  void goMealDetailsOnFavorites({required String mealId}) {
-    _router.go('/favorites/$mealId');
+  void goMaps() {
+    _router.go('/result/maps');
   }
 }

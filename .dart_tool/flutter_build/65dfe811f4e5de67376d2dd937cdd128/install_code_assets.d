@@ -1,0 +1,1 @@
+ /Users/elystal/Documents/ForkCast/.dart_tool/flutter_build/65dfe811f4e5de67376d2dd937cdd128/native_assets.json: 
