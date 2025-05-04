@@ -1,0 +1,632 @@
+{
+   "html_attributions" : [],
+   "result" : 
+   {
+      "address_components" : 
+      [
+         {
+            "long_name" : "158",
+            "short_name" : "158",
+            "types" : 
+            [
+               "street_number"
+            ]
+         },
+         {
+            "long_name" : "中美路二段",
+            "short_name" : "中美路二段",
+            "types" : 
+            [
+               "route"
+            ]
+         },
+         {
+            "long_name" : "興國里",
+            "short_name" : "興國里",
+            "types" : 
+            [
+               "administrative_area_level_3",
+               "political"
+            ]
+         },
+         {
+            "long_name" : "中壢區",
+            "short_name" : "中壢區",
+            "types" : 
+            [
+               "administrative_area_level_2",
+               "political"
+            ]
+         },
+         {
+            "long_name" : "桃園市",
+            "short_name" : "桃園市",
+            "types" : 
+            [
+               "administrative_area_level_1",
+               "political"
+            ]
+         },
+         {
+            "long_name" : "台灣",
+            "short_name" : "TW",
+            "types" : 
+            [
+               "country",
+               "political"
+            ]
+         },
+         {
+            "long_name" : "320",
+            "short_name" : "320",
+            "types" : 
+            [
+               "postal_code"
+            ]
+         }
+      ],
+      "adr_address" : "\u003cspan class=\"postal-code\"\u003e320\u003c/span\u003e\u003cspan class=\"country-name\"\u003e台灣\u003c/span\u003e\u003cspan class=\"region\"\u003e桃園市\u003c/span\u003e\u003cspan class=\"locality\"\u003e中壢區\u003c/span\u003e\u003cspan class=\"street-address\"\u003e興國里中美路二段158號\u003c/span\u003e",
+      "business_status" : "OPERATIONAL",
+      "current_opening_hours" : 
+      {
+         "open_now" : false,
+         "periods" : 
+         [
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-04",
+                  "day" : 0,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-04",
+                  "day" : 0,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-04",
+                  "day" : 0,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-04",
+                  "day" : 0,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-06",
+                  "day" : 2,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-06",
+                  "day" : 2,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-06",
+                  "day" : 2,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-06",
+                  "day" : 2,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-07",
+                  "day" : 3,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-07",
+                  "day" : 3,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-07",
+                  "day" : 3,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-07",
+                  "day" : 3,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-08",
+                  "day" : 4,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-08",
+                  "day" : 4,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-08",
+                  "day" : 4,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-08",
+                  "day" : 4,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-09",
+                  "day" : 5,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-09",
+                  "day" : 5,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-09",
+                  "day" : 5,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-09",
+                  "day" : 5,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-10",
+                  "day" : 6,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-10",
+                  "day" : 6,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "date" : "2025-05-10",
+                  "day" : 6,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "date" : "2025-05-10",
+                  "day" : 6,
+                  "time" : "1700"
+               }
+            }
+         ],
+         "weekday_text" : 
+         [
+            "星期一: 休息",
+            "星期二: 11:00 – 14:00, 17:00 – 21:00",
+            "星期三: 11:00 – 14:00, 17:00 – 21:00",
+            "星期四: 11:00 – 14:00, 17:00 – 21:00",
+            "星期五: 11:00 – 14:00, 17:00 – 21:00",
+            "星期六: 11:00 – 14:00, 17:00 – 21:00",
+            "星期日: 11:00 – 14:00, 17:00 – 21:00"
+         ]
+      },
+      "dine_in" : true,
+      "formatted_address" : "320台灣桃園市中壢區中美路二段158號",
+      "formatted_phone_number" : "03 422 2168",
+      "geometry" : 
+      {
+         "location" : 
+         {
+            "lat" : 24.9602278,
+            "lng" : 121.2203111
+         },
+         "viewport" : 
+         {
+            "northeast" : 
+            {
+               "lat" : 24.96152178029151,
+               "lng" : 121.2216509802915
+            },
+            "southwest" : 
+            {
+               "lat" : 24.9588238197085,
+               "lng" : 121.2189530197085
+            }
+         }
+      },
+      "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+      "icon_background_color" : "#FF9E67",
+      "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+      "international_phone_number" : "+886 3 422 2168",
+      "name" : "廣德海鮮餐廳（中壢中美店）",
+      "opening_hours" : 
+      {
+         "open_now" : false,
+         "periods" : 
+         [
+            {
+               "close" : 
+               {
+                  "day" : 0,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "day" : 0,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 0,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "day" : 0,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 2,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "day" : 2,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 2,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "day" : 2,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 3,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "day" : 3,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 3,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "day" : 3,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 4,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "day" : 4,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 4,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "day" : 4,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 5,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "day" : 5,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 5,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "day" : 5,
+                  "time" : "1700"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 6,
+                  "time" : "1400"
+               },
+               "open" : 
+               {
+                  "day" : 6,
+                  "time" : "1100"
+               }
+            },
+            {
+               "close" : 
+               {
+                  "day" : 6,
+                  "time" : "2100"
+               },
+               "open" : 
+               {
+                  "day" : 6,
+                  "time" : "1700"
+               }
+            }
+         ],
+         "weekday_text" : 
+         [
+            "星期一: 休息",
+            "星期二: 11:00 – 14:00, 17:00 – 21:00",
+            "星期三: 11:00 – 14:00, 17:00 – 21:00",
+            "星期四: 11:00 – 14:00, 17:00 – 21:00",
+            "星期五: 11:00 – 14:00, 17:00 – 21:00",
+            "星期六: 11:00 – 14:00, 17:00 – 21:00",
+            "星期日: 11:00 – 14:00, 17:00 – 21:00"
+         ]
+      },
+      "photos" : 
+      [
+         {
+            "height" : 3024,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/108117484686562418352\"\u003eJohn Tsao\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcJUFhebTW-GohOek4QVMGCj-ZIyc5fDEjP3XrQ6fx-GH6u58Y85aOHzjHErfe8fTbE2omJUE2dGw2d9YfyzANCwNemCs6F3S_bVCnkJB-G1sHnVr9K5vUPLL92Vc0vBbzwJOgi90Fb9lmJ77mOdy8HFy-ptnvKcDQxN6kXEmGqPSftOvcnJx7RjORjk6huTKqP_YgXu5u89RauvPR8l7ZHtjVcmkmfTVfj_R0JUoz-x100bT8Ddkpq0ZkeBYvon5p_4zYnHTUhoneOYqt4jBXx3pBlwWtM534rVz4KYe04sZBNjTnG7s_907eB-iQzpbjB-IDoDHHE0TYy751HMdBy-7m3zxR7me6Q4KXzPE0nKk1TI8x0kApPrnjD213tqYg4EhJgcVhFtCC3_kO9ulxf0RT5cQeMHv_zcR_X25mNKxtF3B99XuiSvZV-C03GikBoR-faeY9kFjowoDH367o_oXd_GaJ5Dnti0NEic0Uwks4_L6uqNtzFlqtGELyBLzYyiPQ1DgzrECS6lQwI82uplQ0XuBMgdwejJMjqtUXnm_QWxm3wcQGPUo4sdQO2z7Ia33Z2KDxpqILzndUB44FB2bRH8C-v9017FC5xAbNVT0_F2nIQe1N5tLTER0dHLCCr-sg",
+            "width" : 4032
+         },
+         {
+            "height" : 3456,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/100357752126107689488\"\u003echih-wei hsieh\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcJrPOio6fjzINc-EyzVrOS1qjzTks916JbxhEtyFjU1IBHNSetPgyTE2jqsDKCFuVQ02YdQuSRCv8pcWiJmQcg9OhYX4cCfmsXPuanIAAryzjgu2pxxdeIYtzs76Pur-dPp9XV7LMRs1r7VC9gxz-0EpYJ9jL6Jwyp8o8inKsQyq7hFSr0_8D5A7TsqLc_nXggq0AL6FN6yXdN80Hxm0JaSrLYk34S3i9nYQLsa6R0pvfF8_av9rZi1wMym7Er8qg0aIWQbhTMXw52EO6h0Y4af_UArliF-QJengm59Pc1VhjrhUr7VALfxASpHn41cTNNxzxxvVSRrbPS_Tbe-dZHKYnUwH4JgPDmVhwZZsxZ4zkYocNuMPVlBRQhoZpV69ZmwPPxN5YaZwtVLxSXN_dFFmL7YUd8hhOUkTwZ9oc7kDs_3eQnotygD735x_w9Wf5qtVBClVtlcdioPVzaeKLfFtWNJ-C53hNHawnGituyomSuyBwwOrQYII3hFwJZihSY0D2MUUzDQZt3QxutNXRNRHOlCz-lTGqn7KsW7iqNtH2ekHkSa37wAeok72XimyOGjSml4yuEFKTPi7V0OfrMjTNGWZhC7pYZayuSJ9EcBX0_bumMbETuoglcV9YoXW3e5bg",
+            "width" : 5184
+         },
+         {
+            "height" : 3024,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/113395938711396898605\"\u003e羅國軒\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcKkTq11_-EQWocFEGTLFLaNxIg-CCs6ndYydbK_MyL_YD_QJwDJatMdFUNIPVkfRD7-cN3itwQLY2sQTYarwbs9NimchKkg9Qt_O2EOKKo5WARXD3PgJUca5Wfxc3vLAfaENwSkM1dnAi6rRVVnXTNy5iOIFFka0v3kRqcowTgXiYPUUmNFK6AdEnXvuOsZIFwoN4DIbIK4GKNmdiSqrdxHSfxjg0rFmBHBT28TI3Bg9_j6N23VYYPYDHKr-klSMATDgIlQxv7F6Glrv4Vff_K-YqzgQurWeeM2PWFzJuOdoUO-q-XJmI0P5tu8mHETiLKOrU1HpaAfs9aHOhl9PVnpCgUArJU-GrL9_tBWIEooUBhm76yBIPxauOARVAcXsnvNTIOzum0eCN6k_l7e7xaaujuX8I-eKLEimq3jM1qtoS07aXxPxUIEkO5BeT0e4FqX8RSde2YuU8JAHkcO9LtNfTyJxKpthacwkkSFRjND6nbKhzZw7fx9fD8qDhdUbfuedgGnFq9cLqUh0upy2trZyV8lgrrO2_wo6ropHN3uHx9Nt1RifBPULp6PwbBxsPE9bougOL8nrOkMEiRovZUV7Q2x5PExrZS1V9HYLeKEhOzXDaLbyQ6PhX53jjvG2N6BCu-yarbTyNbYMwBig6ruZAE",
+            "width" : 4032
+         },
+         {
+            "height" : 3024,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/115578468427274956342\"\u003eTSUNGCHU HSU\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcL84pWHyMOB7JzLm2W3XOvZvVRxzVmjcFA1aj5AEy4IABEGBYgDN-iroFFpxFXe5A60ouCnswkz-PGo-_LjKVVct8yfE7UWmXBqyqIwsnPVNw6NM1wD90--q9_0Ngds38GO3EIU-ipvR5ABVTLUct0zt0PYOMvk5CP2DZs5hz2q3s1ZyxDDzrkjF3_xv6AvZBm97jCvYKo1J5uGtrmYejwNXrKD4PY3DTjoY2Q1avgXGfLNktj1bX9d3P7MRY6JdVyoFMVIDnwV-E4P7BmGB0QV3O6s_FCFDTTDslAykh5p5PIh2bvU2vEn76wMukzxiexcsYUGk4ybs7S-wa2OWH3Z-nEkUXg6nliw3yyhWietPjHSPl_9m6lyjzE7Si5UdMU1F6u_oCM6i7CZcrxSo1a2tpdeCFRcSc35bH4bunF5Fx7hqn6uHtQsdWKn-qTHbw2fbM0yZ2VzJtW_OW6o6-ctK52Cx3M1uqxdmMgmBUkN6BC2bf5nGpfM8NtbC0hQK379i3qNmeQBozvmAOBPCF8JMTVlRqnlCEDGbmc4kAHEk3UixKurPQCbQ770M9Y8yQ5c6k6eX59U7_5S6iiYq4Z3TahaU4_oeBPEjYDoW7Tbm_ar9BzZu9SZ-jHESvgcMisi0g",
+            "width" : 4032
+         },
+         {
+            "height" : 958,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/118288123837185727637\"\u003e秀美黃\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcJ3CsAmxAtfuCcJSAlNgofAU2MRJRbFfwQDEUb5FJsxAYGtYTICZLFHtujiZwP5BZm-wzX6PjEUnmMMrrjQFTo0n-qSm9cO6K89q_-GjfBe99cWo7WlZb2TCLt2-JZT5BaIfwLX4acIYGFzqMz5zdOOIq9XYufC89JUFFNQosEmYqVCIUUrHbaS01por2_45EWf9m-ceBJu2_pgcwJ5JeuM5Iah4iT4eip7efHsNlWXmfNRpN0DfRl9dIkgn6NbxtBd9zZBKcUSpwfv0klB96MR0rmQMjXui9cRdh0CGHWg_qU5E5shPbSCU-u_DPTUVW9Dq8RG8pmWnLxLp-NfSppI3Ki2-g1ELTYLAybC8L1xQG29VKU2eQUMMMs6iGJHmyVALpXyqZj-Whv8BlgeMV0LanyvOq1MzDBHbP8ezw6auulynf6M87DM-OBJW8BTAV1krPhdo1h4uUHOfqKTvpJDGcS1hfo3zOpoLAqtnATowy2G5OFM4x3ZscXSZETqP7ZSVvUFWcQn1yT696alnDvaN7Ge1um4svLHzKjQgoddpnGVrwV-3vhjg8qeTLfKqlhj-i83TxZpQxS6UxK8N5gH5pydsjmou4lX_DQ57azxtUH2MkicBm6jBDDca5O-8e_P6jgO",
+            "width" : 1278
+         },
+         {
+            "height" : 958,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/118288123837185727637\"\u003e秀美黃\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcKqEK_z4aqZwxQnQKI5yfO7SblIAkqkVK4rLFdgsakVO9_dRIHdaDAG8tn2Wm_TNx5kIjYQKuijx6VMOvf9JCyBfKyglQrJCgu8_EeWIACxOG8r5F266DsOYqbIabZ6mgsVr07tsdrOCuTnR76X40fFJdvh-SJshdOUdxOVs9G_M6BcVlvAoEKUqOAFgteYju8xfufHqm3pxJ-6seMC5_Q6xpwPUS01shde9VfYkeazvOU9qWFXWPSrGTaAFcKEQyYSM4XE3nqqUkAwcB_fg3Nzkj7tE2t2F90DMThYCpa7uuzUMUV_O5QZFtTsQCUsq4Jo0QtUoaYFPl_BVUvQHyTgsaOGtEXTvxKZuSULsdT4BzbqXZZB8X7NnzFYhf1-_4NJLkwPHGG5XST1QqTiO6ofIllle1TbyavJdMC2djvmxth4V1PKK-axA9hthml8hNlBaUeBS7mERmVx5iksCVSIDSwRnqi8_xqyAWgDd9GAay77jhqc09ShCK7e7URpkxfhASEpow-P8rnsB0OHLO4DR9cvf-QL5oFcILc0ZHTT7xxcFpLwTWQdWFzCCAbEFB2J8lYodbhqRj3igzWmJ1dXUOquh-jRlU94PI-Ad0pIC_HqlJ1qux1GPIk4e2o5vT1vJg",
+            "width" : 1278
+         },
+         {
+            "height" : 958,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/118288123837185727637\"\u003e秀美黃\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcLAMTvQv7ZhM3Uxe4Dggf9Rb-S5qMoFTeapTz-yJhg4uH61ZVuLNR2sUPGVCuLWWPM16ZcW9TKe0obXDozCH-6VgFtKuDK00CQrP69nwCLTHaxU2rnnyg7K5pjW5YQRKhF2p8PycRjGeV0bHDAviqIwiVO2zDPf5Sg5RZgvfEBPBxAZN7p4bFQOM-aAqsAA46uJ6C_wJ47bQ5moSTLT68TZFbBgFwBBDiz4hMc9SarhrEz7ykNEzkKMXpEdlnmprvE4ThZWJRI4PC_GWRc2i5kf6kQyvOEfVkWR2nu3NwFB57Tb2B5fpj8WF-ca2YOT8KugA1dkqe62u_G7XcPjCuIM5qvBBK44_WAZR0dDwrwAlHviSIL6GBtwxns4oM3WhxNCQvI0JJZ5wQ1hxXGNnW9aKy5mGI8Rz2uR0McjfXc0AGUBP1xnim5f6EVJq6YG3Q8GdmCDobPu4Qf6ukRfgNN2UX3sKiQzUzc61mZuV_JAFYTnksRly6QFUSKOA4xSxzV3ig7qlZahd9tonb0J2ec0Mvu1Hwzvi9hy_Sv2UUUVfAP1k-4hDVP5Ssdp8RpvUFZjUuPsuKkJ4Yaau9d2DKPq20hSVTmTVKshDt-PbbLfA_K7xkgxAGv-bRs7XX2gbm2x07wS",
+            "width" : 1278
+         },
+         {
+            "height" : 4032,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/117640638277209547483\"\u003eRivers Ho\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcI8KIMrEBehq6dPZlwLTr1VaVQ_XDyQB-78RZr7Uv8IoV972jBNd7Wj54qGiOEEAoDUtTtTto-a1HS5ZOxMd5fFiuC0M_TFkEWkquwftQLCCLSGKv7fC9oplm7iYefUHlwjoWZXbsVEu31eOEpe3VyA7_n0RNN8HwYu5l61MdOY94K1YrF1qhOeP1Que20eNgQTasKHu7ZtBYFg9WaxBi2Mv03J738w26zEU7Ozt1b6vVhlI7rpLtWGGi1GZJUAeYV0uDC0dxe1Hu9Bgt1i6_U9tUawoAkXZJzarBzwJ4w7N-N1IRkKmNAdSL01sP-t8o3u1SB2v-eP4LG8cknF8tJDYG0o5BLpwKzLSR6kUKdrteUni2WIAzFP1Tx5U8IPSdUQct6Kg4-9uPFgclePhrEI3Jy2bRC47OPXl-R0Gj1AzewFxTzF1h4be6fa0yyRmLmyvQvTOeRVPUxYkKXS6i3nMYcIXLEeUHT1l866LR0Z7j7-IoZyXd0tMMT5kYAdVARrR01OTkCaxvkU3gV4K32QvIKbvQnfg3ihtK7qg8D-ekgX9XtaphFfVOU5ptGSROgrH0Es38H1qQUT_cdEndXFaQulxuvnowmIgIk41AV9z6KruzELpRsoANW49mlc2naUoJcf",
+            "width" : 3024
+         },
+         {
+            "height" : 4032,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/117640638277209547483\"\u003eRivers Ho\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcKTZ5Udd4BQdZ6EcEH4NOi70UGK7OJySEBQqGAmcHMREXTN06NoloZHJ24kS8VHsMYf58cbNfYGOOaKLIN_TBuwA5ffoFIlrMfQWvPc1q_1d1s2tICd1pAMzmeTGO-Zdnc2NP7N4Os4BgN6s7aWoqGfdNzkgJ75KMSBVSoBQgYrGmRzLVG5-srXGj8dlu7bLkwF91fpVO9N254XXK2oYW_YY-jJjo4kQ6HxRQ_w7a-16hOylF0sXXCCT6AitdriDPL3LhzkQH8SMwU8GUeLVGdFKYUznkGC6-GlXyIzF43kF7FeYLDI6KmiZRfDxkKa9IeFVSFydH-fTuUkWxPjjQwTW66haZEWNlMF5TVlaJrMyTjHGhd6eD3g5shkRkMdzQEBqq0Z74PMCjz2ZafEzpf0-RLCUS-Fqie74nH7C1y4O5undf3J9Jwm5SAu3Bt7bjFWnBmB6sQPy4TIsVsFRciAuWZoASmtFHeSj1qm7tCScM4OsNHLy-O04mvFYBc-GitwOxfoGrs2HqG1HS89wec9CeOtGKsVIxtpQEETZRjpJkHP7Ue9bD9v-iTFGZhRA02DqzmJQqdI6Vb6i2a8_d4G6ySiPjuku21AoPGa4s_lrAwk3_6X49Lo1hyd-5k9TNEwpw",
+            "width" : 3024
+         },
+         {
+            "height" : 3060,
+            "html_attributions" : 
+            [
+               "\u003ca href=\"https://maps.google.com/maps/contrib/108464575383773492363\"\u003eK2 Kuo\u003c/a\u003e"
+            ],
+            "photo_reference" : "AeeoHcJiIVCkIz5mDqm9S9RA2ZsHlkpBIKlBKAq4cvqH_-CWTuYkDZ8x0mYX0vomPbmcaT4T_ObKd2DEDJ4kXw2UY3yrbgLaVIxfGLZ3bXccFmu9Cv4SR4Fyw6Q2jYNj1xrs3SSxyhKLZ0S5ikSUfiS7DLLvfEGcnC4Yv4sdY6YHh7ajxwEq-_5JcmJRJmCfCEVs7GKsT0BdNJi9RFaoLeG41u4afTlSjp1d1hgrNdTQpcXSDnYOH2tPbz54ysfA1VjExCLyc8CJWGK5e7DjT1T01LPJN_gahlKWiN-lkfASFQ4W5zRzLZ2NWuq3Hj-z7ML5DmUaeqRYUAS3bkDt6tFvFCYYEsJO8Oq-Fh4SZ9gWmmPYzvnJT3RjBmcyfUe8tEVdCda5h2YA_69nbQKue0s4XTM4WVQFV3U9fFymHzATAFdk-70XafgLql0_5QWcTz6oTktOQKYbm4c6qiH8Yg_rWYukIntYQXIUdqpIKKIftRAlf7RPSEhheOttmX_suBhzq27bzR3mMNp_2cSD_ZPed7wBFSNMdGzCgBHD0gX9uJRJRcR-MPm6Czj89q-JLiTLu4ZURS2Di5a0XhUp7mlP0uxqpn9nROAQNT631xoaGKiRUo6ml7xMfOGJHF4aN1mLLgMJ9ELM",
+            "width" : 4080
+         }
+      ],
+      "place_id" : "ChIJgfVnrzUiaDQReWqdihQFK6I",
+      "plus_code" : 
+      {
+         "compound_code" : "X66C+34 台灣桃園市中壢區興國里",
+         "global_code" : "7QP3X66C+34"
+      },
+      "price_level" : 2,
+      "rating" : 4,
+      "reference" : "ChIJgfVnrzUiaDQReWqdihQFK6I",
+      "reservable" : true,
+      "reviews" : 
+      [
+         {
+            "author_name" : "K2 Kuo",
+            "author_url" : "https://www.google.com/maps/contrib/108464575383773492363/reviews",
+            "language" : "zh-Hant",
+            "original_language" : "zh-Hant",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a-/ALV-UjVMRlfzRbcVYEPtWuhf9lmB0wiYeiBmMW7jB7jCxlhpdI9aV17k=s128-c0x00000000-cc-rp-mo-ba7",
+            "rating" : 4,
+            "relative_time_description" : "4 個月前",
+            "text" : "餐廳不怎麼樣，整體整體裝潢較為老舊，料理菜色雖一般但口味好，好處是在距離桃園機場捷運終點的A22老西街站才數百公車，不行時間不用5分鐘。",
+            "time" : 1735102256,
+            "translated" : false
+         },
+         {
+            "author_name" : "王寶寶",
+            "author_url" : "https://www.google.com/maps/contrib/101433298676387782759/reviews",
+            "language" : "zh-Hant",
+            "original_language" : "zh-Hant",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a/ACg8ocL8D0WrfPCOFaxaZc5wUbkBZJv3z2GMiGWs1_Zl6JH9BteR3w=s128-c0x00000000-cc-rp-mo-ba6",
+            "rating" : 5,
+            "relative_time_description" : "10 個月前",
+            "text" : "#桃園中壢\n#廣德海鮮餐廳（中壢中美店）\n#白鯧魚米粉\n\n這間是中壢開了很久的餐廳，口味不錯，桌菜、單點菜色都好吃，白鯧米粉湯、廣德燜鴨是招牌菜，用餐時每桌都會點白鯧米粉湯，內用可以一直加湯加米粉。\n\n餐廳一樓空間蠻寬敞的，二樓都是包廂區，整體環境就海鮮快炒店來看算蠻乾淨的。\n\n之前都是外帶桌菜，合菜很￼精緻好吃，但是份量都很大，照片放在最後一張。\n內用單點可以多點幾道喜歡吃的熱炒，每道菜都好好吃，而且不油不膩，調味又很好。\n內用白鯧魚米粉，低消每人$350，這間店會一直加湯加米粉，所以有這樣的限制也蠻合理的。\n\n這裡停車可以停到對面特約停車場，單次$100，一台車折抵$50 。\n\n本日餐點\n🌟白鯧米粉湯 $780\n🌟苦瓜鹹蛋 $260\n🌟炒海瓜子$200\n🌟蒜泥鮮蚵$280\n🌟椒鹽龍珠 $260\n🌟生炒軟絲 $280\n🌟生魚片 $500\n🌟麻油松阪腰子 $760\n🌟麻油腰子 $760\n🌟蔥爆牛肉 $280\n🌟銀芽魚翅羹 $980\n🌟外帶 $509（扣除服務費）\n🌟冷泡茶 $100\n🌟飲料 $70\n\n#廣德海鮮餐廳\n對面有特約停車場\n桃園市中壢區中美路二段158號",
+            "time" : 1718167925,
+            "translated" : false
+         },
+         {
+            "author_name" : "wong july",
+            "author_url" : "https://www.google.com/maps/contrib/109964261644232551364/reviews",
+            "language" : "zh-Hant",
+            "original_language" : "zh-Hant",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a/ACg8ocJLYG-ZcJP73rbFwnyVM7wSq1jBr3Rys2lRIbJLdIfQlZAyJw=s128-c0x00000000-cc-rp-mo",
+            "rating" : 5,
+            "relative_time_description" : "2 個月前",
+            "text" : "整體好滿意，食物質素具備色、香、味，份量都足夠一名壯男😀。我帶一位嬰兒，服務人員都很協助我們，找一個適合位置！最主要是帶著微笑😊協助👍",
+            "time" : 1740555491,
+            "translated" : false
+         },
+         {
+            "author_name" : "Pao Hsuan Lin",
+            "author_url" : "https://www.google.com/maps/contrib/105234687385082657728/reviews",
+            "language" : "zh-Hant",
+            "original_language" : "zh-Hant",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a-/ALV-UjVwna21o1su5Dqb1TG2DqptLTRQSprDNxXDNNylSnjbkY2uxM38Ww=s128-c0x00000000-cc-rp-mo-ba6",
+            "rating" : 1,
+            "relative_time_description" : "3 個月前",
+            "text" : "全家吃完年夜菜，至少4人（3大1小）拉肚子。\n自從有人反應拉肚子後，多了好多五星評論，好巧喔",
+            "time" : 1738318033,
+            "translated" : false
+         },
+         {
+            "author_name" : "Rivers Ho",
+            "author_url" : "https://www.google.com/maps/contrib/117640638277209547483/reviews",
+            "language" : "zh-Hant",
+            "original_language" : "zh-Hant",
+            "profile_photo_url" : "https://lh3.googleusercontent.com/a-/ALV-UjVXoIP0yL34sCTnaWzcpjAAlGveh4cmKu6vBbzfaTwFOd-zmiSm=s128-c0x00000000-cc-rp-mo-ba6",
+            "rating" : 5,
+            "relative_time_description" : "12 個月前",
+            "text" : "菜色首推招牌的白鯧米粉與燜鴨二道湯品，不但好吃，米粉還無限吃到飽，其他店家的招牌料理如牛小排、涼拌蛋等等都不錯，整體而言算是好吃又不貴，難怪是中壢在地人聚餐的好所在。",
+            "time" : 1714832301,
+            "translated" : false
+         }
+      ],
+      "serves_beer" : true,
+      "serves_breakfast" : false,
+      "serves_brunch" : false,
+      "serves_dinner" : true,
+      "serves_lunch" : true,
+      "takeout" : true,
+      "types" : 
+      [
+         "restaurant",
+         "food",
+         "point_of_interest",
+         "establishment"
+      ],
+      "url" : "https://maps.google.com/?cid=11685439243925940857",
+      "user_ratings_total" : 1467,
+      "utc_offset" : 480,
+      "vicinity" : "中壢區中美路二段158號",
+      "website" : "https://www.facebook.com/gdbutterfish2168/",
+      "wheelchair_accessible_entrance" : true
+   },
+   "status" : "OK"
+}
