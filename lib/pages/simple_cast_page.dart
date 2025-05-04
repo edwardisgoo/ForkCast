@@ -10,21 +10,38 @@ class SimpleCastPage extends StatelessWidget {
     final nav = Provider.of<NavigationService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: const Text('Simple Cast Page')),
-      body: Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            ElevatedButton(
-              onPressed: () => nav.goResult(),
-              child: const Text('Go to Result'),
+      body: Stack(
+        children: [
+          Center(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                ElevatedButton(
+                  onPressed: () => nav.goResult(),
+                  child: const Text('Go to Result'),
+                ),
+                const SizedBox(height: 16),
+              ],
             ),
-            const SizedBox(height: 16),
-            ElevatedButton(
-              onPressed: () => nav.goComplexCast(),
-              child: const Text('Go to Complex Cast'),
+          ),
+          Align(
+            alignment: Alignment.bottomCenter,
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 16.0),
+              child: GestureDetector(
+                onTap: () => nav.goComplexCast(),
+                child: const Text(
+                  'Go to Complex Cast',
+                  style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    decoration: TextDecoration.none,
+                  ),
+                ),
+              ),
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }
