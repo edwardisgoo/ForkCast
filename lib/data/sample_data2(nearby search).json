@@ -1,0 +1,1247 @@
+{
+   "html_attributions" : [],
+   "next_page_token" : "AeeoHcIUothJwvJBOQHP-Xs2IWhNmsuKoa5aMuuy3RRenqLOA5iPKwm8ToQ61jx7y6A84YJtnc1c46DWBVm_ds0VUFrAjxU7w9ig5eAn80WZ5rQvdhfPO0Wjdq3A2HHm7WoIx0v__ONCqWylgm1k49GNbEMPAxmUSUJWd9LxRmqpo64M1UEK64ey3jUzjps8Hv22Kkhgm815gVV4vSwg26cy3YTjFfuvkaliF5YacuRtdG0JRl71dqxiDq2WmBSHzklIUP2P-7mYDzWzu7WPx6GptGnUOET_0YD5wQCj0kmghYY1r-wbttcFiJ5_6tiY5ZOswVaRRhg1pJJeI5copi0Jg-pHzHLgI7M3elbcqGek-nkIWTHkbodCoqufmKBr-bsh4fMFd4i4ARsCOjQLnDo_E_4ry6GBsL2BDeF3bSknmUC-Rs0iHwREeO76m9ZC",
+   "results" : 
+   [
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9602278,
+               "lng" : 121.2203111
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.96152178029151,
+                  "lng" : 121.2216509802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9588238197085,
+                  "lng" : 121.2189530197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "廣德海鮮餐廳（中壢中美店）",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3024,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/108117484686562418352\"\u003eJohn Tsao\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcLY35phjRW4CHMHbCZgIe5LkRMY5FHRHIwCz5N304UPkoolaoReDXbojtDX2e4ziSovVw_C6ugfQKcjE2xXHE9l_VSx-WAIIWdGIPUgiN4BJWeTYfQx2ZoHfWCD5crUzEyOlajUPAyikj77mWruaUO-vht0pq9C3ESvuthwjAimtFNVVri455yFqNOqrZ0bZHmNXpujnorRzyqsPsz7ZxU9RgXD7nJrgIJraOuuO82Rqx8FdI_p-EL5IhHX5vQKiGda8TjlGMWMCNUa28mULiDY5fHVjSyMhe5CbqXfgCK0BtDEA9m0J45txjj-oR6-bjWG1wrQxB0iyTazUwO9LgZyI2XtOesOhp67fwWFHM3FORe4PFcVqMi_vHIsfz7gWP4husiw3bNLOBB7Qw4FIrN7mzySSB6XjgVhF0GEBcb7ev2Wd5tq3dYt_WpwaO2qPH6tvnnUyHVuA5N8Mvfm65eo-WMaX8o3CARpwkjr8jpk9vIpNMC5RgYB_qpB2gFNdxTzi-bU3R0VZFBhaigDuzd7FNMccfKt8oIeiqQY7k8Mkw6Tvt6QU1jr_751rHgUsrTFDK-MxxU6PsnHqG6_py-v_UIAHSwAi_IwT-4CclZAZkNp8zeHy-vf_pn5GUztKvKkGw",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJgfVnrzUiaDQReWqdihQFK6I",
+         "plus_code" : 
+         {
+            "compound_code" : "X66C+34 台灣桃園市中壢區興國里",
+            "global_code" : "7QP3X66C+34"
+         },
+         "price_level" : 2,
+         "rating" : 4,
+         "reference" : "ChIJgfVnrzUiaDQReWqdihQFK6I",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1467,
+         "vicinity" : "中壢區中美路二段158號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.95653399999999,
+               "lng" : 121.217139
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9578738802915,
+                  "lng" : 121.2185336302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.95517591970849,
+                  "lng" : 121.2158356697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "新明老牌牛肉麵",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 5712,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/106544566825247047592\"\u003eRebecca\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcKMYgZfJgG7c3aQSzkRp9bUfQM8yztFrVxxXpRpxSMl52nFc-EnGFGRDz_Bi-_45Q2e2lh342eKVQ19FTB1_2i57gf6GdZJrtwGO11UyK2zNZl3ttUmdr5NYgqUSCdpbt05Ygrr-z2F4fEfK94xiL_h48fh6fm929z27zdxHK6IwTunV-8ZY8CnbhSXAcH89MdO8BQCpjGN_0gaQ3JC9OzJahFcOw9wxoHAcMj3kWkVpjN0i9XhauRhBJQvZgF-NTzMRAOFfo1_-nEUkvNCc-B-2DK8cqCAE3mGHLtjzaUZAYKBDz0a1-cvyHNxSmON3paYp8H9n-bjDMj8lAD_M-430V2mSesvrluEjsITyp_PIxIxBciom80tsExXnoGv88NOlzGuTrNZlkbFY0SVsEEqI4OxeqMb0hq_ps1g8GTRIRAfG8VYAXuZMLvkSGkr-pkVP5LrnOqRRLhxKyyGzVb9e5v2U5NRvG72-R7O0rIdiMsiTfr9towvWyjQLe876GyVg20UXLiMFlzEYWTr_TdaC_uij3N1TLVJD7W-uVVD0FRr5r0wGeY_OFgj4AzbKE5ADXfpIOnCLByjsFqjCgOCdjXzz39grq4k3P0fEpjlwaQyIli0PtQJK3Zh8XfsRJdSTg",
+               "width" : 4284
+            }
+         ],
+         "place_id" : "ChIJIWfp00oiaDQRJ7NMKwptVmU",
+         "plus_code" : 
+         {
+            "compound_code" : "X648+JV 台灣桃園市中壢區舊明里",
+            "global_code" : "7QP3X648+JV"
+         },
+         "price_level" : 1,
+         "rating" : 3.9,
+         "reference" : "ChIJIWfp00oiaDQRJ7NMKwptVmU",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 3869,
+         "vicinity" : "中壢區民權路65號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9650199,
+               "lng" : 121.2173386
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9664426802915,
+                  "lng" : 121.2186664802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9637447197085,
+                  "lng" : 121.2159685197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "明皇樓中餐廳 Tang's Chinese Restaurant",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 1306,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107468127793278319765\"\u003e明皇樓中餐廳 Tang&#39;s Chinese Restaurant\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcIl6vHCvpIYoXHiDyXR5y0hP1_ZFAgTcq9feXkhha3geVvZyEEFPWzjXnkjhtmdAoz737CCgtZOphBd9IBSfn0ETHr_K-EKP6deqiM_5i1ugwPKMCV8IC2Q8C3b-in1yi4fv-mSXDym9urzx0Oacl8eWfFUOVwSsFeY8hakK6qW7Ak7-cc6ul-clXTDHbHQRf4drds2rXk1ZzEQ3WKqkEBvVBVLsRCjok689T4VUv6xXhd3LywXzhx71PoiaWx08p2qFu_DltAXUDMFQ8NFttw7t6dQWeGSPGFwmfreVaS8fDeg2-j8l6SPpQ1NMv3Ut_XfUIvGHI0",
+               "width" : 2048
+            }
+         ],
+         "place_id" : "ChIJYziyTTMiaDQRHtIFVMHBe2o",
+         "plus_code" : 
+         {
+            "compound_code" : "X688+2W 台灣桃園市中壢區光明里",
+            "global_code" : "7QP3X688+2W"
+         },
+         "price_level" : 2,
+         "rating" : 4.1,
+         "reference" : "ChIJYziyTTMiaDQRHtIFVMHBe2o",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1021,
+         "vicinity" : "中壢區民權路398號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.957884,
+               "lng" : 121.22275
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9591571302915,
+                  "lng" : 121.2241737802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9564591697085,
+                  "lng" : 121.2214758197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "拉麵吧",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3024,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/114222122076872669000\"\u003e許小咕\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcLkMGRVIa9mSKh4K22BCvoR7QAEw7wbE3Li3NCrHi0ANVjObNl-4kCOsYZicLoLoeXomtGD2hjH9nOowghEDW8xdcQH9qOOouGzt0HxVvpbY-wEryFtRknLcCbUnQCLdrcX2mfD0538_EQiiEgWEygS2JVV_CYoH3fSK8sUATuCKxye5-BtfjCkdtgbUrgThqTLl8K5dIPWXy1QaFEiiC_2W0SRTq000kcdFII0y_SBeP-BsJMtIdLskocEZ-Bb6rVnus4hMVr4gebOGEvbhdpgU7tjab_PeoKGRPbV1G_msGqQl4r0b4egvlXtGgi0V_ukhB8Bt5no9B_tQEKlILygdxRbaIfy-tzf-tQa1PW6cbg2eWQewalAjx4qzaiMpQUKluE9y7L8Y_TpDKPJHHmaR-XQ71URaoWOmAiLe5VTZdas5bXlCsktb7aoQAtuUArepFgDaH_uvaPJK_8eYGzqL1lpAunbvItv5RNPcrLIr9tQaaIfhGJ5Rffcc4zbzJNq812iS4wP54H-D9A6wnC7uvcK-fx-1AkZY86PtFmztduFyMjWu9Lr81tyYtMr5nZHQrukvd_BiPWs3QHnxQzBGRw434jgdl5O99rJ3ol1dMMoIwaayz9CUT087GstfBdHIA",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJw1cnBzYiaDQR80VqRe31xtA",
+         "plus_code" : 
+         {
+            "compound_code" : "X65F+54 台灣桃園市中壢區興南里",
+            "global_code" : "7QP3X65F+54"
+         },
+         "price_level" : 2,
+         "rating" : 4.2,
+         "reference" : "ChIJw1cnBzYiaDQR80VqRe31xtA",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 2864,
+         "vicinity" : "中壢區大同路84號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9589766,
+               "lng" : 121.2227262
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9603346802915,
+                  "lng" : 121.2240303302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.95763671970849,
+                  "lng" : 121.2213323697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "中華拉麵王",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3024,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/113757306007388918254\"\u003eIvan Tang\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcJNwQkHAAkucWIH8tY8aUDy7UwgKjGrZ3Ltb2kIkwUQIYoLQXgI3Id2iJb0_FYSMK4MUUSv_aBxS46gKLeaL2UOA6sV0DqMmN_WKv1H9yJRaVvUEzfmZAR6H1AZ_RmZCJjZySAqfXhcDyOpx7j0JeNrD7DNa6AVN5nZYThk0iSPf84gOQCz4GfSK5jvpLccS6r_oo8DBz50LMIgDGqWa8HUQixko2huzbnbO-IHZdShu7wMdoY5VLf2QF2A7eP5_pzhCBsL-rrhVY47JKhUAu02z0IrR7HJlrgnaW5M0NlNLi-7lUc7dWmdy3ei5KaUZDUR-KBUmkrTSjgOeCHNFj8x7Hl3gfanNxZTvdpnFl0uHow5zB6RTri9HGSh4zjuVNHxXkv4stB-4JIKM2pHRIV4o7fO2HyAd_DIxf60_8mx1aoYv96gcDKn9VgAklVB5TcGGOb1NJ3N8Flw01xJalynDvh76fH6JNq_lz2zYwP0S3v4SFTMvw0N2957anWxH8PwAOIe2WqZ-u8o4G62ebaWdq6q4MwuaXps5xJDsjFMbaeNW8W4vYJ5477GBinDcSOq8XdD-6lq2R9ujK4s-u_J6gxSKUKSid3alVFgEgfUe3iojddyZ5q3O7xkr7leN3B9IMlL",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJsRbAczYiaDQRugXJE0h1e0o",
+         "plus_code" : 
+         {
+            "compound_code" : "X65F+H3 台灣桃園市中壢區興南里",
+            "global_code" : "7QP3X65F+H3"
+         },
+         "price_level" : 1,
+         "rating" : 4.1,
+         "reference" : "ChIJsRbAczYiaDQRugXJE0h1e0o",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 393,
+         "vicinity" : "中壢區新生路82號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.96324509999999,
+               "lng" : 121.2229831
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9645907802915,
+                  "lng" : 121.2243749302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.96189281970849,
+                  "lng" : 121.2216769697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "梁記麻辣火鍋專賣店",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 4000,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/116275483501243523695\"\u003e吳農農\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcJ1KxrZgrwKMRibz-8wckhbFZNCmuiBLgSi1LatAzCqltAXhxK6tJJl7L9zioxehJk32iNyeERf3M0lOQQhYVv4zbN5hD5TKIQfRlcwt9zdrJIWPAgvvALzN1ixzcbCdhQBAb7wXhZSVHwclI7GOA--XIFe5a92q38v5fHlmttQzQHgqLs3wCvo8dFYsFTC95ebriIi0ng44BQYbyj4Uf4v0TfQLWo6XRiAwQHEndq4Lsy-AF9aUSWtfxO1jVAaq7N3XLOAqPxdsoJruaPQjHmvC1S02zBMCLLjzWGkwb4N5KCFk-uIrIfLb1AxM4mZqfQLWa7_qaj5XdBLt_Xu5nz_Slp8-yohf1RQhfJA_zbGdR7R5CC8yy7a_dknhYAtDjgAPQgWrYoapWKFGZqVdNulo5Eej9xITndszeIzdoER5atVLK95roEUctig3Mye0plEmOEojZmfJ2xoBX1gVAtKXTRQcZthooRXcL9Jcw5gStyTvVsZLclxdLNu5mwQH9tshg2gau39M8kX5CQWkHr3TpHOvBD40Qmtu-LlN-6jscUevkOix67U8OR7BtKLs1mXr-iPKT_bSWxqgas1DkGsYj3Ij9970mmsO2lBNF2JgFfHuwpwoUN7Wrs_sZG96st2mg",
+               "width" : 3000
+            }
+         ],
+         "place_id" : "ChIJAfiB_TMiaDQRXCsOKRDcxvA",
+         "plus_code" : 
+         {
+            "compound_code" : "X67F+75 台灣桃園市中壢區興平里",
+            "global_code" : "7QP3X67F+75"
+         },
+         "price_level" : 2,
+         "rating" : 4.4,
+         "reference" : "ChIJAfiB_TMiaDQRXCsOKRDcxvA",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1487,
+         "vicinity" : "中壢區新生路259號"
+      },
+      {
+         "business_status" : "CLOSED_TEMPORARILY",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9630427,
+               "lng" : 121.208644
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9643565802915,
+                  "lng" : 121.2100600302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9616586197085,
+                  "lng" : 121.2073620697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "金湛羊肉",
+         "permanently_closed" : true,
+         "photos" : 
+         [
+            {
+               "height" : 1078,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/108307899572471488118\"\u003e金湛羊肉\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcIsgjibfyE7kEzTs-JBGdBQ402whOgoKI7PC-UtQE1wEQfE0XXSYQthuwhUYtkshXUbopBxtpjSPCBfuDxVMfrtLWUB39pIDAmREj2XgpacI03s7qJk4jktV-f2ts_c1xWznRX8C6HSa8BztluobEtzt1LDucXjH72wK8T1V5W6tfKILLlZl63nd63pRsrJFSb0L1FBIGtwsQahOPXydkyUH5Cnr0lzV8KlmlvVmiqbWXTrMr4AxphfEA517CcR8t5f-wp0VmrCHDvE_RA5yTMxGcvrnW1Sl8wU-fVYYkmwtU7HSdZL9RlCk49PefjMZhbnUq3yr38",
+               "width" : 1473
+            }
+         ],
+         "place_id" : "ChIJRVJKqckjaDQR5zjb6OdeoXw",
+         "plus_code" : 
+         {
+            "compound_code" : "X675+6F 台灣桃園市中壢區三民里",
+            "global_code" : "7QP3X675+6F"
+         },
+         "price_level" : 1,
+         "rating" : 4.6,
+         "reference" : "ChIJRVJKqckjaDQR5zjb6OdeoXw",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1233,
+         "vicinity" : "中壢區環西路二段63號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9608239,
+               "lng" : 121.2259144
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9621363802915,
+                  "lng" : 121.2273090802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.95943841970849,
+                  "lng" : 121.2246111197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "湄南小鎮泰國菜",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 810,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/109161950787696237808\"\u003e湄南小鎮泰國菜\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcKJoZyij-OofvWAHnlJsNCgdhzASNZfWcCiAZw_efRWdj9BCwamDR4Ez9UJxRZ6i97Bk0TwkFuh8gKiDyqJm3ci2UGjr5F1vQAnxSBbuzQd_esTUBzJCtLAECwbm3_MiDNLMLCEWIRgHagStYKzl5LScTDHxB3dSYvsqtQSHwDZKz5_Bn6zFqUCW_FLiEcWhfiDutU0QmGieNrmKy5MDki8nupbBE0tta-7LyelfjS4cLu8I7ATTr_N5RCflou-RzkUBfRluVfd6UsoMeZBPwkdU3rSFHMmy7p1_ogCMHmaFeD-tYff3Maz7UeDkYiPgXKmwtoP4Zs",
+               "width" : 1080
+            }
+         ],
+         "place_id" : "ChIJLXSLGDciaDQRTGz66CqkGi4",
+         "plus_code" : 
+         {
+            "compound_code" : "X66G+89 台灣桃園市中壢區新街里",
+            "global_code" : "7QP3X66G+89"
+         },
+         "price_level" : 2,
+         "rating" : 4.4,
+         "reference" : "ChIJLXSLGDciaDQRTGz66CqkGi4",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 2353,
+         "vicinity" : "中壢區延平路306號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.956467,
+               "lng" : 121.217129
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9578074802915,
+                  "lng" : 121.2185206302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9551095197085,
+                  "lng" : 121.2158226697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "永川牛肉麵",
+         "opening_hours" : 
+         {
+            "open_now" : true
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3024,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107089301526607347702\"\u003e林安德（安德）\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcIYF5E8OxmCgzDTphxcytBvx5hKu66V-M3IrbqSPpQYLmytG4kAcA-tXoaENPIFjDofYriW-dOPMxtHipDJqo-4YMWt_mGftj8MXwAG2cIdVDtNMZ-z3n4ttVyHT0xoRaaB6Lu64CQClogWU_EH7fP7p6UC4rswc72lVgcKxRIxDWsEJnV7DbZ8NBE3ll-SuJqlklDQgFE2IwdqcWTP4FUTyALkjOlT4p_u4g1mZl4AK3rXnFSQWXEJkq3fwi-OfD7aWHrNGkO6-FmW_bCNMDRs_6hFS1YvONVpb-5XgA-Xk1MO3emfF9cqz5YK9ewGpQMJJHkrS4t7S4vbgOR3yjDjS7q9cTPQXGmErXYVpC6UwX_Ylr2Rtj102U-E_RTeytZd4mIthlquBfwqzPRO3K-lTdRqke5TB1hpbBAkFTUB9KrLfOMvPfIXsCtuc19K1nSWqYDZhx75rBuuElEYXCflTdAF58Ngq1vIa2haKrdmBpoT9p_Gj4jF3M-i9q7Lu_BDApBM-AJQ6MmhB8PW1oW_Bg1GlejyLggCR8-hPLEhBJqwrahds0zXxWt3ac1RT7oz_g-Spv6vapycTjo2r3t7og_K7dyLNvgpv4_LKJq9XzKn5sgaROtJKQeArK-T",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJRVwU1EoiaDQREkmWRrfFzcw",
+         "plus_code" : 
+         {
+            "compound_code" : "X648+HV 台灣桃園市中壢區舊明里",
+            "global_code" : "7QP3X648+HV"
+         },
+         "price_level" : 1,
+         "rating" : 3.9,
+         "reference" : "ChIJRVwU1EoiaDQREkmWRrfFzcw",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 10621,
+         "vicinity" : "中壢區民權路61-1號"
+      },
+      {
+         "business_status" : "CLOSED_TEMPORARILY",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9601699,
+               "lng" : 121.213407
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9614582802915,
+                  "lng" : 121.2147083302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9587603197085,
+                  "lng" : 121.2120103697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "193 kitchen（193廚房）",
+         "permanently_closed" : true,
+         "photos" : 
+         [
+            {
+               "height" : 1109,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/115598565914948686689\"\u003e193 kitchen（193廚房）\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcJe-zrJy00BzFVDeLn6bkZv5QSon6KiJ84Z6Vo_Y9Wn46EJ8oW4GODFlWgek5hU5N3U7DVoqCfxqC87lOVM244n0RB1Ugk1cQe5lV1vN-FppNdYsCqNXY4rTlehaUiFoe_9Rb54v_JfAZdaA1R5s4JmOA5OYJ7HdNm_MQN_bIsPrZhji99WkCu-w_g-3y-kKUcK2Has-vFeNiCCJin7_rmd47eEvgh1vTU6autbAuslf2TlhPpMpZtbX8lJBas9kyqXWq6ZK1Ra9djVXEz1u8WrlWIIi0GooXwPPgCFljw7GPwU9bmTTpaKIpjcyEwJiSUeh2tpXUI",
+               "width" : 1479
+            }
+         ],
+         "place_id" : "ChIJy2EuesojaDQRxDAU98yoN0g",
+         "plus_code" : 
+         {
+            "compound_code" : "X667+39 台灣桃園市中壢區光明里",
+            "global_code" : "7QP3X667+39"
+         },
+         "price_level" : 2,
+         "rating" : 4.5,
+         "reference" : "ChIJy2EuesojaDQRxDAU98yoN0g",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1490,
+         "vicinity" : "191號, No. 193號, 中央西路二段, 中壢區"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9601366,
+               "lng" : 121.2208724
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9614367302915,
+                  "lng" : 121.2222131302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9587387697085,
+                  "lng" : 121.2195151697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "田季發爺燒肉 中壢店",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 4016,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/105653189539045933074\"\u003e田季發爺燒肉 桃園中壢店\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcK7PQlremhxKA4kukzawbql3PGrkUTvwlbOuUdhf38R_CKE20iDeNnetvbxhqUyiffParDCgmhE_vEWgUcw31EVdRcfqv8NWEHMZ30avV1NMoEaZ1Joprj8PNgDr-Z7DUHF4GVYWoeECWzLyoe_i1A-vncVEeKwaOLh7h1HGTWvrIWdEem5abdXwfNsbyb40Ns6vS3gLJTmx1NHRUEa5L-KigcR_e14IcV41-sij2smVmNERhKq7hJkgjV0Y840j-ZUB30RvpGDepEqtcoQ4Mkx6u596jKG_ag5kDB8RyN2CZkCTqUOJU2mgSX5fbzMTHJSDWWOKiQ",
+               "width" : 6016
+            }
+         ],
+         "place_id" : "ChIJ97M_tzUiaDQRjm-f1ftJ_6s",
+         "plus_code" : 
+         {
+            "compound_code" : "X66C+38 台灣桃園市中壢區興國里",
+            "global_code" : "7QP3X66C+38"
+         },
+         "price_level" : 2,
+         "rating" : 4.4,
+         "reference" : "ChIJ97M_tzUiaDQRjm-f1ftJ_6s",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "bar",
+            "point_of_interest",
+            "store",
+            "establishment"
+         ],
+         "user_ratings_total" : 7968,
+         "vicinity" : "中壢區中美路二段136號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9601018,
+               "lng" : 121.2209525
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9614138802915,
+                  "lng" : 121.2222961302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9587159197085,
+                  "lng" : 121.2195981697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "一番地壽喜燒 中壢店",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 672,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/114964152661117587776\"\u003e一番地壽喜燒 中壢店\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcL7e4nUyVXo9LtedFNhiR2q71G3kkX93kkPUCH0tIjMuGVDvgYT09pQU_iyWgomBdxt0N9DXD2ctNv69HF2TykLe6mXLX47IYmgkC9OWRzp6ZWCs-BamHH4LvYjVyS4iCi0rtRvbzevac73H02_FFqxjXIrwf-neF37NNV7-GDKNoMLgVUM8mxWf_kTIisjcEjIFXxH4clMewKNXnNuAc4vWZLAgOzPesJWon5_9XDM2pv6jqa2q9NzTu61Uh1A7OQB2zVLH55nn37xbhdujDhRM6WY5gtWM_o94LDoMbsMXFF7IUHMCxINPxMmDohyqsLKqLa4JoQ",
+               "width" : 1200
+            }
+         ],
+         "place_id" : "ChIJ_____zQiaDQRvoIPvwY6VFQ",
+         "plus_code" : 
+         {
+            "compound_code" : "X66C+29 台灣桃園市中壢區興國里",
+            "global_code" : "7QP3X66C+29"
+         },
+         "price_level" : 2,
+         "rating" : 4.2,
+         "reference" : "ChIJ_____zQiaDQRvoIPvwY6VFQ",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 2353,
+         "vicinity" : "中壢區中美路二段130號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9626746,
+               "lng" : 121.2238649
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9639591302915,
+                  "lng" : 121.2248021802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.96126116970849,
+                  "lng" : 121.2221042197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "三合院 中壢店",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 683,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/103763728935292258432\"\u003eJeffery Lee (雞蛋糕生活美學)\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcKVpdBL3pTtLsu4NniQSgl7pI7klipuNmmiKYnmd7k5unAJ-9Ojvjx9eoosWGNWAzhuKODJuxs77ruSHwnukHGPYv-uL5z0SUlFkSBiaOL28IrMFIMtnroe3hohquXN6sh8VeqLoSu_7qT_ogDPfW_EdeHagKC5vQWMjtujgj5clWLGyyRsbWW6rixI5loWgMl3-3gnXejnRT5PInF_RFkCuEaJGCUJfmKkm5jl60GAhi9U9VjMMeJyyzKMYINfNT6KrOJnFqy9jeDUtpu_6S3HGHJ-jNNwz4dchB4eJ6PKi3eDNTGKKYyV_87-A3jI_KITc3CwC596QcGWjS-Yi9UTSQYvfvgZcakvupZKTejNkqbrsFZwBVkxQQEbraShUO4gzQyl13_8RB3ml4IAEnGyWPywt4PTZsT1Buw1FBfwV8dTU313_aV0Ql8vO_vb7zi6u15EZ_BWDnggbR_AHWwa9E-eLxeSgOE5VJCrXHJ4G7epJTNlR7Q7-URX25vZ9cletgxN3YCxRXJdSWKp6Bd_CvVusW9sBbHJhID3rKQm4fIAW7QGhvDlMrN83aP5AguE4WguAIpKxWku2CI_swcIxPSdcJ5cbfKjm-73FxTzFLrIMRXdcuM73OSMezKlQM6HSP7a",
+               "width" : 1024
+            }
+         ],
+         "place_id" : "ChIJs-miTDEiaDQRBKOXXQaIwLg",
+         "plus_code" : 
+         {
+            "compound_code" : "X67F+3G 台灣桃園市中壢區金華里",
+            "global_code" : "7QP3X67F+3G"
+         },
+         "price_level" : 2,
+         "rating" : 3.9,
+         "reference" : "ChIJs-miTDEiaDQRBKOXXQaIwLg",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1394,
+         "vicinity" : "中壢區元化路357號8F"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9627778,
+               "lng" : 121.2236111
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9638960302915,
+                  "lng" : 121.2246622302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.96119806970849,
+                  "lng" : 121.2219642697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "瓦城泰國料理 遠東SOGO中壢店",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3072,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/111392836967083352492\"\u003eSam Huang\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcJsKJUnbPBOjJX2GpuWXy8lltUHbBMSzPIbd1Wz3CYGTN_hzXGZ8d5uD11D1ShYeSBaLi3_-q82skUsbiRUVNm4bJuH5ydoIGbNufAkaqcfZVCWpRQ_oFeroLWy8BlHjB5nMzOQow-GNv20kNiaWZYmvFo9L2RiL4ewtgdNoUBNRbGaEo9PVlOnLX6YUPMYUZO5L0UvjvDOoy2sQqWKckyZRgSnfg_yHHftnQ6lL0GyTagFSrSdHmZ9X__DdVoLwvXqkKxGOPLckhuAd-Edg4qVR58QBKYTisi5v-GDWBPKzGihrM_Lx3QRIZwuV6ZlPFkpOImM4jW6GM7DTlNV1ByC7Ngex-opXFghqL3MJtIVYe6_fQxNh9jaPxEiBtP5E4SaJGxuZRMTKxz2aU0AWQPQjtQQMXxExyhkrH5TG8xBUqjL1C9OjjgMzNhgGhE8rGr99PlWzXq-VYgHM1I5pPp3n1uz3dgEN9vS4tJenUjCnCPMM1urUkGQNZwI8eXi5B8cNq1iwmA2Z_6UBBjj6y4jsgmHDdsqGoDAmJADgcM2WNc4i_o8ofGKz9QIxYEYzHEYRCcF1rY91tc1JICyCz_tSvBrMxmUKmzvIUH1sZNt0h3W3Sq5LXjTBFvyGsO7-N8s0g",
+               "width" : 4080
+            }
+         ],
+         "place_id" : "ChIJ57SfszYiaDQREHPLQWiesI8",
+         "plus_code" : 
+         {
+            "compound_code" : "X67F+4C 台灣桃園市中壢區金華里",
+            "global_code" : "7QP3X67F+4C"
+         },
+         "price_level" : 2,
+         "rating" : 4.1,
+         "reference" : "ChIJ57SfszYiaDQREHPLQWiesI8",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1721,
+         "vicinity" : "中壢區元化路357號8樓"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9628066,
+               "lng" : 121.2249466
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9642218302915,
+                  "lng" : 121.2263049802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9615238697085,
+                  "lng" : 121.2236070197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "The Pluto 布魯特餐廳",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 1440,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/100356756589911470922\"\u003eThe Pluto 布魯特餐廳\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcJ0ZK4VnORHuSn9MyAnKJ7V7LFN5iHn3mTpWQCHu9i_0K4YqVYzSZoisnHtGkiloH8qm0liVp1amPQTFezplHKPWlyO9YiMSJeW_GAfr_-of4cH7rzgNCbvvvKvanguUqMCtaYrJ8WnFgYXohs7Cz_ap4CQ7uZH9arFKPZvh_XHh2Jv47vLpzr0mT3Bh-SV5MyARhZsYfKmynA3x2pc-O6BkrU0sJLLoqbiH41bwMfE2VMNu8luj6LTpaeHJUPadrcj0QPbtxf3hIJCtpk_GjdFMNoHBRGHulRAoziox3KM2-6lxBMDfcsoG2vrsfufmQXZLbva",
+               "width" : 1024
+            }
+         ],
+         "place_id" : "ChIJFzWZNzEiaDQRAaaQsbDWNy4",
+         "plus_code" : 
+         {
+            "compound_code" : "X67F+4X 台灣桃園市中壢區金華里",
+            "global_code" : "7QP3X67F+4X"
+         },
+         "price_level" : 2,
+         "rating" : 4.2,
+         "reference" : "ChIJFzWZNzEiaDQRAaaQsbDWNy4",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 823,
+         "vicinity" : "中壢區九和二街42號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9603345,
+               "lng" : 121.2243299
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9616529802915,
+                  "lng" : 121.2256834302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9589550197085,
+                  "lng" : 121.2229854697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "曉春樓",
+         "place_id" : "ChIJv2YY8jYiaDQRzoqAcP6Sdgg",
+         "plus_code" : 
+         {
+            "compound_code" : "X66F+4P 台灣桃園市中壢區興南里",
+            "global_code" : "7QP3X66F+4P"
+         },
+         "reference" : "ChIJv2YY8jYiaDQRzoqAcP6Sdgg",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "vicinity" : "中壢區恩德街28號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9633752,
+               "lng" : 121.2229577
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9647189802915,
+                  "lng" : 121.2243686802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9620210197085,
+                  "lng" : 121.2216707197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "喜樂屋（日式家庭料理）",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3024,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/107916293921135621939\"\u003e快樂雲\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcLVPvs9varrMDxk04KUWLUH9C7Tp_rVSNJoDXcti4HaNBmE-xRc6Qu1KFIra5eEe3t_mNPkqR7zVGbdjoy8ztryXFoCNRSLsdS9KZPkCmPTeCW9RjTfhuyV_dLHzHKB9oynSVJQzOqLuPROuysHEN6VN30Lgon3luBgfzlmIFjkslvIN7z7ubOf4iHeXRiqkqG6WbAq9MItdxCTQ1XSr21b2zpsvO4D9qcTF584vN2n-71S8igB1A66ZNIKH-iuj4JTj5oK41OVj61Lk89PUPWu3XtlJmuc_IwLd8vsmItnFUt1LdakP0eAwTGMZZ88QYCs7KrvfH9_P3XtVQB4u6JhLazqdYZ6SupkwgHb2ZN5kLok1I5oEvA5TXXdHkkkTaWWzFG6BBMT2zNy4KdYrgAF-Or3umk_SYw01oTKQGKwHwJSbWppmJUq0OiWi3yBwhfRFiwvB-px2BxER61vDxtwhrJqXjgyN564KRdkJHFFq77JykfphKNBSfiZ-f7MUwekCMgjiPYVHtcvDeeVb88XjWe9pyUwQtWPsNpoOj1kEbVp08xTSdspy0953aW4Ld1f_uqEqd7owMI5f73eiS_9oacDk6S0JHs0_n6uxz_VqSIGkgjt7woIWuCpvJ4RpUOm6gSy",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJPYoYUTEiaDQRWWStIjn1LwI",
+         "plus_code" : 
+         {
+            "compound_code" : "X67F+95 台灣桃園市中壢區興平里",
+            "global_code" : "7QP3X67F+95"
+         },
+         "price_level" : 2,
+         "rating" : 4.3,
+         "reference" : "ChIJPYoYUTEiaDQRWWStIjn1LwI",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 260,
+         "vicinity" : "中壢區新生路263號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9551253,
+               "lng" : 121.2191033
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.95643693029151,
+                  "lng" : 121.2204644802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9537389697085,
+                  "lng" : 121.2177665197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "劉媽媽菜包店",
+         "opening_hours" : 
+         {
+            "open_now" : true
+         },
+         "photos" : 
+         [
+            {
+               "height" : 4032,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/116689782956899881155\"\u003e神秘客\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcJfmOnYsbzJIzzudXw6ZwEWZMMKUAagel11NOsyNaMyNgy5C-0epQWaUOSSD5lOPJHK_JTVD3A-CaVdZVfWrBqil7CPZolMfKkc0UI43VF_UTdCY64lTqk7MvAZOCVCce6TresHaOVCUhTSAIFqDS5G1wKqnbEWvo7kr7fRrtxz8vbW-Hjo4D9ZAX81WKkpvj71RjeW5-oWEJoH10_kST7DhKFS9S-Cnh68FfDQ4Lqy9zgaldK4z3imeqoOo17DaOGePArXEbeFIqDYKr1Xbkqgxt9kQ0_8_p2aLNTv2SxNg2O4SjnkXbxi8nDN5NE4-V0ardtEpd-qZvaxkAPrIJkhEK-fR6AXtiu6--Yd56MsuceI_zQOkyKkIaHktD-b4y9-AE3HHuO98URCex0bKa7Qnw4avAXcAdohweA0ATL63HmnPU6opjBSEZaaMlm2Te-PIYAHqQOxbGTmMoK6gFiZ_UH5-4T-EIqDRbO3iI36s7YKIRGQ0R9SdApQqaebhJOTpPhd1ae9VUs4U61sqgBxXCJGh9wEFrVzdZRA1IijuZV_2-41D-AJQc4fFlbLNBcd9IfuzjEWWnqD8mjcuMoXSQFFX-6sLzZYABjDkIWu24V2MN1j_KU_l75g_hT4JF91ng",
+               "width" : 3024
+            }
+         ],
+         "place_id" : "ChIJoeupBUsiaDQRqNJ0pxx7UAg",
+         "plus_code" : 
+         {
+            "compound_code" : "X649+3J 台灣桃園市中壢區中壢里",
+            "global_code" : "7QP3X649+3J"
+         },
+         "price_level" : 1,
+         "rating" : 3.8,
+         "reference" : "ChIJoeupBUsiaDQRqNJ0pxx7UAg",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "bakery",
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "store",
+            "establishment"
+         ],
+         "user_ratings_total" : 3548,
+         "vicinity" : "中壢區中正路268號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9628805,
+               "lng" : 121.2125714
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9642972802915,
+                  "lng" : 121.2138265802915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.96159931970849,
+                  "lng" : 121.2111286197085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "采楓健康蔬食",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3024,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/103433062235444084530\"\u003e謝益修\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcK7G5IuisOvT6djsNUFWStykkG58ngo0YeqdSs8Ssarfdc1enAn8MrRNxWyfuRNwLNBd1OU1TMlEDXW5VcGFFVdfyC9BjjEgtarvEzTGTrTMr3gN9XhSxZpf6MOJQeAKU11_ASlbfLVnRjX0F8I-TthINosTg2_i0rolB2oV6XfANrv2TBGOYEibAA_boOLjwbHfViNvh2tYo6LB8hTPyh8T0BLbITaL2_Xgh8kvISQ018DwWVig4gQk0p26bXDxRMUmDsbxR91omFDjJXf4RFHXPABBinL1llZaEn5P_PCDoWe1-c0_0kX2QKdLr2tJ4ZQ5RKgpHf6a25D6-udu17jflTL7ai6dlF-nONbgaSCdaoVGk_13gGSGi0ec39uDdBmmJJyy2y7hP74ePPVyxEXDNCr9gaEmr_kVFYK40cYvr0BIFFJ3G8w7_neN_u4WaZebRUxnDALY8ywPw49L70Hie4-ce8MAXYTFXJ8fTkcW3VXAmdygybVpR_RQym9GtmoZLMpWB6BlvSGN8_f-IzqhmeQqEE8LY1GjQnPClcVKwTKGlmQSem-Oz5_bIyPlHU-SpUcCoZ3ROCDiP_Qpzs-x3GZiCy7XehjdB9FvVcqaooqTmN0HfLU9cxvxxB8j2-DAnu1",
+               "width" : 4032
+            }
+         ],
+         "place_id" : "ChIJZ-fzycsjaDQRfIYrhQJyqMk",
+         "plus_code" : 
+         {
+            "compound_code" : "X677+52 台灣桃園市中壢區光明里",
+            "global_code" : "7QP3X677+52"
+         },
+         "price_level" : 2,
+         "rating" : 4.3,
+         "reference" : "ChIJZ-fzycsjaDQRfIYrhQJyqMk",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 462,
+         "vicinity" : "中壢區三光路146號"
+      },
+      {
+         "business_status" : "OPERATIONAL",
+         "geometry" : 
+         {
+            "location" : 
+            {
+               "lat" : 24.9598911,
+               "lng" : 121.2150985
+            },
+            "viewport" : 
+            {
+               "northeast" : 
+               {
+                  "lat" : 24.9612395302915,
+                  "lng" : 121.2164503302915
+               },
+               "southwest" : 
+               {
+                  "lat" : 24.9585415697085,
+                  "lng" : 121.2137523697085
+               }
+            }
+         },
+         "icon" : "https://maps.gstatic.com/mapfiles/place_api/icons/v1/png_71/restaurant-71.png",
+         "icon_background_color" : "#FF9E67",
+         "icon_mask_base_uri" : "https://maps.gstatic.com/mapfiles/place_api/icons/v2/restaurant_pinlet",
+         "name" : "簡師傅麻辣臭豆腐",
+         "opening_hours" : 
+         {
+            "open_now" : false
+         },
+         "photos" : 
+         [
+            {
+               "height" : 3000,
+               "html_attributions" : 
+               [
+                  "\u003ca href=\"https://maps.google.com/maps/contrib/117764688745325012530\"\u003e黃俐瑜\u003c/a\u003e"
+               ],
+               "photo_reference" : "AeeoHcIoBMb-1n_LoxHMGlYrc5KjiwboxFYAiQk_3QjzORzgc-1ea-KmGFzAb6p2TULiOwxYZDYKdIjZsRMtTs8ft3t6G3RU2extzCjUR9DO-EdmOLlo__WJNrizX6v5P6LEqPpUzfI8Mg1d4KPp6h8M_cgdtPPH6eph2_11h0DxxgyYFlcWpAZi53dwqJeZjJJidj9ADOcyA4reFJKsEclcFZMSnpbWZXGLIJukqr1hFWMILTZpYbzWVoPXBnLCv4iuOFRwBy2a-N5euvmTKRif6jeSsEBDauaMXRXyS2QA2emQOcRV-vOERobak-AcFGRJk9D0V3DAy05YkLWjaFw5HhZfKOh9QQG3Qwf7Al_X4c3Gtath6bjvAV2OL4R2ZyASAt99RVui_GL5STofeQaiWAqMk_0ag9SpgZRHRs6f_NhHG6IqXhyjtjI9vp_mSMphtwrDI1r3UZKMqsqXlIi12cE5PCJ-ir4S5dPQwjsmFTJzWnsrsi2TRLAUCYl6pstv-f-Sj-eRn7dgH1Z9Ub-fC09sPvUkFjjqwGAVvx5JIvOTfKtqygJwUmaGtGT8OYWuBx9rqxY-7TAU3dqQ2LbLd3O70ll3a6pVlnXDYnVz-L85pIzZey89ppqwjYrCbENPNUtSHQ",
+               "width" : 4000
+            }
+         ],
+         "place_id" : "ChIJV5SmwsojaDQRIHA9fzFHimc",
+         "plus_code" : 
+         {
+            "compound_code" : "X658+X2 台灣桃園市中壢區光明里",
+            "global_code" : "7QP3X658+X2"
+         },
+         "price_level" : 1,
+         "rating" : 3.9,
+         "reference" : "ChIJV5SmwsojaDQRIHA9fzFHimc",
+         "scope" : "GOOGLE",
+         "types" : 
+         [
+            "restaurant",
+            "food",
+            "point_of_interest",
+            "establishment"
+         ],
+         "user_ratings_total" : 1703,
+         "vicinity" : "中壢區新明路101號"
+      }
+   ],
+   "status" : "OK"
+}

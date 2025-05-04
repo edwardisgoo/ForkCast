@@ -1,0 +1,34 @@
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "forkcast-c8d06",
+          "appId": "1:343066555968:android:5b28a74d000cfdb3c0d1a5",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "forkcast-c8d06",
+          "configurations": {
+            "android": "1:343066555968:android:5b28a74d000cfdb3c0d1a5",
+            "ios": "1:343066555968:ios:420bcc2823e7ea16c0d1a5",
+            "macos": "1:343066555968:ios:420bcc2823e7ea16c0d1a5",
+            "web": "1:343066555968:web:4c27ab82925022d5c0d1a5",
+            "windows": "1:343066555968:web:c1ff5f4a6ef2693ac0d1a5"
+          }
+        }
+      }
+    }
+  },
+  "functions": [
+    {
+      "source": "functions",
+      "codebase": "default",
+      "predeploy": [
+        "npm --prefix \"$RESOURCE_DIR\" run build"
+      ]
+    }
+  ]
+}

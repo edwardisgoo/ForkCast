@@ -1,6 +1,14 @@
 # This is a generated file; do not edit or check into version control.
+<<<<<<< HEAD
+path_provider=C:\\Users\\Meep\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider-2.1.5\\
+path_provider_android=C:\\Users\\Meep\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_android-2.2.17\\
+path_provider_foundation=C:\\Users\\Meep\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_foundation-2.4.1\\
+path_provider_linux=C:\\Users\\Meep\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_linux-2.2.1\\
+path_provider_windows=C:\\Users\\Meep\\AppData\\Local\\Pub\\Cache\\hosted\\pub.dev\\path_provider_windows-2.3.0\\
+=======
 path_provider=/Users/elystal/.pub-cache/hosted/pub.dev/path_provider-2.1.5/
 path_provider_android=/Users/elystal/.pub-cache/hosted/pub.dev/path_provider_android-2.2.17/
 path_provider_foundation=/Users/elystal/.pub-cache/hosted/pub.dev/path_provider_foundation-2.4.1/
 path_provider_linux=/Users/elystal/.pub-cache/hosted/pub.dev/path_provider_linux-2.2.1/
 path_provider_windows=/Users/elystal/.pub-cache/hosted/pub.dev/path_provider_windows-2.3.0/
+>>>>>>> c42dd3c8814b29e5405e59351434989b70844f8d
