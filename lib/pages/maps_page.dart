@@ -7,13 +7,15 @@ class MapsPage extends StatelessWidget {
   
   @override
   Widget build(BuildContext context) {
-    final nav = Provider.of<NavigationService>(context, listen: false);
     return Scaffold(
       appBar: AppBar(title: const Text('Maps Page')),
       body: Center(
+        // Added button linking to external app/website (future integration)
         child: ElevatedButton(
-          onPressed: () => nav.goMain(),
-          child: const Text('Back to Main'),
+          onPressed: () {
+            // Future: link to Google Maps
+          },
+          child: const Text('Go to Google Maps'),
         ),
       ),
     );
