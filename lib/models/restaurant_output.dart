@@ -1,15 +1,49 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/restaurant_raw.dart';
+
 /*
 光齊：針對呼叫fetchRestaurant時所需Output設計的Data Structure
-*/ 
+*/
 class RestaurantOutput {
-  const RestaurantOutput({
-    required this.indexInList,
-    required this.name,
-    required this.reason
+  RestaurantOutput({
+    required this.raw,
+    required this.reason,
+    required this.matchScore,
+    required this.priceScore,
+    required this.distanceScore,
+    required this.ratingScore,
+    required this.preferenceScore,
+    required this.requirementScore,
   });
-
-  final int indexInList;//必須與輸入的List對應 從1開始
-  final String name;// Debug用的餐廳名稱
-  final String reason;// 簡短推薦原因 
+  final RestaurantRaw raw;
+  final String reason; // 簡短推薦原因
+  final double matchScore;
+  final double priceScore;
+  final double distanceScore;
+  final double ratingScore;
+  final double preferenceScore;
+  final double requirementScore;
+  // 由detailGeneration後才會出現的資訊
+  String shortIntroduction = "";
+  String fullIntroduction = "";
+  String menu = "";
+  String reviews = "";
+  String priceReason = "";
+  String flavorReason = "";
+  //加入details的function
+  void addDetails({
+    required String short,
+    required String full,
+    required String menu,
+    required String reviews,
+    required String priceReason,
+    required String flavorReason,
+  }) {
+    shortIntroduction = short;
+    fullIntroduction = full;
+    this.menu = menu;
+    this.reviews = reviews;
+    this.priceReason = priceReason;
+    this.flavorReason = flavorReason;
+  }
 }

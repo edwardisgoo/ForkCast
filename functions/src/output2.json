@@ -1,0 +1,45 @@
+{
+    "topIndexes": [
+      6,
+      1,
+      0
+    ],
+    "recommendations": [
+      {
+        "index": 6,
+        "reason": "綠色生活餐廳距離近(300.2公尺)，提供全素選項，完全符合素食需求，價格中等，符合預算，評論評分4.4中等偏上。雖然評論數量較少，但整體而言非常符合使用者的需求，尤其距離和素食需求是使用者最重視的條件。",
+        "matchScore": 0.92,
+        "matchDetail": {
+          "price": 0.7,
+          "distance": 1,
+          "rating": 0.7,
+          "preference": 0.9,
+          "requirement": 1
+        }
+      },
+      {
+        "index": 1,
+        "reason": "慢食餐坊標明提供素食，距離在可接受範圍內(580公尺)，評論評分高達4.5，主打有機健康料理，價格雖偏貴，但符合預算上限，且強調健康，更符合使用者偏好。",
+        "matchScore": 0.88,
+        "matchDetail": {
+          "price": 0.6,
+          "distance": 0.8,
+          "rating": 0.9,
+          "preference": 0.9,
+          "requirement": 1
+        }
+      },
+      {
+        "index": 0,
+        "reason": "樂樂餐館距離較近(350.5公尺)，價格中等，符合預算。雖然菜單並未明確標示素食選項，但評分4.3尚可接受。相較於其他更符合條件的餐廳，其優先級較低。",
+        "matchScore": 0.75,
+        "matchDetail": {
+          "price": 0.7,
+          "distance": 0.95,
+          "rating": 0.75,
+          "preference": 0.8,
+          "requirement": 0.5
+        }
+      }
+    ]
+  }

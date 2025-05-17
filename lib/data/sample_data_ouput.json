@@ -1,0 +1,24 @@
+{
+    "distance": 0.0,
+    "opening": true,
+    "rating": 4.5,
+    "reviews": [
+      {
+        "rating": 5,
+        "time": 1620000000,
+        "text": "食物很好吃，服務也很棒！"
+      },
+      {
+        "rating": 4,
+        "time": 1620500000,
+        "text": "氣氛不錯，景觀超美。"
+      }
+    ],
+    "photoImformation": "有2張圖片",
+    "name": "台北101景觀餐廳",
+    "summary": "位於台北101高樓的景觀餐廳，供應精緻料理與美景。",
+    "types": "中式料理 / 咖啡廳",
+    "priceInformation": "貴",
+    "extraInformation": "路邊取貨 / 外送 / 內用 / 可預約 / 提供啤酒 / 早午餐 / 晚餐 / 午餐 / 素食 / 葡萄酒 / 外帶 / 無障礙入口"
+  }
+  

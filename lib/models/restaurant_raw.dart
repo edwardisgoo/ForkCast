@@ -19,8 +19,33 @@ enum PriceLevel{
 }
 class RestaurantRaw {
   const RestaurantRaw({
-    /*
-    TODO 實作Parser*/ 
+    required this.latitude,
+    required this.longtitude,
+    required this.address,
+    required this.businessStatus,
+    required this.openingHours,
+    required this.rating,
+    required this.reviews,
+    required this.photos,
+    required this.name,
+    required this.summary,
+    required this.id,
+    required this.types,
+    required this.url,
+    required this.priceLevel,
+    required this.curbsidePickup,
+    required this.delivery,
+    required this.dineIn,
+    required this.reservable,
+    required this.servesBeer,
+    required this.servesBreakfast,
+    required this.servesBrunch,
+    required this.servesDinner,
+    required this.servesLunch,
+    required this.servesVegetarianFood,
+    required this.servesWine,
+    required this.takeout,
+    required this.wheelchairAccessibleEntrance,
   });
   /*
   1.位置相關

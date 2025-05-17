@@ -122,4 +122,21 @@ class RestaurantInput {
       extraInformation: extraInfo,
     );
   }
+  Map<String, dynamic> toJson() => {
+  'distance': distance,
+  'opening': opening,
+  'rating': rating,
+  'reviews': reviews.map((r) => {
+    'rating': r.rating,
+    'time': r.time,
+    'text': r.text,
+  }).toList(),
+  'photoImformation': photoImformation,
+  'name': name,
+  'summary': summary,
+  'types': types,
+  'priceInformation': priceInformation,
+  'extraInformation': extraInformation,
+};
+
 }

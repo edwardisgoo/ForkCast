@@ -1,8 +1,11 @@
 import 'package:cloud_functions/cloud_functions.dart';
+import 'package:flutter_app/models/openingHours.dart';
+import 'package:flutter_app/models/restaurant_raw.dart';
 import 'package:flutter_app/models/restaurant_input.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/models/query.dart';
+
 /*
 光齊：主要排序餐廳的Flow
 Input:
@@ -14,67 +17,146 @@ UserSetting:
 用於讀取喜好排序
 
 Ouput:{'result':List<RestaurantOutput>}經由Flow流程得出的
-*/ 
+*/
 Future<Map<String, dynamic>> fetchRestaurant(
-  List<RestaurantInput> dataRestaurants,
+  List<RestaurantRaw> rawdataRestaurants,
+  HourMin queryTime,
+  double queryLat,
+  double queryLng,
   Query extraPreference,
   UserSetting userSetting,
 ) async {
+  List<RestaurantInput> dataRestaurants = [];
+  for (var rawRestaurant in rawdataRestaurants) {
+    dataRestaurants.add(
+        RestaurantInput.fromRaw(rawRestaurant, queryTime, queryLat, queryLng));
+  }
   try {
     //還沒實作
-    /*final HttpsCallable callable = FirebaseFunctions.instance.httpsCallable(
-      //'customRecipeExample',
-      'customRecipe', //'customRecipeExample',
+    final HttpsCallable callableFindRestaurants =
+        FirebaseFunctions.instance.httpsCallable(
+      'findRestaurants',
+      options: HttpsCallableOptions(
+        timeout: const Duration(seconds: 30), // 增加Timeout
+      ),
     );
-    print('Calling customRecipe function on firebase');
-    //final response = await callable.call(ingredients);
-    final response = await callable.call({
-      "suggestRecipe": {
-        "title": recipeTitle,
-        "ingredients": recipeIngredients,
-        "directions": recipeDirections,
+    final HttpsCallable callableDetailGeneration =
+        FirebaseFunctions.instance.httpsCallable(
+      'detailGeneration',
+      options: HttpsCallableOptions(
+        timeout: const Duration(seconds: 30), // 增加Timeout
+      ),
+    );
+    final List<Map<String, dynamic>> serializedRestaurants =
+        dataRestaurants.map((restaurant) => restaurant.toJson()).toList();
+    for (var restaurant in serializedRestaurants) {
+      if (restaurant == null) {
+        throw Exception("Restaurant data cannot be null");
+      }
+    }
+    final Map<String, dynamic> requestData = {
+      "restaurants": serializedRestaurants,
+      "query": {
+        "minPrice": extraPreference.minPrice,
+        "maxPrice": extraPreference.maxPrice,
+        "minDistance": extraPreference.minDistance,
+        "maxDistance": extraPreference.maxDistance,
+        "requirement": extraPreference.requirement,
+        "note": extraPreference.note,
       },
-      "ingredients": ingredients,
-    });
-    //print('Firebase response: ${response.data}'); // <-- 新增這行，觀察 Firebase 回傳的結果
-    if (response.data == null) {
+      "userSetting": {
+        "sortedPreference": userSetting.sortedPreference,
+      },
+    };
+    print('Request data of findRestaurants: $requestData');
+    final responseFindRestaurants =
+        await callableFindRestaurants.call(requestData);
+    print(
+        'Firebase response of findRestaurants: ${responseFindRestaurants.data}');
+
+    if (responseFindRestaurants.data == null) {
       print("Error: Response data is null");
       throw Exception("Response data is null");
     }
-
-    final data = Map<String, dynamic>.from(response.data as Map);
-    //print('Parsed data: $data'); // <-- 新增這行，確保 data 不是 null
-    if (!data.containsKey("recipe")) {
-      print("Error: 'recipe' key not found in response");
-      throw Exception("'recipe' key not found in response");
+    final rawData = responseFindRestaurants.data as Map<String, dynamic>;
+    if (rawData is! Map) {
+      throw Exception("Invalid response format from Firebase");
     }
-    if (!data.containsKey("customRecipeImage")) {
-      print("Error: 'customRecipeImage' key not found in response");
-      throw Exception("'customRecipeImage' key not found in response");
+    final data = <String, dynamic>{};
+    try {
+      rawData.forEach((key, value) {
+        data[key.toString()] = value;
+      });
+    } catch (e) {
+      throw Exception(
+          "Error happens in converting data to type Map<String, dynamic> $e");
     }
-    if (!data.containsKey("originRecipeImage")) {
-      print("Error: 'originRecipeImage' key not found in response");
-      throw Exception("'originRecipeImage' key not found in response");
+    if (!data.containsKey("topIndexes")) {
+      print("Error: 'topIndexes' key not found in response");
+      throw Exception("'topIndexes' key not found in response");
     }
-    final customRecipe = Map<String, dynamic>.from(data["recipe"]);
-    final customRecipeImage = Map<String, dynamic>.from(
-      data["customRecipeImage"],
-    );
-    final originRecipeImage = Map<String, dynamic>.from(
-      data["originRecipeImage"],
-    );
-    /*if (!originRecipeImage.containsKey("url")) {
-      print("Error: 'url' key not found in originRecipeImage");
-      throw Exception("'url' key not found in originRecipeImage");
-    }*/
-    //print("originRecipeImage['url']=: ${originRecipeImage["url"]}");
-  */
+    if (!data.containsKey("recommendations")) {
+      print("Error: 'recommendations' key not found in response");
+      throw Exception("'recommendations' key not found in response");
+    }
     List<RestaurantOutput> result = [];
-    return {
-      'result': result
-    };
+    final List<int> topIndexes = data["topIndexes"].whereType<int>().toList();
+    final List<Map<String, dynamic>> recommendations =
+        (data["recommendations"] as List)
+            .map((e) => Map<String, dynamic>.from(e as Map))
+            .toList();
+    for (int i = 0; i < topIndexes.length; i++) {
+      final int index = topIndexes[i];
+      final Map<String, dynamic>? recommendation =
+          recommendations.firstWhere((r) => r["index"] == index);
+
+      if (recommendation != null && index < dataRestaurants.length) {
+        final Map<String, dynamic> requestData = {
+          "restaurant": serializedRestaurants[index],
+          "query": {
+            "minPrice": extraPreference.minPrice,
+            "maxPrice": extraPreference.maxPrice,
+            "minDistance": extraPreference.minDistance,
+            "maxDistance": extraPreference.maxDistance,
+            "requirement": extraPreference.requirement,
+            "note": extraPreference.note,
+          },
+          "userSetting": {
+            "sortedPreference": userSetting.sortedPreference,
+          },
+          "previousRecommendation": recommendation
+        };
+        print('Request data of detailGeneration: $requestData');
+        final response;
+        try {
+          response = await callableDetailGeneration.call(requestData);
+          print(
+              'After calling detailGeneration, response.data ${response.data}');
+        } catch (err) {
+          throw Exception("Error happens in calling detailGeneration:${err}");
+        }
+        result.add(RestaurantOutput(
+          raw: rawdataRestaurants[index],
+          reason: recommendation["reason"] ?? "",
+          matchScore: recommendation["matchScore"].toDouble() ?? 0.0,
+          priceScore: recommendation["matchDetail"]["price"].toDouble() ?? 0.0,
+          distanceScore:
+              recommendation["matchDetail"]["distance"].toDouble() ?? 0.0,
+          ratingScore:
+              recommendation["matchDetail"]["rating"].toDouble() ?? 0.0,
+          preferenceScore:
+              recommendation["matchDetail"]["preference"].toDouble() ?? 0.0,
+          requirementScore:
+              recommendation["matchDetail"]["requirement"].toDouble() ?? 0.0,
+        ));
+      }
+    }
+    if (recommendations.length != result.length)
+      print("Didn't match all indexes");
+    return {'result': result};
   } catch (e) {
-    print("Error calling custom recipe: $e");
-    throw Exception("Failed to fetch custom recipe");
+    print(
+        "Error calling fetchRestaurants in services/fetchRestaurants.dart: $e");
+    throw Exception("Failed to fetch custom recipe $e");
   }
 }
