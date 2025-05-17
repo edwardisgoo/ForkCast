@@ -1,6 +1,6 @@
 import { z } from "genkit";
 import { ai } from "../config";
-import { gemini15Flash } from "@genkit-ai/vertexai";
+import { gemini20Flash } from "@genkit-ai/vertexai";
 
 // 定義 RestaurantInput schema
 const RestaurantInputSchema = z.object({
@@ -125,7 +125,7 @@ export const findRestaurantsFlow = ai.defineFlow(
                     return {
                         index,
                         restaurant,
-                        eligible: withinPriceRange && withinDistanceRange,
+                        eligible: true,//withinPriceRange && withinDistanceRange,
                         priceRange: { minPrice, maxPrice },
                         matchDetail
                     };
@@ -139,7 +139,7 @@ export const findRestaurantsFlow = ai.defineFlow(
                 console.log("擴大搜索範圍...");
                 return await fallbackStrategy(input);
             }
-
+            
             // 構建提示以加入使用者偏好
             const prompt = `你是一位美食推薦專家。根據使用者的偏好和需求，從以下餐廳中選出最適合的三家推薦。
 
@@ -195,8 +195,9 @@ ${JSON.stringify(eligibleRestaurants.map((item: { restaurant: any; }) => item.re
 其中 A、B、C 是餐廳在原始輸入陣列中的索引。如果餐廳名稱中包含使用者需求的關鍵字或類型中包含相關字詞，請加以重視。`;
 
             // 直接使用模型生成
+            console.log("prompt:",prompt);
             const response = await ai.generate({
-                model: gemini15Flash,
+                model: gemini20Flash,
                 prompt: prompt,
             });
 
@@ -260,7 +261,7 @@ function extractTextFromResponse(response: any) {
 }
 
 // 解析 JSON
-function parseJsonFromText(text: string) {
+/*function parseJsonFromText(text: string) {
     const jsonRegex = /\{[\s\S]*?\}/g;
     const jsonMatches = text.match(jsonRegex);
 
@@ -307,6 +308,214 @@ function parseJsonFromText(text: string) {
     }
 
     return parsed;
+}*/
+
+// 定義明確的介面類型
+interface MatchDetail {
+    price: number;
+    distance: number;
+    rating: number;
+    preference: number;
+    requirement: number;
+}
+
+interface Recommendation {
+    index: number;
+    reason: string;
+    matchScore: number;
+    matchDetail: MatchDetail;
+}
+
+interface ParsedResult {
+    topIndexes: number[];
+    recommendations: Recommendation[];
+}
+
+// 改進的 JSON 解析函數
+function parseJsonFromText(text: string): ParsedResult {
+    console.log("Attempting to parse JSON from text:", text);
+    
+    // 1. 清理文本，移除可能的錯誤訊息
+    text = text.replace(/SyntaxError:[\s\S]*$/, '');
+    
+    // 2. 嘗試找到最完整的 JSON 結構
+    let jsonMatches;
+    
+    // 先尋找完整的大括號對
+    const completeJsonRegex = /\{[\s\S]*?\}/g;
+    jsonMatches = text.match(completeJsonRegex);
+    
+    if (!jsonMatches || jsonMatches.length === 0) {
+        throw new Error("從模型回應中找不到 JSON 格式");
+    }
+    
+    // 3. 嘗試解析每個可能的 JSON 字符串
+    let parsed: ParsedResult | null = null;
+    let parseError: Error | null = null;
+    
+    // 先嘗試最長的 JSON 字符串，可能性最高
+    jsonMatches.sort((a, b) => b.length - a.length);
+    
+    for (const jsonStr of jsonMatches) {
+        try {
+            // 處理多行字符串問題
+            const fixedJsonStr = jsonStr
+                .replace(/\n/g, '\\n') // 替換換行符
+                .replace(/\r/g, '\\r') // 替換回車符
+                .replace(/\t/g, '\\t') // 替換製表符
+                .replace(/\"/g, '\\"') // 轉義雙引號
+                .replace(/\\\\/g, '\\') // 修復重複的反斜槓
+                .replace(/"{/g, '{')   // 修復異常的開始引號
+                .replace(/}"/g, '}')   // 修復異常的結束引號
+                .replace(/([^\\])"/g, '$1\\"') // 為未轉義的雙引號添加轉義符
+                .replace(/\\\\"/g, '\\"') // 修復可能的過度轉義
+                .replace(/(['"])([\s\S]*?)([^\\])\1/g, function(match, quote, content, end) {
+                    // 確保字符串內容中所有引號都被正確轉義
+                    return quote + content.replace(new RegExp(quote, 'g'), '\\' + quote) + end + quote;
+                });
+            
+            // 檢查括號平衡
+            let fixedJson = balanceBrackets(fixedJsonStr);
+            
+            console.log("Attempting to parse JSON:", fixedJson);
+            const candidate = JSON.parse(fixedJson);
+            
+            // 驗證解析結果
+            if (candidate) {
+                if (isSingleRecommendation(candidate)) {
+                    // 如果只是單個推薦對象，則構建完整的結構
+                    console.log("Found single recommendation, building full structure");
+                    parsed = {
+                        topIndexes: [candidate.index],
+                        recommendations: [candidate as Recommendation]
+                    };
+                    break;
+                } else if (candidate.topIndexes && Array.isArray(candidate.topIndexes)) {
+                    console.log("成功解析完整 JSON 結構");
+                    parsed = candidate as ParsedResult;
+                    break;
+                } else if (candidate.recommendations && Array.isArray(candidate.recommendations)) {
+                    console.log("找到推薦數組，構建完整結構");
+                    // 從推薦中提取 topIndexes
+                    const indices = candidate.recommendations.map((rec: Recommendation) => rec.index);
+                    parsed = {
+                        topIndexes: indices,
+                        recommendations: candidate.recommendations as Recommendation[]
+                    };
+                    break;
+                }
+            }
+        } catch (err) {
+            parseError = err instanceof Error ? err : new Error(String(err));
+            console.log("解析 JSON 失敗:", err);
+        }
+    }
+    
+    // 4. 如果單獨解析失敗，嘗試修復和組合 JSON
+    if (!parsed) {
+        try {
+            console.log("嘗試修復和組合 JSON");
+            parsed = repairAndCombineJson(text);
+        } catch (err) {
+            console.log("修復組合失敗:", err);
+        }
+    }
+    
+    if (!parsed) {
+        throw new Error("無法解析有效的 JSON 格式: " + (parseError ? parseError.message : "未知錯誤"));
+    }
+    
+    return parsed;
+}
+
+// 檢查是否為單個推薦對象
+function isSingleRecommendation(obj: any): obj is Recommendation {
+    return obj && 
+           typeof obj.index !== 'undefined' && 
+           typeof obj.reason === 'string' &&
+           typeof obj.matchScore === 'number' &&
+           obj.matchDetail;
+}
+
+// 檢查和平衡括號
+function balanceBrackets(jsonStr: string): string {
+    // 計算開閉括號
+    let openBraces = (jsonStr.match(/\{/g) || []).length;
+    let closeBraces = (jsonStr.match(/\}/g) || []).length;
+    
+    // 添加缺失的閉括號
+    if (openBraces > closeBraces) {
+        jsonStr += '}'.repeat(openBraces - closeBraces);
+    }
+    
+    return jsonStr;
+}
+
+// 修復並組合 JSON
+function repairAndCombineJson(text: string): ParsedResult {
+    // 尋找推薦對象
+    const recommendationRegex = /"index"\s*:\s*(\d+)[\s\S]*?"reason"\s*:\s*"([^"]*)"[\s\S]*?"matchScore"\s*:\s*([\d\.]+)[\s\S]*?"matchDetail"\s*:\s*\{[\s\S]*?\}/g;
+    const recommendations: Recommendation[] = [];
+    const indices: number[] = [];
+    let match;
+    
+    while ((match = recommendationRegex.exec(text)) !== null) {
+        try {
+            // 提取匹配的文本並嘗試構建 JSON
+            const fullMatch = match[0];
+            const index = parseInt(match[1]);
+            indices.push(index);
+            
+            // 使用正則表達式提取 matchDetail
+            const matchDetailRegex = /"matchDetail"\s*:\s*(\{[\s\S]*?\})/;
+            const matchDetailMatch = fullMatch.match(matchDetailRegex);
+            let matchDetail: MatchDetail = {
+                price: 0.8,
+                distance: 0.7,
+                rating: 0.7,
+                preference: 0.6,
+                requirement: 0.5
+            };
+            
+            if (matchDetailMatch && matchDetailMatch[1]) {
+                try {
+                    // 清理和修復 matchDetail 字符串
+                    let detailStr = matchDetailMatch[1]
+                        .replace(/([a-zA-Z0-9_]+)\s*:/g, '"$1":') // 確保所有鍵被引號包圍
+                        .replace(/,\s*\}/g, '}'); // 移除尾隨逗號
+                    
+                    const parsedDetail = JSON.parse(balanceBrackets(detailStr));
+                    matchDetail = {
+                        price: parsedDetail.price || 0.8,
+                        distance: parsedDetail.distance || 0.7,
+                        rating: parsedDetail.rating || 0.7,
+                        preference: parsedDetail.preference || 0.6,
+                        requirement: parsedDetail.requirement || 0.5
+                    };
+                } catch (e) {
+                    console.log("無法解析 matchDetail，使用默認值:", e);
+                }
+            }
+            
+            recommendations.push({
+                index: index,
+                reason: match[2].replace(/\n/g, ' '), // 替換換行符為空格
+                matchScore: parseFloat(match[3]),
+                matchDetail: matchDetail
+            });
+        } catch (e) {
+            console.log("處理推薦對象時出錯:", e);
+        }
+    }
+    
+    if (recommendations.length > 0) {
+        return {
+            topIndexes: indices,
+            recommendations: recommendations
+        };
+    }
+    
+    throw new Error("無法從文本中提取有效的推薦對象");
 }
 
 // 後處理結果

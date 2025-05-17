@@ -1,6 +1,6 @@
 import { z } from "genkit";
 import { ai } from "../config";
-import { gemini15Flash } from "@genkit-ai/vertexai";
+import { gemini20Flash } from "@genkit-ai/vertexai";
 
 // 定義 RestaurantInput schema
 const RestaurantInputSchema = z.object({
@@ -67,7 +67,7 @@ const convertPreferenceArrayToString = (preferences: string[]): string => {
 // 改用不同的方式處理 prompt 模板
 // 依照您的成功範例，使用單一層級的變數參考
 const detailGenerator = ai.definePrompt({
-    model: gemini15Flash,
+    model: gemini20Flash,
     name: 'detailGenerator',
     messages: `
     你是一個專業的餐廳介紹員，負責生成詳細、客觀的餐廳介紹。
@@ -106,7 +106,7 @@ const detailGenerator = ai.definePrompt({
 - 偏好匹配度：{{matchDetailPreference}}
 - 需求匹配度：{{matchDetailRequirement}}
 
-請按以下格式提供餐廳詳細資訊：
+請嚴格按以下格式提供餐廳詳細資訊：
 
 短介紹：[簡短二十字內概述該餐廳的特色和為何推薦給使用者]
 完整介紹：[詳細描述餐廳的氛圍、特色和整體體驗]
@@ -248,31 +248,14 @@ export const detailGenerationFlow = ai.defineFlow(
             }
 
             // 解析AI生成的內容，提取各部分
-            // 使用更靈活的匹配方式
-            const extractSection = (sectionName: string, content: any) => {
-                const patterns = [
-                    new RegExp(`${sectionName}[：:](.*?)(?=\\n\\n|\\n[^\\n]+[：:]|$)`, 's'),
-                    new RegExp(`${sectionName}\\n(.*?)(?=\\n\\n|\\n[^\\n]+[：:]|$)`, 's'),
-                    new RegExp(`${sectionName}[：:]\\s*(.*?)(?=\\n\\n|\\n[^\\n]+[：:]|$)`, 's')
-                ];
-
-                for (const pattern of patterns) {
-                    const match = content.match(pattern);
-                    if (match && match[1]) {
-                        return match[1].trim();
-                    }
-                }
-
-                return null;
-            };
 
             // 使用提取函數獲取各個部分
-            const shortIntroduction = extractSection("短介紹", detailContent) || "未能生成短介紹";
-            const fullIntroduction = extractSection("完整介紹", detailContent) || "未能生成完整介紹";
-            const menu = extractSection("菜單推薦", detailContent) || "未能生成菜單推薦";
-            const reviews = extractSection("評論摘要", detailContent) || "未能生成評論摘要";
-            const priceReason = extractSection("價格分析", detailContent) || "未能生成價格分析";
-            const flavorReason = extractSection("口味分析", detailContent) || "未能生成口味分析";
+            const shortIntroduction = cleanExtractedContent(extractSection("短介紹", detailContent) || "未能生成短介紹");
+            const fullIntroduction = cleanExtractedContent(extractSection("完整介紹", detailContent) || "未能生成完整介紹");
+            const menu = cleanExtractedContent(extractSection("菜單推薦", detailContent) || "未能生成菜單推薦");
+            const reviews = cleanExtractedContent(extractSection("評論摘要", detailContent) || "未能生成評論摘要");
+            const priceReason = cleanExtractedContent(extractSection("價格分析", detailContent) || "未能生成價格分析");
+            const flavorReason = cleanExtractedContent(extractSection("口味分析", detailContent) || "未能生成口味分析");
 
             // 構建輸出對象
             const result = {
@@ -311,3 +294,69 @@ export const detailGenerationFlow = ai.defineFlow(
         }
     }
 );
+const sections = ["短介紹", "完整介紹", "菜單推薦", "評論摘要", "價格分析", "口味分析"];
+function extractSection(sectionName: string, content: string): string {
+    // 試用不同的正則表達式模式來匹配目標部分
+    const patterns = [
+        // 基本匹配：尋找標題後的內容，直到下一個標題或文檔結束
+        new RegExp(`\\*\\*${sectionName}[：:](.*?)(?=\\n\\*\\*|$)`, 's'),
+        // 匹配標記後的部分直到下一個部分開始
+        new RegExp(`\\*\\*${sectionName}[：:]\\*\\*\\s*(.*?)(?=\\n\\*\\*|$)`, 's'),
+        // 簡單的部分標題後匹配內容
+        new RegExp(`${sectionName}[：:](.*?)(?=\\n(?:\\*\\*|[^\\s])|$)`, 's')
+    ];
+
+    // 嘗試每個模式直到找到匹配
+    for (const pattern of patterns) {
+        const match = content.match(pattern);
+        if (match && match[1]) {
+            return match[1].trim();
+        }
+    }
+
+    // 如果特定模式匹配失敗，嘗試更通用的方法
+    // 在當前部分和下一個部分之間尋找內容
+    //const sectionHeaders = sections.map(s => `**${s}`);
+    const currentIndex = sections.indexOf(sectionName);
+    
+    if (currentIndex !== -1) {
+        const currentHeader = `**${sectionName}`;
+        // 查找當前標題的位置
+        const currentHeaderPos = content.indexOf(currentHeader);
+        
+        if (currentHeaderPos >= 0) {
+            const startPos = content.indexOf('**', currentHeaderPos + 2) + 2;
+            
+            // 如果這不是最後一個部分，則找到下一個部分的開始位置
+            if (currentIndex < sections.length - 1) {
+                const nextHeader = `**${sections[currentIndex + 1]}`;
+                const nextHeaderPos = content.indexOf(nextHeader, startPos);
+                
+                if (nextHeaderPos > startPos) {
+                    return content.substring(startPos, nextHeaderPos).trim();
+                }
+            } else {
+                // 如果是最後一個部分，則獲取剩餘的所有內容
+                return content.substring(startPos).trim();
+            }
+        }
+    }
+
+    // 如果所有嘗試都失敗，返回一個默認消息
+    return `未能提取${sectionName}部分`;
+}
+// 清理提取的內容 - 移除多餘的標記和格式化
+function cleanExtractedContent(content: string): string {
+    if (!content) return "";
+    
+    // 移除開頭的星號和其他可能的標記
+    let cleaned = content.replace(/^\*+\s*/, "");
+    
+    // 移除多餘的空行
+    cleaned = cleaned.replace(/\n{3,}/g, "\n\n");
+    
+    // 移除 markdown 列表標記前的額外空格
+    cleaned = cleaned.replace(/\n\s+\*/g, "\n*");
+    
+    return cleaned.trim();
+}

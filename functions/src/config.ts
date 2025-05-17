@@ -3,13 +3,12 @@ import { vertexAI } from '@genkit-ai/vertexai';
 
 const firebaseConfig = {
   // TODO: add your firebase config here
-  apiKey: "AIzaSyAcTJi85l_cSWCQgoT3bgFGDFMUncm3ao8",
-  authDomain: "example-recipe-app-d465f.firebaseapp.com",
-  projectId: "example-recipe-app-d465f",
-  storageBucket: "example-recipe-app-d465f.firebasestorage.app",
-  messagingSenderId: "752702754764",
-  appId: "1:752702754764:web:73ff2191efe243d0ec9769",
-  measurementId: "G-XPZ5QVVGSC"
+  apiKey: "AIzaSyAwRaVbP50pOATcKGUqyG1q3yo0XDnR950",
+  authDomain: "forkcast-c8d06.firebaseapp.com",
+  projectId: "forkcast-c8d06",
+  storageBucket: "forkcast-c8d06.firebasestorage.app",
+  messagingSenderId: "343066555968",
+  appId: "1:343066555968:web:4c27ab82925022d5c0d1a5"
 };
 
 export const getProjectId = () => firebaseConfig.projectId;

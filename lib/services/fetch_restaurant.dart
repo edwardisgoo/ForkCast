@@ -33,14 +33,20 @@ Future<Map<String, dynamic>> fetchRestaurant(
   }
   try {
     //還沒實作
-    final HttpsCallable callable = FirebaseFunctions.instance.httpsCallable(
-      //'customRecipeExample',
-      'findRestaurants', //'customRecipeExample',
+    final HttpsCallable callableFindRestaurants =
+        FirebaseFunctions.instance.httpsCallable(
+      'findRestaurants',
       options: HttpsCallableOptions(
         timeout: const Duration(seconds: 30), // 增加Timeout
       ),
     );
-    print('Preparing data for Firebase function call');
+    final HttpsCallable callableDetailGeneration =
+        FirebaseFunctions.instance.httpsCallable(
+      'detailGeneration',
+      options: HttpsCallableOptions(
+        timeout: const Duration(seconds: 30), // 增加Timeout
+      ),
+    );
     final List<Map<String, dynamic>> serializedRestaurants =
         dataRestaurants.map((restaurant) => restaurant.toJson()).toList();
     for (var restaurant in serializedRestaurants) {
@@ -62,37 +68,29 @@ Future<Map<String, dynamic>> fetchRestaurant(
         "sortedPreference": userSetting.sortedPreference,
       },
     };
-    print('Request data: $requestData');
-    print('reviews: ${requestData["restaurants"][0]["reviews"]}');
-    print('reviews.runtimeType: ${requestData["restaurants"][0]["reviews"].runtimeType}');
-    print('reviews[0].keys: ${requestData["restaurants"][0]["reviews"][0].keys}');
-    print('reviews[0].values: ${requestData["restaurants"][0]["reviews"][0].values}');
-   
-    final response = await callable.call(requestData);
-    print('Firebase response: ${response.data}');
+    print('Request data of findRestaurants: $requestData');
+    final responseFindRestaurants =
+        await callableFindRestaurants.call(requestData);
+    print(
+        'Firebase response of findRestaurants: ${responseFindRestaurants.data}');
 
-    if (response.data == null) {
+    if (responseFindRestaurants.data == null) {
       print("Error: Response data is null");
       throw Exception("Response data is null");
     }
-    final rawData = response.data as Map<String, dynamic>;
-    print('rawData.runtimeType:${rawData.runtimeType}');
-    print('rawData.keys${rawData.keys}');
+    final rawData = responseFindRestaurants.data as Map<String, dynamic>;
     if (rawData is! Map) {
       throw Exception("Invalid response format from Firebase");
     }
     final data = <String, dynamic>{};
     try {
       rawData.forEach((key, value) {
-        print('Adding key:${key},value:${value}');
         data[key.toString()] = value;
-        print('data.keys${data.keys}');
       });
     } catch (e) {
       throw Exception(
           "Error happens in converting data to type Map<String, dynamic> $e");
     }
-    print('final data.keys${data.keys}');
     if (!data.containsKey("topIndexes")) {
       print("Error: 'topIndexes' key not found in response");
       throw Exception("'topIndexes' key not found in response");
@@ -101,26 +99,42 @@ Future<Map<String, dynamic>> fetchRestaurant(
       print("Error: 'recommendations' key not found in response");
       throw Exception("'recommendations' key not found in response");
     }
-    print('data["topIndexes"].runtimeType:${data["topIndexes"].runtimeType}');
     List<RestaurantOutput> result = [];
     final List<int> topIndexes = data["topIndexes"].whereType<int>().toList();
-    // print('topIndexes:${topIndexes}');
-    // print(
-    //     'data["recommendations"].runtimeType:${data["recommendations"].runtimeType}');
-
     final List<Map<String, dynamic>> recommendations =
         (data["recommendations"] as List)
             .map((e) => Map<String, dynamic>.from(e as Map))
             .toList();
-
-    // print('recommendations.runtimeType:${recommendations.runtimeType}');
-    // print('recommendations:${recommendations}');
     for (int i = 0; i < topIndexes.length; i++) {
       final int index = topIndexes[i];
       final Map<String, dynamic>? recommendation =
           recommendations.firstWhere((r) => r["index"] == index);
 
       if (recommendation != null && index < dataRestaurants.length) {
+        final Map<String, dynamic> requestData = {
+          "restaurant": serializedRestaurants[index],
+          "query": {
+            "minPrice": extraPreference.minPrice,
+            "maxPrice": extraPreference.maxPrice,
+            "minDistance": extraPreference.minDistance,
+            "maxDistance": extraPreference.maxDistance,
+            "requirement": extraPreference.requirement,
+            "note": extraPreference.note,
+          },
+          "userSetting": {
+            "sortedPreference": userSetting.sortedPreference,
+          },
+          "previousRecommendation": recommendation
+        };
+        print('Request data of detailGeneration: $requestData');
+        final response;
+        try {
+          response = await callableDetailGeneration.call(requestData);
+          print(
+              'After calling detailGeneration, response.data ${response.data}');
+        } catch (err) {
+          throw Exception("Error happens in calling detailGeneration:${err}");
+        }
         result.add(RestaurantOutput(
           raw: rawdataRestaurants[index],
           reason: recommendation["reason"] ?? "",

@@ -1,10 +1,11 @@
 {
   "compilerOptions": {
-    "module": "esnext", // 更改為有效的值 (commonjs 是 Node.js 的標準)
+    "module": "commonjs", // 更改為有效的值 (commonjs 是 Node.js 的標準)
     "esModuleInterop": true,
     "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
+    "rootDir": "src",
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
