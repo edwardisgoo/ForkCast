@@ -46,7 +46,7 @@ Future<List<RestaurantRaw>> loadJsonAndProcess() async {
       name: r['name'],
       summary: r['summary'],
       id: r['name'].hashCode.toString(), // 可自訂唯一 ID 方式
-      types: {75},//_parseTypes(r['types']),//r['types'],
+      types: {75}, //_parseTypes(r['types']),//r['types'],
       url: "", // 資料中無 URL
       priceLevel: _parsePriceLevel(r['priceInformation']),
       curbsidePickup: _containsExtra(r['extraInformation'], ['路邊取餐']),
@@ -162,10 +162,40 @@ class _RestaurantHomePageState extends State<RestaurantHomePage> {
                   final item = resultList[index];
                   return Card(
                     elevation: 2,
-                    margin: const EdgeInsets.symmetric(vertical: 8),
-                    child: ListTile(
-                      title: Text(item.raw.name),
-                      subtitle: Text("推薦原因: ${item.reason}"),
+                    margin:
+                        const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            item.raw.name,
+                            style: const TextStyle(
+                                fontSize: 18, fontWeight: FontWeight.bold),
+                          ),
+                          const SizedBox(height: 8),
+                          Text("推薦原因: ${item.reason}"),
+                          Text("匹配分數: ${item.matchScore.toStringAsFixed(2)}"),
+                          Text("價格分數: ${item.priceScore.toStringAsFixed(2)}"),
+                          Text(
+                              "距離分數: ${item.distanceScore.toStringAsFixed(2)}"),
+                          Text("評價分數: ${item.ratingScore.toStringAsFixed(2)}"),
+                          Text(
+                              "偏好分數: ${item.preferenceScore.toStringAsFixed(2)}"),
+                          Text(
+                              "需求分數: ${item.requirementScore.toStringAsFixed(2)}"),
+                          if (item.shortIntroduction.isNotEmpty)
+                            Text("簡介: ${item.shortIntroduction}"),
+                          if (item.priceReason.isNotEmpty)
+                            Text("價格理由: ${item.priceReason}"),
+                          if (item.flavorReason.isNotEmpty)
+                            Text("口味理由: ${item.flavorReason}"),
+                          if (item.menu.isNotEmpty) Text("菜單: ${item.menu}"),
+                          if (item.reviews.isNotEmpty)
+                            Text("評論: ${item.reviews}"),
+                        ],
+                      ),
                     ),
                   );
                 },

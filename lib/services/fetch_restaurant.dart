@@ -128,14 +128,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
         };
         print('Request data of detailGeneration: $requestData');
         final response;
-        try {
-          response = await callableDetailGeneration.call(requestData);
-          print(
-              'After calling detailGeneration, response.data ${response.data}');
-        } catch (err) {
-          throw Exception("Error happens in calling detailGeneration:${err}");
-        }
-        result.add(RestaurantOutput(
+        RestaurantOutput fetchedRestaurant = RestaurantOutput(
           raw: rawdataRestaurants[index],
           reason: recommendation["reason"] ?? "",
           matchScore: recommendation["matchScore"].toDouble() ?? 0.0,
@@ -148,7 +141,32 @@ Future<Map<String, dynamic>> fetchRestaurant(
               recommendation["matchDetail"]["preference"].toDouble() ?? 0.0,
           requirementScore:
               recommendation["matchDetail"]["requirement"].toDouble() ?? 0.0,
-        ));
+        );
+        try {
+          response = await callableDetailGeneration.call(requestData);
+          print('After calling detailGeneration, response.data ${response.data}');
+          final data = response.data;
+          if (!data.containsKey("shortIntroduction")&&
+          !data.containsKey("fullIntroduction")&&
+          !data.containsKey("menu")&&
+          !data.containsKey("reviews")&&
+          !data.containsKey("priceReason")&&
+          !data.containsKey("flavorReason")) {
+      print("Error: some keys are not founded in response.data");
+      print("response.data.keys:${data.keys}");
+      throw Exception("key not found in response of detailGeneration");
+    }
+          fetchedRestaurant.addDetails(
+            short: data["shortIntroduction"], 
+            full: data["fullIntroduction"], 
+            menu: data["menu"], 
+            reviews: data["reviews"], 
+            priceReason: data["priceReason"], 
+            flavorReason: data["flavorReason"]);
+        } catch (err) {
+          throw Exception("Error happens in calling detailGeneration:${err}");
+        }
+        result.add(fetchedRestaurant);
       }
     }
     if (recommendations.length != result.length)
