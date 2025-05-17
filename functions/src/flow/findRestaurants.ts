@@ -65,6 +65,7 @@ export const findRestaurantsFlow = ai.defineFlow(
     },
     async (input: { restaurants: any[]; query: { maxPrice: number; minPrice: number; minDistance: number; maxDistance: number; requirement: any; note: any; }; userSetting: { sortedPreference: any[]; }; }) => {
         try {
+            console.log("開始尋找合適餐廳(findRestaurants)")
             console.log("Processing restaurants:", input.restaurants.length);
             console.log("User query:", input.query);
             console.log("User settings:", input.userSetting);
