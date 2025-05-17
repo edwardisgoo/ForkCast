@@ -1,14 +1,15 @@
 {
   "compilerOptions": {
-    "module": "NodeNext",
+    "module": "esnext", // 更改為有效的值 (commonjs 是 Node.js 的標準)
     "esModuleInterop": true,
-    "moduleResolution": "nodenext",
+    "moduleResolution": "node",
     "noImplicitReturns": true,
     "noUnusedLocals": true,
     "outDir": "lib",
     "sourceMap": true,
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "noImplicitAny": false
   },
   "compileOnSave": true,
   "include": [
