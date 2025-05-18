@@ -67,7 +67,7 @@ class NavigationService {
   }
 
   void goResult() {
-    _router.go('/result');
+    _router.push('/result');
   }
 
   void goMaps() {
