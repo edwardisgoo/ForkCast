@@ -1,130 +1,129 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/services/navigation.dart';
-import 'package:provider/provider.dart';
+import '../widgets/title_text.dart';
+import '../widgets/restaurant_card.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key});
-  
   @override
   State<ResultPage> createState() => _ResultPageState();
 }
 
 class _ResultPageState extends State<ResultPage> {
-  int? expandedIndex;
+  final GlobalKey _titleKey = GlobalKey();
+  bool _showCards = false;
+  double _titleHeightPx = 30; // default bump to match new fontSize
+  static const double _extraGapPx = 12; // space under title before cards
 
-  // When a small block is tapped, show its huge pop-up overlay.
-  void _onSmallBlockTap(int index) {
-    setState(() {
-      expandedIndex = index;
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _measureTitle();
+      Future.delayed(const Duration(milliseconds: 300),
+          () => setState(() => _showCards = true));
     });
   }
 
-  // When the huge block is tapped, navigate to maps_page.
-  void _onExpandedBlockTap() {
-    final nav = Provider.of<NavigationService>(context, listen: false);
-    nav.goMaps();
-  }
-
-  // Dismiss the overlay (e.g., when tapping outside the huge block).
-  void _dismissOverlay() {
-    setState(() {
-      expandedIndex = null;
-    });
-  }
-
-  // Build one of the small blocks.
-  Widget _buildSmallBlock(int index) {
-    return Expanded(
-      child: GestureDetector(
-        onTap: () => _onSmallBlockTap(index),
-        child: Container(
-          margin: const EdgeInsets.all(8),
-          decoration: BoxDecoration(
-            color: Colors.grey[(index + 1) * 200],
-            borderRadius: BorderRadius.circular(12),
-          ),
-          child: Center(
-            child: Text(
-              'Block ${index + 1}',
-              style: const TextStyle(fontFamily: 'Courier', fontSize: 18),
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
-  // Build the huge pop-up overlay version of a block.
-  Widget _buildExpandedOverlay(int index) {
-    return Positioned.fill(
-      child: GestureDetector(
-        onTap: _dismissOverlay, // tap outside to dismiss
-        child: Container(
-          color: Colors.black.withOpacity(0.3),
-          child: Center(
-            child: GestureDetector(
-              onTap: _onExpandedBlockTap,
-              child: Container(
-                margin: const EdgeInsets.all(32),
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: Colors.grey[(index + 1) * 200],
-                  borderRadius: BorderRadius.circular(16),
-                ),
-                child: Center(
-                  child: Text(
-                    'Block ${index + 1}',
-                    style: const TextStyle(fontFamily: 'Courier', fontSize: 32),
-                  ),
-                ),
-              ),
-            ),
-          ),
-        ),
-      ),
-    );
+  void _measureTitle() {
+    final ctx = _titleKey.currentContext;
+    if (ctx != null) {
+      final box = ctx.findRenderObject() as RenderBox;
+      setState(() => _titleHeightPx = box.size.height);
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    final nav = Provider.of<NavigationService>(context, listen: false);
+    final size = MediaQuery.of(context).size;
+    final insets = MediaQuery.of(context).padding;
+    final safeTop = insets.top;
+    final safeBottom = insets.bottom;
+
+    // identical fractional Y math
+    final double titleY =
+        2 * (safeTop + 16 + 15) / size.height - 1; // 16px + half of 30px
+    final double buttonY =
+        2 * (size.height - safeBottom - 16 - 30) / size.height - 1;
+
+    // scrolling list area
+    final double listTop = safeTop + 16 + _titleHeightPx + _extraGapPx;
+    const double btnPadPx = 16 + 60;
+    final double listBottom = safeBottom + btnPadPx;
+
+    // baseline shift to align font-size‐14 text under font‐size‐30 title
+    const double baselineShift = (30 - 14) / 2;
+
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Result Page'),
-        actions: [
-          // Return button to go back to SimpleCastPage.
-          IconButton(
-            icon: const Icon(Icons.arrow_back),
-            onPressed: () => nav.goSimpleCast(),
-          ),
-        ],
-      ),
       body: Stack(
         children: [
-          Column(
-            children: [
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: Column(
-                    children: [
-                      // Three small blocks.
-                      for (int i = 0; i < 3; i++) _buildSmallBlock(i),
-                    ],
-                  ),
-                ),
-              ),
-              // Optional: "Cast again" button at the bottom (if desired).
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: ElevatedButton(
-                  onPressed: () => nav.goResult(),
-                  child: const Text('Cast again'),
-                ),
-              ),
-            ],
+          // Hero title
+          Align(
+            alignment: Alignment(0, titleY),
+            child: Hero(
+              tag: 'pageTitle',
+              child: TitleText(key: _titleKey, fontSize: 30),
+            ),
           ),
-          if (expandedIndex != null) _buildExpandedOverlay(expandedIndex!)
+
+          // Left hint
+          Align(
+            alignment: Alignment(-0.8, titleY),
+            child: Transform.translate(
+              offset: Offset(0, baselineShift),
+              child: const Text(
+                '左滑刪除餐廳',
+                style: TextStyle(color: Colors.red, fontSize: 14),
+              ),
+            ),
+          ),
+
+          // Right hint
+          Align(
+            alignment: Alignment(0.8, titleY),
+            child: Transform.translate(
+              offset: Offset(0, baselineShift),
+              child: const Text(
+                '右滑前往餐廳',
+                style: TextStyle(color: Colors.green, fontSize: 14),
+              ),
+            ),
+          ),
+
+          // Restaurant cards
+          Positioned(
+            top: listTop,
+            left: 0,
+            right: 0,
+            bottom: listBottom,
+            child: AnimatedOpacity(
+              opacity: _showCards ? 1 : 0,
+              duration: const Duration(milliseconds: 400),
+              child: ListView.separated(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                itemCount: 3,
+                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                itemBuilder: (_, __) => const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16),
+                  child: RestaurantCard(),
+                ),
+              ),
+            ),
+          ),
+
+          // Cast! button
+          Align(
+            alignment: Alignment(0, buttonY),
+            child: ElevatedButton(
+              onPressed: () {},
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.black,
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
+                textStyle: const TextStyle(fontSize: 28),
+              ),
+              child: const Text('Cast!', style: TextStyle(color: Colors.white)),
+            ),
+          ),
         ],
       ),
     );
