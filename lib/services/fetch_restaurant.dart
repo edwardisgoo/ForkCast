@@ -146,25 +146,35 @@ Future<Map<String, dynamic>> fetchRestaurant(
           response = await callableDetailGeneration.call(requestData);
           print('After calling detailGeneration, response.data ${response.data}');
           final data = response.data;
-          if (!data.containsKey("shortIntroduction")&&
-          !data.containsKey("fullIntroduction")&&
-          !data.containsKey("menu")&&
-          !data.containsKey("reviews")&&
-          !data.containsKey("priceReason")&&
-          !data.containsKey("flavorReason")) {
-      print("Error: some keys are not founded in response.data");
-      print("response.data.keys:${data.keys}");
-      throw Exception("key not found in response of detailGeneration");
-    }
+          
+          // 修改:檢查回傳的鍵值是否存在，包括新的 preferenceAnalysis 鍵
+          if (!data.containsKey("shortIntroduction") ||
+              !data.containsKey("fullIntroduction") ||
+              !data.containsKey("menu") ||
+              !data.containsKey("reviews") ||
+              !data.containsKey("preferenceAnalysis")) {
+            print("Error: some keys are not found in response.data");
+            print("response.data.keys: ${data.keys}");
+            throw Exception("key not found in response of detailGeneration");
+          }
+          
+          // 修改: 將 preferenceAnalysis 處理為 Map<String, String> 格式
+          Map<String, String> reasons = {};
+          if (data["preferenceAnalysis"] is Map) {
+            (data["preferenceAnalysis"] as Map).forEach((key, value) {
+              reasons[key.toString()] = value.toString();
+            });
+          }
+          
+          // 將分析結果傳遞給 fetchedRestaurant
           fetchedRestaurant.addDetails(
             short: data["shortIntroduction"], 
             full: data["fullIntroduction"], 
             menu: data["menu"], 
             reviews: data["reviews"], 
-            priceReason: data["priceReason"], 
-            flavorReason: data["flavorReason"]);
+            reasons: reasons);
         } catch (err) {
-          throw Exception("Error happens in calling detailGeneration:${err}");
+          throw Exception("Error happens in calling detailGeneration: ${err}");
         }
         result.add(fetchedRestaurant);
       }

@@ -116,7 +116,7 @@ class _RestaurantHomePageState extends State<RestaurantHomePage> {
       );
 
       final setting = UserSetting(
-        sortedPreference: ["distance", "rating"],
+        sortedPreference: ["距離", "評價","特殊需求"],
       );
 
       final response = await fetchRestaurant(
@@ -187,13 +187,20 @@ class _RestaurantHomePageState extends State<RestaurantHomePage> {
                               "需求分數: ${item.requirementScore.toStringAsFixed(2)}"),
                           if (item.shortIntroduction.isNotEmpty)
                             Text("簡介: ${item.shortIntroduction}"),
-                          if (item.priceReason.isNotEmpty)
-                            Text("價格理由: ${item.priceReason}"),
-                          if (item.flavorReason.isNotEmpty)
-                            Text("口味理由: ${item.flavorReason}"),
                           if (item.menu.isNotEmpty) Text("菜單: ${item.menu}"),
                           if (item.reviews.isNotEmpty)
                             Text("評論: ${item.reviews}"),
+                          if (item.reasons.isNotEmpty) ...[
+                            const SizedBox(height: 10),
+                            const Text(
+                              "偏好分析:",
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                            ...item.reasons.entries.map((entry) => Padding(
+                                  padding: const EdgeInsets.only(left: 12.0),
+                                  child: Text("${entry.key}: ${entry.value}"),
+                                )),
+                          ],
                         ],
                       ),
                     ),
