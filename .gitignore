@@ -68,3 +68,31 @@ node_modules/
 
 # dataconnect generated files
 .dataconnect
+
+# Build output
+/build/
+/build/*
+
+# APKs and binary files
+*.apk
+*.lib
+*.zip
+*.dll
+*.exe
+*.so
+
+# Firebase C++ SDK binaries
+firebase_cpp_sdk_windows/
+
+# CMake and Visual Studio build folders (optional, but common)
+CMakeFiles/
+CMakeCache.txt
+*.sln
+*.vcxproj*
+
+# Big build files
+/build/
+/*.apk
+/*.lib
+/*.zip
+/firebase_cpp_sdk_windows/

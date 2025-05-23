@@ -1,0 +1,2 @@
+C:/Users/Meep/Desktop/meep/class/softwarestudio/project/ForkCast/android/app/.cxx/RelWithDebInfo/576x2c60/arm64-v8a/CMakeFiles/edit_cache.dir
+C:/Users/Meep/Desktop/meep/class/softwarestudio/project/ForkCast/android/app/.cxx/RelWithDebInfo/576x2c60/arm64-v8a/CMakeFiles/rebuild_cache.dir

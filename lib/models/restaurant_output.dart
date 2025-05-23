@@ -28,22 +28,19 @@ class RestaurantOutput {
   String fullIntroduction = "";
   String menu = "";
   String reviews = "";
-  String priceReason = "";
-  String flavorReason = "";
+  Map<String, String> reasons = {};
   //加入details的function
   void addDetails({
     required String short,
     required String full,
     required String menu,
     required String reviews,
-    required String priceReason,
-    required String flavorReason,
+    required Map<String, String> reasons,
   }) {
     shortIntroduction = short;
     fullIntroduction = full;
     this.menu = menu;
     this.reviews = reviews;
-    this.priceReason = priceReason;
-    this.flavorReason = flavorReason;
+    this.reasons = reasons;
   }
 }
