@@ -49,11 +49,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
     );
     final List<Map<String, dynamic>> serializedRestaurants =
         dataRestaurants.map((restaurant) => restaurant.toJson()).toList();
-    for (var restaurant in serializedRestaurants) {
-      if (restaurant == null) {
-        throw Exception("Restaurant data cannot be null");
-      }
-    }
+    for (var restaurant in serializedRestaurants) {}
     final Map<String, dynamic> requestData = {
       "restaurants": serializedRestaurants,
       "query": {
@@ -79,9 +75,6 @@ Future<Map<String, dynamic>> fetchRestaurant(
       throw Exception("Response data is null");
     }
     final rawData = responseFindRestaurants.data as Map<String, dynamic>;
-    if (rawData is! Map) {
-      throw Exception("Invalid response format from Firebase");
-    }
     final data = <String, dynamic>{};
     try {
       rawData.forEach((key, value) {
@@ -107,7 +100,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
             .toList();
     for (int i = 0; i < topIndexes.length; i++) {
       final int index = topIndexes[i];
-      final Map<String, dynamic>? recommendation =
+      final Map<String, dynamic> recommendation =
           recommendations.firstWhere((r) => r["index"] == index);
 
       if (recommendation != null && index < dataRestaurants.length) {
@@ -127,7 +120,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
           "previousRecommendation": recommendation
         };
         print('Request data of detailGeneration: $requestData');
-        final response;
+        final HttpsCallableResult response;
         RestaurantOutput fetchedRestaurant = RestaurantOutput(
           raw: rawdataRestaurants[index],
           reason: recommendation["reason"] ?? "",
@@ -144,9 +137,10 @@ Future<Map<String, dynamic>> fetchRestaurant(
         );
         try {
           response = await callableDetailGeneration.call(requestData);
-          print('After calling detailGeneration, response.data ${response.data}');
+          print(
+              'After calling detailGeneration, response.data ${response.data}');
           final data = response.data;
-          
+
           // 修改:檢查回傳的鍵值是否存在，包括新的 preferenceAnalysis 鍵
           if (!data.containsKey("shortIntroduction") ||
               !data.containsKey("fullIntroduction") ||
@@ -157,7 +151,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
             print("response.data.keys: ${data.keys}");
             throw Exception("key not found in response of detailGeneration");
           }
-          
+
           // 修改: 將 preferenceAnalysis 處理為 Map<String, String> 格式
           Map<String, String> reasons = {};
           if (data["preferenceAnalysis"] is Map) {
@@ -165,22 +159,23 @@ Future<Map<String, dynamic>> fetchRestaurant(
               reasons[key.toString()] = value.toString();
             });
           }
-          
+
           // 將分析結果傳遞給 fetchedRestaurant
           fetchedRestaurant.addDetails(
-            short: data["shortIntroduction"], 
-            full: data["fullIntroduction"], 
-            menu: data["menu"], 
-            reviews: data["reviews"], 
-            reasons: reasons);
+              short: data["shortIntroduction"],
+              full: data["fullIntroduction"],
+              menu: data["menu"],
+              reviews: data["reviews"],
+              reasons: reasons);
         } catch (err) {
-          throw Exception("Error happens in calling detailGeneration: ${err}");
+          throw Exception("Error happens in calling detailGeneration: $err");
         }
         result.add(fetchedRestaurant);
       }
     }
-    if (recommendations.length != result.length)
+    if (recommendations.length != result.length) {
       print("Didn't match all indexes");
+    }
     return {'result': result};
   } catch (e) {
     print(
