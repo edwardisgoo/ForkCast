@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 
 class SimpleCastPage extends StatelessWidget {
   const SimpleCastPage({super.key});
-  
+
   @override
   Widget build(BuildContext context) {
     final nav = Provider.of<NavigationService>(context, listen: false);

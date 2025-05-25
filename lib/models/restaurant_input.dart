@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:flutter_app/models/openingHours.dart';
 import 'package:flutter_app/models/types.dart';
 import 'package:flutter_app/models/review.dart';
@@ -46,9 +45,9 @@ class RestaurantInput {
   //RestaurantRaw->RestaurantInput轉換函數
   factory RestaurantInput.fromRaw(
     RestaurantRaw raw,
-    HourMin queryTime,//使用者查詢的時間
-    double queryLat,//使用者所在位置的精度
-    double queryLng,//使用者所在位置的緯度
+    HourMin queryTime, //使用者查詢的時間
+    double queryLat, //使用者所在位置的精度
+    double queryLng, //使用者所在位置的緯度
   ) {
     // 計算直線距離 (Haversine Formula 簡化版，單位：公尺)
     final double distance = calculateDistanceMeters(
@@ -76,9 +75,9 @@ class RestaurantInput {
 
     // Types 轉文字
     final String typeStrings = raw.types
-    .map((index) => typeMap[typeMap.keys.elementAt(index)] ?? '未知')
-    .toList()
-    .join(' / ');
+        .map((index) => typeMap[typeMap.keys.elementAt(index)] ?? '未知')
+        .toList()
+        .join(' / ');
 
     // 處理價位
     final String priceInfo = {
@@ -123,20 +122,21 @@ class RestaurantInput {
     );
   }
   Map<String, dynamic> toJson() => {
-  'distance': distance,
-  'opening': opening,
-  'rating': rating,
-  'reviews': reviews.map((r) => {
-    'rating': r.rating,
-    'time': r.time,
-    'text': r.text,
-  }).toList(),
-  'photoImformation': photoImformation,
-  'name': name,
-  'summary': summary,
-  'types': types,
-  'priceInformation': priceInformation,
-  'extraInformation': extraInformation,
-};
-
+        'distance': distance,
+        'opening': opening,
+        'rating': rating,
+        'reviews': reviews
+            .map((r) => {
+                  'rating': r.rating,
+                  'time': r.time,
+                  'text': r.text,
+                })
+            .toList(),
+        'photoImformation': photoImformation,
+        'name': name,
+        'summary': summary,
+        'types': types,
+        'priceInformation': priceInformation,
+        'extraInformation': extraInformation,
+      };
 }

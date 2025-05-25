@@ -66,7 +66,7 @@ Future<List<RestaurantRaw>> loadJsonAndProcess() async {
     );
   }).toList();
 
-  print('Parsed restaurant: ${restaurants}');
+  print('Parsed restaurant: $restaurants');
   return results;
 }
 
@@ -116,7 +116,7 @@ class _RestaurantHomePageState extends State<RestaurantHomePage> {
       );
 
       final setting = UserSetting(
-        sortedPreference: ["距離", "評價","特殊需求"],
+        sortedPreference: ["距離", "評價", "特殊需求"],
       );
 
       final response = await fetchRestaurant(
