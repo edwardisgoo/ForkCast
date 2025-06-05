@@ -1,0 +1,4 @@
+{"id":"5248259836f51559b94583bbaf2a4041","type":"flow","start":1749081386723,"name":"findRestaurants","end":1749081386726.066,"status":0}
+{"id":"bd949acd3cc567b0ee74f6de728bcb40","type":"flow","start":1749081411619,"name":"detailGeneration","end":1749081414959.9863,"status":0}
+{"id":"f5e66ba9ee1d001e92a613121b04fccf","type":"flow","start":1749081506004,"name":"findRestaurants","end":1749081506004.907,"status":0}
+{"id":"a4a66a6800df1da4abd3541f2df4ed0d","type":"flow","start":1749081537422,"name":"detailGeneration","end":1749081542109.963,"status":0}

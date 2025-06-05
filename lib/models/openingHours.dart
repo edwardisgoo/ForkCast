@@ -13,6 +13,7 @@ class HourMin{//收集小時跟分鐘的資料結構 對應open或close
   HourMin.fromInts(this.hour, this.minute);
   
 }
+
 class TimePeriod{//由兩個時間構成的一個營業時段
   final HourMin start;
   final HourMin end;

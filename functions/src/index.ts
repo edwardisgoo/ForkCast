@@ -1,19 +1,28 @@
 import {onCallGenkit} from 'firebase-functions/https';
 
-// TODO: export your functions
-// import './flow/customRecipe';//引用 customRecipe.ts
-
-// import { customRecipeFlow } from './flow/customRecipe';//要在這裡宣告才會deploy上去 且命名也在這
-// export const customRecipe = onCallGenkit(customRecipeFlow);//要在這裡宣告才會deploy上去 且命名也在這
-//import './flow/retrieveRecipe';//引用 retrieveRecipe.ts
-//import { retrieveRecipeFlow } from './flow/retrieveRecipe';
-//export const retrieveRecipe = onCallGenkit(retrieveRecipeFlow);
-//import { testFlow } from './flow/testFlow';
-//export const test = onCallGenkit(testFlow);
 import './flow/findRestaurants';
 import { findRestaurantsFlow } from './flow/findRestaurants';
 export const findRestaurants = onCallGenkit(findRestaurantsFlow);
+
+
 import './flow/detailGeneration';
 import { detailGenerationFlow } from './flow/detailGeneration';
 export const detailGeneration = onCallGenkit(detailGenerationFlow);
+
+
+import './flow/actions/GooglePlacesNearbySearch';
+import { placesNearbySearchFlow , nearbySearchFunction } from './flow/actions/GooglePlacesNearbySearch';
+export const placesNearbySearch = onCallGenkit(placesNearbySearchFlow);
+// export const placesNearbySearch = nearbySearchFunction;
+
+
+import './flow/actions/GooglePlacesDetailsSearch';
+import { placesDetailsSearchFlow , detailsSearchFunction} from './flow/actions/GooglePlacesDetailsSearch';
+export const placesDetailsSearch = onCallGenkit(placesDetailsSearchFlow);
+// export const placesDetailsSearch = detailsSearchFunction;
+
+import './flow/actions/GooglePlacesGetRestaurantRaw';
+import { placesGetRestaurantRawFlow} from './flow/actions/GooglePlacesGetRestaurantRaw';
+export const placesGetRestaurantRaw = onCallGenkit(placesGetRestaurantRawFlow);
+
 
