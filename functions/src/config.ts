@@ -2,13 +2,15 @@ import { genkit } from 'genkit';
 import { vertexAI } from '@genkit-ai/vertexai';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDWLQvbNzLWjNxHVpV8AchD_4geD26YU6Y",
-  authDomain: "forkcast-test-version.firebaseapp.com",
-  projectId: "forkcast-test-version",
-  storageBucket: "forkcast-test-version.firebasestorage.app",
-  messagingSenderId: "268007894301",
-  appId: "1:268007894301:web:989afe4c04e80b012745f4"
+  apiKey: "AIzaSyAwRaVbP50pOATcKGUqyG1q3yo0XDnR950",
+  authDomain: "forkcast-c8d06.firebaseapp.com",
+  projectId: "forkcast-c8d06",
+  storageBucket: "forkcast-c8d06.firebasestorage.app",
+  messagingSenderId: "343066555968",
+  appId: "1:343066555968:web:4c27ab82925022d5c0d1a5"
 };
+export const API = "AIzaSyB9e1Gpeb7I0K68jyddur3ul5GGrjNoZnY";//陳光齊的API key
+// export const API = "AIzaSyBKQqbW8A7wIbwRN6ebdelrpn-eV9SFtno";//梁皓翔的API key
 
 export const getProjectId = () => firebaseConfig.projectId;
 

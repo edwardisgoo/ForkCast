@@ -1,0 +1,21 @@
+{
+    "restaurantQuery": {
+        "latitude": 24.796698601805172,
+        "longitude": 120.99707804536077,
+        "minPrice": 0,
+        "maxPrice": 200,
+        "minDistance": 0,
+        "maxDistance": 300,
+        "requirement": "不要辣",
+        "note": ""
+    },
+    "userSetting": {
+        "sortedPreference": [
+            "價格","特殊需求","人潮","距離"
+        ]
+    },
+    "queryTime": {
+        "hour": 18,
+        "minute": 0
+    }
+}

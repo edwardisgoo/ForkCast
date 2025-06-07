@@ -12,7 +12,7 @@ const RestaurantInputSchema = z.object({
         time: z.string(),
         text: z.string()
     })),
-    photoImformation: z.string(),
+    photoInformation: z.string(),
     name: z.string(),
     summary: z.string(),
     types: z.string(),
@@ -26,21 +26,21 @@ const QuerySchema = z.object({
     maxPrice: z.number(),
     minDistance: z.number(),
     maxDistance: z.number(),
-    requirement: z.string(), // 使用者想吃什麼
-    note: z.string(), // 額外備註
+    requirement: z.string(),
+    note: z.string(),
 });
 
 // 定義使用者設定
 const UserSettingSchema = z.object({
-    sortedPreference: z.array(z.string()), // 排序偏好，第0個為最高排序優先度
+    sortedPreference: z.array(z.string()),
 });
 
 // 定義推薦理由的輸出結構
 const RecommendationSchema = z.object({
     index: z.number(),
-    reason: z.string(),  // 推薦理由
-    matchScore: z.number(), // 匹配分數
-    matchDetail: z.object({  // 匹配詳情
+    reason: z.string(),
+    matchScore: z.number(),
+    matchDetail: z.object({
         price: z.number(),
         distance: z.number(),
         rating: z.number(),
@@ -49,13 +49,12 @@ const RecommendationSchema = z.object({
     }),
 });
 
-// 修改: 更新DetailSchema，移除價格分析和口味分析，改為偏好分析
-const DetailSchema = z.object({
-    shortIntroduction: z.string(),  // 推薦理由
-    fullIntroduction: z.string(), // 匹配分數
+export const DetailSchema = z.object({
+    shortIntroduction: z.string(),
+    fullIntroduction: z.string(),
     menu: z.string(),
     reviews: z.string(),
-    preferenceAnalysis: z.record(z.string()), // 根據每個偏好進行的分析，key為偏好名稱，value為分析內容
+    preferenceAnalysis: z.record(z.string()),
 });
 
 // 輔助函式：將排序偏好陣列轉換為字串
@@ -63,13 +62,17 @@ const convertPreferenceArrayToString = (preferences: string[]): string => {
     return preferences.join(', ');
 };
 
-// 修改: 更新prompt以根據sortedPreference生成分析內容而非固定的價格和口味分析
+// 改進的 prompt 模板 - 動態生成偏好分析區塊
 const detailGenerator = ai.definePrompt({
     model: gemini20Flash,
     name: 'detailGenerator',
     messages: `
-    你是一個專業的餐廳介紹員，負責生成詳細、客觀的餐廳介紹。
-    請根據以下提供的餐廳資訊、使用者查詢條件和推薦理由，生成詳細的餐廳介紹。
+你是一個專業的餐廳介紹員，負責生成詳細、客觀的餐廳介紹。
+
+**重要格式要求：**
+- 每個區塊必須以 "===SECTION_NAME===" 開始，以 "===END_SECTION_NAME===" 結束
+- 區塊之間不能有重疊內容
+- 每個區塊內容必須完整且獨立
 
 餐廳資訊：
 - 名稱：{{restaurantName}}
@@ -90,32 +93,44 @@ const detailGenerator = ai.definePrompt({
 - 需求：{{queryRequirement}}
 - 備註：{{queryNote}}
 
-使用者偏好：
-- 排序優先順序（優先項目在前）：{{preferenceString}}
+使用者偏好（按重要性排序）：{{preferenceString}}
 
-推薦理由：
-{{recommendationReason}}
-
+推薦理由：{{recommendationReason}}
 匹配分數：{{recommendationMatchScore}}
-匹配詳情：
-- 價格匹配度：{{matchDetailPrice}}
-- 距離匹配度：{{matchDetailDistance}}
-- 評分匹配度：{{matchDetailRating}}
-- 偏好匹配度：{{matchDetailPreference}}
-- 需求匹配度：{{matchDetailRequirement}}
 
-請嚴格按以下格式提供餐廳詳細資訊：
+請嚴格按照以下格式輸出：
 
-短介紹：[簡短二十字內概述該餐廳的特色和為何推薦給使用者]
-完整介紹：[詳細描述餐廳的氛圍、特色和整體體驗]
-菜單推薦：[根據使用者喜好推薦幾道特色菜品，並在條件允許下列出詳細菜單價格]
-評論摘要：[摘要顧客評論的重點和共識，主要分優點跟缺點兩個類別整理]
+===SHORT_INTRO===
+[簡短二十字內概述該餐廳的特色和為何推薦給使用者]
+===END_SHORT_INTRO===
 
-{{#each preferences}}
-{{this}}分析：[分析餐廳在{{this}}方面如何符合使用者需求，提供具體例子]
-{{/each}}
+===FULL_INTRO===
+[詳細描述餐廳的氛圍、特色和整體體驗，約100-150字]
+===END_FULL_INTRO===
 
-請使用中文回覆，並保持專業、客觀的語氣。
+===MENU===
+推薦菜品：
+• [菜品名稱1]：[描述和價格]
+• [菜品名稱2]：[描述和價格]
+• [菜品名稱3]：[描述和價格]
+
+備註：[關於菜單的額外說明]
+===END_MENU===
+
+===REVIEWS===
+優點：
+• [優點1]
+• [優點2]
+• [優點3]
+
+缺點：
+• [缺點1]
+• [缺點2]
+===END_REVIEWS===
+
+{{preferenceAnalysisPrompt}}
+
+請使用中文回覆，並嚴格遵守上述格式。
 `,
     input: {
         schema: z.object({
@@ -135,7 +150,7 @@ const detailGenerator = ai.definePrompt({
             queryRequirement: z.string(),
             queryNote: z.string(),
             preferenceString: z.string(),
-            preferences: z.array(z.string()), // 新增: 用於遍歷的偏好陣列
+            preferenceAnalysisPrompt: z.string(), // 動態生成的偏好分析提示
             recommendationReason: z.string(),
             recommendationMatchScore: z.number(),
             matchDetailPrice: z.number(),
@@ -147,7 +162,127 @@ const detailGenerator = ai.definePrompt({
     }
 });
 
-// 修改: 更新實現流程，處理動態偏好分析
+// 改進的解析函數 - 使用新的格式標記
+function extractSectionByMarkers(sectionKey: string, content: string): string {
+    console.log(`嘗試提取區塊: ${sectionKey}`);
+    
+    // 清理內容
+    const cleanedContent = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    
+    // 構建開始和結束標記
+    const startMarker = `===${sectionKey}===`;
+    const endMarker = `===END_${sectionKey}===`;
+    
+    console.log(`查找標記: ${startMarker} 到 ${endMarker}`);
+    
+    const startIndex = cleanedContent.indexOf(startMarker);
+    const endIndex = cleanedContent.indexOf(endMarker);
+    
+    if (startIndex === -1) {
+        console.log(`未找到開始標記: ${startMarker}`);
+        return `未能提取${sectionKey}部分`;
+    }
+    
+    if (endIndex === -1) {
+        console.log(`未找到結束標記: ${endMarker}`);
+        // 如果沒有找到結束標記，嘗試找到下一個區塊的開始
+        const nextSectionRegex = /===\w+===/g;
+        const matches = [...cleanedContent.matchAll(nextSectionRegex)];
+        const currentSectionIndex = matches.findIndex(match => match.index === startIndex);
+        
+        if (currentSectionIndex !== -1 && currentSectionIndex < matches.length - 1) {
+            const nextSectionStart = matches[currentSectionIndex + 1].index!;
+            const extracted = cleanedContent.slice(startIndex + startMarker.length, nextSectionStart).trim();
+            console.log(`使用下一個區塊邊界提取: ${sectionKey}`);
+            return extracted || `未能提取${sectionKey}部分`;
+        } else {
+            // 取到文檔結尾
+            const extracted = cleanedContent.slice(startIndex + startMarker.length).trim();
+            console.log(`提取到文檔結尾: ${sectionKey}`);
+            return extracted || `未能提取${sectionKey}部分`;
+        }
+    }
+    
+    // 正常情況：找到開始和結束標記
+    const extracted = cleanedContent.slice(startIndex + startMarker.length, endIndex).trim();
+    console.log(`成功提取區塊: ${sectionKey}, 長度: ${extracted.length}`);
+    
+    return extracted || `未能提取${sectionKey}部分`;
+}
+
+// 備用解析函數 - 如果標記格式失敗，使用改進的舊方法
+function extractSectionFallback(sectionName: string, content: string): string {
+    console.log(`使用備用方法提取: ${sectionName}`);
+    
+    const cleanedContent = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    
+    // 多種模式匹配
+    const patterns = [
+        // 模式1: ===名稱===
+        new RegExp(`===${sectionName}===\\s*([\\s\\S]*?)(?===\\w+===|$)`, 'i'),
+        // 模式2: **名稱：**
+        new RegExp(`\\*\\*${sectionName}[：:]\\*\\*\\s*([\\s\\S]*?)(?=\\n\\*\\*[\\u4e00-\\u9fa5][\\u4e00-\\u9fa5]*[：:]\\*\\*|$)`, 'i'),
+        // 模式3: 名稱：
+        new RegExp(`${sectionName}[：:]\\s*([\\s\\S]*?)(?=\\n[\\u4e00-\\u9fa5]{2,}[：:]|$)`, 'i'),
+    ];
+    
+    for (let i = 0; i < patterns.length; i++) {
+        const match = cleanedContent.match(patterns[i]);
+        if (match && match[1] && match[1].trim()) {
+            console.log(`備用方法模式${i + 1}成功匹配: ${sectionName}`);
+            return match[1].trim();
+        }
+    }
+    
+    console.log(`備用方法也失敗: ${sectionName}`);
+    return `未能提取${sectionName}部分`;
+}
+
+// 改進的內容清理函數
+function cleanExtractedContent(content: string): string {
+    if (!content) return "";
+    
+    // 移除 BOM 和特殊字符
+    content = content.replace(/^\uFEFF/, '');
+    
+    // 移除開頭的特殊標記
+    content = content.replace(/^[\*\-\+\s]*/, "");
+    
+    // 標準化換行符
+    content = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+    
+    // 移除過多的空行
+    content = content.replace(/\n{3,}/g, "\n\n");
+    
+    // 移除行首的過多空格（但保留縮進結構）
+    content = content.replace(/^[ \t]+/gm, '');
+    
+    // 移除行尾空格
+    content = content.replace(/[ \t]+$/gm, '');
+    
+    return content.trim();
+}
+
+// 輔助函數：安全地提取文本內容
+function extractTextContent(content: any): string {
+    if (typeof content === 'string') {
+        return content;
+    }
+    
+    if (content && typeof content === 'object') {
+        // 如果是包含 text 屬性的對象
+        if ('text' in content && typeof content.text === 'string') {
+            return content.text;
+        }
+        
+        // 如果是其他類型的對象，嘗試轉換為字符串
+        return String(content);
+    }
+    
+    return '';
+}
+
+// 主要的流程函數
 export const detailGenerationFlow = ai.defineFlow(
     {
         name: "detailGeneration",
@@ -161,31 +296,29 @@ export const detailGenerationFlow = ai.defineFlow(
     },
     async (input: any) => {
         try {
-            // 打印輸入數據，以便調試
-            console.log("輸入數據:", {
-                restaurantName: input.restaurant.name,
-                queryRequirement: input.query.requirement,
-                recommendationReason: input.previousRecommendation.reason,
-                sortedPreference: input.userSetting.sortedPreference
-            });
-
-            // 獲取偏好陣列
+            console.log("開始生成詳細資訊...");
+            
             const preferences = input.userSetting.sortedPreference;
-            // 將排序偏好陣列轉換為字串
             const preferenceString = convertPreferenceArrayToString(preferences);
-            console.log("轉換後的偏好字串:", preferenceString);
-            console.log("偏好陣列:", preferences);
-
-            // 使用detailGenerator生成詳細介紹，但需要展平所有屬性
+            
+            console.log("偏好設定:", preferences);
+            
+            // 動態生成偏好分析的 prompt 部分
+            const preferenceAnalysisPrompt = preferences.map(pref => 
+                `===${pref}分析===\n[分析餐廳在${pref}方面如何符合使用者需求，提供具體例子，約50-80字]\n===END_${pref}分析===`
+            ).join('\n\n');
+            
+            console.log("生成的偏好分析提示:", preferenceAnalysisPrompt);
+            
+            // 調用 AI 生成詳細介紹
             const detailResponse = await detailGenerator({
-                // 將嵌套結構展平為單一層級的屬性，符合修改後的 schema
                 restaurantName: input.restaurant.name,
                 restaurantTypes: input.restaurant.types,
                 restaurantRating: input.restaurant.rating,
-                restaurantDistance: input.restaurant.distance,
+                restaurantDistance: Math.round(input.restaurant.distance),
                 restaurantOpening: input.restaurant.opening ? '是' : '否',
                 restaurantPriceInfo: input.restaurant.priceInformation,
-                restaurantPhotoInfo: input.restaurant.photoImformation,
+                restaurantPhotoInfo: input.restaurant.photoInformation,
                 restaurantSummary: input.restaurant.summary,
                 restaurantExtraInfo: input.restaurant.extraInformation,
                 queryMinPrice: input.query.minPrice,
@@ -195,7 +328,7 @@ export const detailGenerationFlow = ai.defineFlow(
                 queryRequirement: input.query.requirement,
                 queryNote: input.query.note,
                 preferenceString: preferenceString,
-                preferences: preferences, // 新增: 傳遞偏好陣列
+                preferenceAnalysisPrompt: preferenceAnalysisPrompt, // 動態生成的偏好分析提示
                 recommendationReason: input.previousRecommendation.reason,
                 recommendationMatchScore: input.previousRecommendation.matchScore,
                 matchDetailPrice: input.previousRecommendation.matchDetail.price,
@@ -205,73 +338,62 @@ export const detailGenerationFlow = ai.defineFlow(
                 matchDetailRequirement: input.previousRecommendation.matchDetail.requirement
             });
 
-            console.log("Raw response:", detailResponse);
-
-            // 從回應中提取所需信息
-            // 根據日誌輸出，正確的路徑應該是通過message.content來獲取文本
+            // 提取AI回應的文本內容 - 修復的部分
             let detailContent = "";
-
-            // 檢查回應結構並安全地提取文本內容
-            if (detailResponse && detailResponse.message && detailResponse.message.content) {
-                // 因為content是一個陣列含有物件，需要取出實際的文本
+            if (detailResponse?.message?.content) {
                 if (Array.isArray(detailResponse.message.content) && detailResponse.message.content.length > 0) {
                     const contentObj = detailResponse.message.content[0];
-                    if (contentObj && contentObj.text) {
-                        detailContent = contentObj.text;
-                    } else if (typeof contentObj === 'string') {
-                        detailContent = contentObj;
-                    }
+                    detailContent = extractTextContent(contentObj); // 使用輔助函數
                 } else if (typeof detailResponse.message.content === 'string') {
-                    // 有時API可能直接返回字串而非陣列
                     detailContent = detailResponse.message.content;
+                } else {
+                    // 處理其他可能的內容格式
+                    detailContent = extractTextContent(detailResponse.message.content);
                 }
-            } else if (detailResponse && typeof detailResponse.text === 'string') {
-                // 嘗試其他可能的路徑
-                detailContent = detailResponse.text;
-            } else if (detailResponse && typeof detailResponse === 'string') {
-                // 如果整個回應就是一個字串
-                detailContent = detailResponse;
             }
 
-            console.log("提取的文本內容:", detailContent);
+            console.log("AI 回應長度:", detailContent.length);
+            console.log("AI 回應前500字符:", detailContent.substring(0, 500));
 
-            // 檢查AI是否回應了預期格式
-            if (!detailContent || detailContent.includes("請提供餐廳資訊") || detailContent.length < 50) {
-                console.log("AI回應不符合預期，使用備用方案");
-
-                // 使用備用方案：從餐廳和推薦資訊中直接生成
-                const restaurant = input.restaurant;
-                //const recommendation = input.previousRecommendation;
-                
-                // 創建偏好分析的備用內容
-                const preferenceAnalysis: Record<string, string> = {};
-                preferences.forEach(pref => {
-                    preferenceAnalysis[pref] = `這家餐廳在${pref}方面表現良好，值得考慮。`;
-                });
-
-                return {
-                    shortIntroduction: `${restaurant.name}是一家${restaurant.types}，距離您${restaurant.distance}公里，評分為${restaurant.rating}分。`,
-                    fullIntroduction: `${restaurant.name}提供優質的${restaurant.types}美食體驗。${restaurant.summary}`,
-                    menu: `根據餐廳資訊${restaurant.photoImformation}，推薦您嘗試該餐廳的特色菜品。`,
-                    reviews: `根據顧客評論，大多數人對這家餐廳的評價是${restaurant.reviews.length > 0 ? restaurant.reviews[0].text : '正面的'}。`,
-                    preferenceAnalysis: preferenceAnalysis
-                };
+            if (!detailContent || detailContent.length < 50) {
+                throw new Error("AI 回應內容不足");
             }
 
-            // 解析AI生成的內容，提取各部分
-            const shortIntroduction = cleanExtractedContent(extractSection("短介紹", detailContent) || "未能生成短介紹");
-            const fullIntroduction = cleanExtractedContent(extractSection("完整介紹", detailContent) || "未能生成完整介紹");
-            const menu = cleanExtractedContent(extractSection("菜單推薦", detailContent) || "未能生成菜單推薦");
-            const reviews = cleanExtractedContent(extractSection("評論摘要", detailContent) || "未能生成評論摘要");
+            // 使用新的解析方法
+            const shortIntroduction = cleanExtractedContent(
+                extractSectionByMarkers("SHORT_INTRO", detailContent)
+            );
             
-            // 提取每個偏好的分析
+            const fullIntroduction = cleanExtractedContent(
+                extractSectionByMarkers("FULL_INTRO", detailContent)
+            );
+            
+            const menu = cleanExtractedContent(
+                extractSectionByMarkers("MENU", detailContent)
+            );
+            
+            const reviews = cleanExtractedContent(
+                extractSectionByMarkers("REVIEWS", detailContent)
+            );
+
+            // 提取偏好分析
             const preferenceAnalysis: Record<string, string> = {};
             preferences.forEach(pref => {
-                const analysisContent = cleanExtractedContent(extractSection(`${pref}分析`, detailContent));
-                preferenceAnalysis[pref] = analysisContent || `未能生成${pref}分析`;
+                const analysisKey = `${pref}分析`;
+                let analysisContent = cleanExtractedContent(
+                    extractSectionByMarkers(analysisKey, detailContent)
+                );
+                
+                // 如果標記方法失敗，嘗試備用方法
+                if (analysisContent.includes("未能提取")) {
+                    analysisContent = cleanExtractedContent(
+                        extractSectionFallback(analysisKey, detailContent)
+                    );
+                }
+                
+                preferenceAnalysis[pref] = analysisContent;
             });
 
-            // 構建輸出對象
             const result = {
                 shortIntroduction,
                 fullIntroduction,
@@ -280,97 +402,34 @@ export const detailGenerationFlow = ai.defineFlow(
                 preferenceAnalysis
             };
 
-            // 打印更多偵錯信息
-            console.log("解析結果:");
-            console.log("短介紹:", shortIntroduction);
-            console.log("完整介紹:", fullIntroduction);
-            console.log("菜單推薦:", menu);
-            console.log("評論摘要:", reviews);
-            console.log("偏好分析:", preferenceAnalysis);
+            console.log("解析結果摘要:");
+            console.log(`- 短介紹長度: ${shortIntroduction.length}`);
+            console.log(`- 完整介紹長度: ${fullIntroduction.length}`);
+            console.log(`- 菜單推薦長度: ${menu.length}`);
+            console.log(`- 評論摘要長度: ${reviews.length}`);
+            console.log(`- 偏好分析項目數: ${Object.keys(preferenceAnalysis).length}`);
 
-            console.log("生成的詳細資訊:", result);
             return result;
+
         } catch (error) {
             console.error("詳細餐廳資訊生成失敗:", error);
-            // 返回基本的錯誤信息
-            const errorResult = {
-                shortIntroduction: "生成詳細資訊時發生錯誤",
-                fullIntroduction: "無法提供完整介紹",
-                menu: "無法提供菜單推薦",
-                reviews: "無法提供評論摘要",
-                preferenceAnalysis: {}
-            };
             
-            // 為每個偏好創建錯誤信息
-            input.userSetting.sortedPreference.forEach((pref: string) => {
-                (errorResult.preferenceAnalysis as Record<string, string>)[pref] = `無法提供${pref}分析`;
+            // 返回基本的錯誤恢復內容
+            const restaurant = input.restaurant;
+            const preferences = input.userSetting.sortedPreference;
+            
+            const preferenceAnalysis: Record<string, string> = {};
+            preferences.forEach((pref: string) => {
+                preferenceAnalysis[pref] = `這家餐廳在${pref}方面符合您的基本需求。`;
             });
-            
-            console.log("發生錯誤，返回預設值:", errorResult);
-            return errorResult;
+
+            return {
+                shortIntroduction: `${restaurant.name}是一家評分${restaurant.rating}分的${restaurant.types}`,
+                fullIntroduction: `${restaurant.name}位於距離您${restaurant.distance}公尺的位置，提供${restaurant.types}美食。${restaurant.summary}`,
+                menu: `推薦您嘗試這家餐廳的招牌菜品。詳細菜單請現場詢問或查看外送平台。`,
+                reviews: `根據顧客評價，這家餐廳整體表現良好，評分為${restaurant.rating}分。`,
+                preferenceAnalysis
+            };
         }
     }
 );
-
-// 更新sections以包含"分析"模式的標題
-// 注意: 動態偏好分析會在運行時處理，這裡不再需要固定的sections列表
-//const baseSections = ["短介紹", "完整介紹", "菜單推薦", "評論摘要"];
-
-function extractSection(sectionName: string, content: string): string {
-    // 創建動態的正則表達式來匹配目標部分
-    const patterns = [
-        // 基本匹配：尋找標題後的內容，直到下一個標題或文檔結束
-        new RegExp(`\\*\\*${sectionName}[：:](.*?)(?=\\n\\*\\*|$)`, 's'),
-        // 匹配標記後的部分直到下一個部分開始
-        new RegExp(`\\*\\*${sectionName}[：:]\\*\\*\\s*(.*?)(?=\\n\\*\\*|$)`, 's'),
-        // 簡單的部分標題後匹配內容
-        new RegExp(`${sectionName}[：:](.*?)(?=\\n(?:\\*\\*|[^\\s])|$)`, 's')
-    ];
-
-    // 嘗試每個模式直到找到匹配
-    for (const pattern of patterns) {
-        const match = content.match(pattern);
-        if (match && match[1]) {
-            return match[1].trim();
-        }
-    }
-
-    // 當我們無法使用簡單模式找到時，嘗試尋找部分之間的內容
-    // 首先，找到當前部分的位置
-    const currentHeaderRegex = new RegExp(`${sectionName}[：:]`, 'i');
-    const currentMatch = content.match(currentHeaderRegex);
-    
-    if (currentMatch && currentMatch.index !== undefined) {
-        const startPos = currentMatch.index + currentMatch[0].length;
-        
-        // 創建一個可能下一個部分的正則表達式
-        // 這將匹配任何文本後面跟著冒號，這通常表示一個新的部分標題
-        const nextSectionRegex = /\n\s*[\w\u4e00-\u9fa5]+[：:]/;
-        const nextMatch = content.slice(startPos).match(nextSectionRegex);
-        
-        if (nextMatch && nextMatch.index !== undefined) {
-            return content.slice(startPos, startPos + nextMatch.index).trim();
-        } else {
-            // 如果沒有找到下一個部分，返回從當前部分到結束的所有內容
-            return content.slice(startPos).trim();
-        }
-    }
-
-    return `未能提取${sectionName}部分`;
-}
-
-// 清理提取的內容 - 移除多餘的標記和格式化
-function cleanExtractedContent(content: string): string {
-    if (!content) return "";
-    
-    // 移除開頭的星號和其他可能的標記
-    let cleaned = content.replace(/^\*+\s*/, "");
-    
-    // 移除多餘的空行
-    cleaned = cleaned.replace(/\n{3,}/g, "\n\n");
-    
-    // 移除 markdown 列表標記前的額外空格
-    cleaned = cleaned.replace(/\n\s+\*/g, "\n*");
-    
-    return cleaned.trim();
-}

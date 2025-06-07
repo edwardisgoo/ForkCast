@@ -41,47 +41,46 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyDWLQvbNzLWjNxHVpV8AchD_4geD26YU6Y',
-    appId: '1:268007894301:web:989afe4c04e80b012745f4',
-    messagingSenderId: '268007894301',
-    projectId: 'forkcast-test-version',
-    authDomain: 'forkcast-test-version.firebaseapp.com',
-    storageBucket: 'forkcast-test-version.firebasestorage.app',
+    apiKey: 'AIzaSyAwRaVbP50pOATcKGUqyG1q3yo0XDnR950',
+    appId: '1:343066555968:web:4c27ab82925022d5c0d1a5',
+    messagingSenderId: '343066555968',
+    projectId: 'forkcast-c8d06',
+    authDomain: 'forkcast-c8d06.firebaseapp.com',
+    storageBucket: 'forkcast-c8d06.firebasestorage.app',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyAEMar2c_UqhkLHIjQ6wh9M5ywNp3wgOL4',
-    appId: '1:268007894301:android:2f4ed77895bf4f3e2745f4',
-    messagingSenderId: '268007894301',
-    projectId: 'forkcast-test-version',
-    storageBucket: 'forkcast-test-version.firebasestorage.app',
+    apiKey: 'AIzaSyD31nQkgsPXhyb1gHuRtbVZ4bC3toG0HIY',
+    appId: '1:343066555968:android:5b28a74d000cfdb3c0d1a5',
+    messagingSenderId: '343066555968',
+    projectId: 'forkcast-c8d06',
+    storageBucket: 'forkcast-c8d06.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyA7L2Wd1riTooZtXW4ykHxDvbgy8Wajt84',
-    appId: '1:268007894301:ios:d7f21bbf6e81bdb32745f4',
-    messagingSenderId: '268007894301',
-    projectId: 'forkcast-test-version',
-    storageBucket: 'forkcast-test-version.firebasestorage.app',
+    apiKey: 'AIzaSyAV8eyPhBmOu55XinMJ1ozpU14Vsj2jv6I',
+    appId: '1:343066555968:ios:420bcc2823e7ea16c0d1a5',
+    messagingSenderId: '343066555968',
+    projectId: 'forkcast-c8d06',
+    storageBucket: 'forkcast-c8d06.firebasestorage.app',
     iosBundleId: 'com.example.lab07Example',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyA7L2Wd1riTooZtXW4ykHxDvbgy8Wajt84',
-    appId: '1:268007894301:ios:d7f21bbf6e81bdb32745f4',
-    messagingSenderId: '268007894301',
-    projectId: 'forkcast-test-version',
-    storageBucket: 'forkcast-test-version.firebasestorage.app',
+    apiKey: 'AIzaSyAV8eyPhBmOu55XinMJ1ozpU14Vsj2jv6I',
+    appId: '1:343066555968:ios:420bcc2823e7ea16c0d1a5',
+    messagingSenderId: '343066555968',
+    projectId: 'forkcast-c8d06',
+    storageBucket: 'forkcast-c8d06.firebasestorage.app',
     iosBundleId: 'com.example.lab07Example',
   );
 
   static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyDWLQvbNzLWjNxHVpV8AchD_4geD26YU6Y',
-    appId: '1:268007894301:web:6a99d762cd10e21b2745f4',
-    messagingSenderId: '268007894301',
-    projectId: 'forkcast-test-version',
-    authDomain: 'forkcast-test-version.firebaseapp.com',
-    storageBucket: 'forkcast-test-version.firebasestorage.app',
+    apiKey: 'AIzaSyAwRaVbP50pOATcKGUqyG1q3yo0XDnR950',
+    appId: '1:343066555968:web:c1ff5f4a6ef2693ac0d1a5',
+    messagingSenderId: '343066555968',
+    projectId: 'forkcast-c8d06',
+    authDomain: 'forkcast-c8d06.firebaseapp.com',
+    storageBucket: 'forkcast-c8d06.firebasestorage.app',
   );
-
 }

@@ -1,11 +1,11 @@
-import 'package:flutter_app/models/restaurant_raw.dart';
+import 'package:flutter_app/models/restaurant_input.dart';
 
 /*
 光齊：針對呼叫fetchRestaurant時所需Output設計的Data Structure
 */
 class RestaurantOutput {
   RestaurantOutput({
-    required this.raw,
+    required this.input,
     required this.reason,
     required this.matchScore,
     required this.priceScore,
@@ -14,7 +14,7 @@ class RestaurantOutput {
     required this.preferenceScore,
     required this.requirementScore,
   });
-  final RestaurantRaw raw;
+  final RestaurantInput input;
   final String reason; // 簡短推薦原因
   final double matchScore;
   final double priceScore;
