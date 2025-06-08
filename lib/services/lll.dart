@@ -1,18 +1,34 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart'; // 確保導入 Geolocator 的 Position 類型
-import 'package:flutter_app/services/location_service.dart'; // 導入您自己定義的 LocationService
+import 'package:geolocator/geolocator.dart';
+import 'package:flutter_app/services/location_service.dart';
+import 'package:provider/provider.dart';
+import 'package:flutter_app/providers/location_viewmodel.dart'; // Updated path
 
+// Main function for standalone testing of LocationScreen
 void main() {
-  runApp(const MyApp());
+  runApp(
+    MultiProvider(
+      providers: [
+        Provider<LocationService>(create: (_) => LocationService()),
+        ChangeNotifierProvider(
+          create: (context) => LocationViewModel(
+            locationService: Provider.of<LocationService>(context, listen: false),
+          ),
+        ),
+      ],
+      child: const TestLocationApp(),
+    )
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+// Specific MyApp for testing LocationScreen
+class TestLocationApp extends StatelessWidget {
+  const TestLocationApp({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Location Test App',
+      title: 'Location Test App (Standalone)',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
@@ -21,51 +37,14 @@ class MyApp extends StatelessWidget {
   }
 }
 
-class LocationScreen extends StatefulWidget {
+// LocationScreen is now a StatelessWidget and consumes LocationViewModel
+class LocationScreen extends StatelessWidget {
   const LocationScreen({super.key});
 
   @override
-  State<LocationScreen> createState() => _LocationScreenState();
-}
-
-class _LocationScreenState extends State<LocationScreen> {
-  final LocationService _locationService = LocationService(); // 實例化您的 LocationService
-  String _locationMessage = '點擊按鈕獲取您的位置'; // 初始顯示文字
-  double? _latitude;
-  double? _longitude;
-
-  // 獲取位置的方法
-  Future<void> _fetchLocation() async {
-    setState(() {
-      _locationMessage = '正在獲取位置...'; // 點擊後更新文字
-      _latitude = null;
-      _longitude = null;
-    });
-
-    try {
-      // 呼叫 LocationService 中的 getCurrentLocation()
-      Position position = await _locationService.getCurrentLocation();
-      setState(() {
-        _latitude = position.latitude;
-        _longitude = position.longitude;
-        _locationMessage = '緯度: ${position.latitude}\n經度: ${position.longitude}';
-      });
-    } catch (e) {
-      // 捕獲錯誤並顯示錯誤訊息
-      setState(() {
-        _locationMessage = '獲取位置失敗: ${e.toString()}';
-        _latitude = null;
-        _longitude = null;
-      });
-      // 可以在這裡顯示一個 SnackBar 或 Dialog 來提示用戶
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('錯誤: ${e.toString()}')),
-      );
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
+    final viewModel = context.watch<LocationViewModel>();
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('位置測試'),
@@ -76,23 +55,32 @@ class _LocationScreenState extends State<LocationScreen> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
-              // 顯示位置訊息的文字行
               Text(
-                _locationMessage,
+                viewModel.locationMessage,
                 textAlign: TextAlign.center,
                 style: const TextStyle(fontSize: 18),
               ),
               const SizedBox(height: 20),
-              // 按鈕
               ElevatedButton(
-                onPressed: _fetchLocation, // 按鈕點擊時呼叫 _fetchLocation 方法
-                child: const Text('獲取我的位置'),
+                onPressed: viewModel.isLoading
+                    ? null
+                    : () => context.read<LocationViewModel>().fetchLocation(),
+                child: viewModel.isLoading
+                    ? const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+                          SizedBox(width: 8),
+                          Text('獲取中...'),
+                        ],
+                      )
+                    : const Text('獲取我的位置'),
               ),
-              if (_latitude != null && _longitude != null)
+              if (viewModel.latitude != null && viewModel.longitude != null)
                 Padding(
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Text(
-                    '您的位置：($_latitude, $_longitude)',
+                    '您的位置：(${viewModel.latitude}, ${viewModel.longitude})',
                     style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
