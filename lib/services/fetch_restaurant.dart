@@ -36,7 +36,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
     // 準備 Cloud Function 的輸入參數
     final Map<String, dynamic> functionInput = {
       'restaurantQuery': {
-        'unwanted_restaurants':[],
+        'unwanted_restaurants':["ChIJ66ayunI2aDQR2J-2bgklJ9I", "ChIJ_UmSJ3M2aDQRGpQ4UoYLGqg" ,"ChIJa1FP13I2aDQRxBkPogHSIPE"],
         'latitude': queryLat,
         'longitude': queryLng,
         'minPrice': extraPreference.minPrice,
@@ -78,6 +78,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
         // 印出每個餐廳的詳細資料結構
         print('--- Restaurant Data Structure ---');
         print('Restaurant data: $restaurantData');
+        
         print('Restaurant data type: ${restaurantData.runtimeType}');
         
         // 解析 restaurant (RestaurantInput) - 正確處理類型轉換
@@ -88,6 +89,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
         // 解析 recommendation - 正確處理類型轉換
         final Map<String, dynamic> recommendationMap = Map<String, dynamic>.from(restaurantData['recommendation']);
         print('Recommendation map: $recommendationMap');
+        print('\n\n\n\n\nIDDDDDDDDDD: ${restaurantMap['id']}');
         print('MatchDetail: ${recommendationMap['matchDetail']}');
         print('MatchDetail type: ${recommendationMap['matchDetail'].runtimeType}');
         

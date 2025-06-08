@@ -35,7 +35,7 @@ coverage
 # Grunt intermediate storage (http://gruntjs.com/creating-plugins#storing-task-files)
 .grunt
 
-# Bower dependency directory (https://bower.io/)
+# Bower dependency directory (https://bowerjs.com/)
 bower_components
 
 # node-waf configuration
@@ -97,8 +97,9 @@ CMakeCache.txt
 /*.zip
 /firebase_cpp_sdk_windows/
 
-#additional files
+# Flutter/Dart specific
 /.dart_tool/
 /functions/.genkit/
 .flutter-plugins
 .flutter-plugins-dependencies
+/android/.cxx/
