@@ -36,3 +36,7 @@ export const restaurantQuery = onCallGenkit(restaurantQueryFlow);
 import './flow/queryToFinal';
 import { restaurantRecommendationFlow } from './flow/queryToFinal';
 export const restaurantRecommendation = onCallGenkit(restaurantRecommendationFlow);
+
+import './flow/queryToFinal_test';
+import { restaurantRecommendationFlowMock } from './flow/queryToFinal_test';
+export const restaurantRecommendationMock = onCallGenkit(restaurantRecommendationFlowMock);

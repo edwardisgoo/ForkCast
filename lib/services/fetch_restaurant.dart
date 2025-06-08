@@ -28,7 +28,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
   try {
     final HttpsCallable callableFindRestaurants =
         FirebaseFunctions.instance.httpsCallable(
-      'restaurantRecommendation',
+      'restaurantRecommendationMock',
       options: HttpsCallableOptions(
         timeout: const Duration(seconds: 40), // 增加Timeout
       ),
