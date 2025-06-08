@@ -42,6 +42,17 @@ class RestaurantCard extends StatelessWidget {
     // Price ratings based on index
     final String priceRating = (index + 3).toString();
 
+    final String name =
+        restaurant.input.name.isNotEmpty ? restaurant.input.name : '未知餐廳';
+    final String ratingStr = restaurant.input.rating.toStringAsFixed(1);
+    final List<String> ratingParts = ratingStr.split('.');
+    final String ratingInt = ratingParts.first;
+    final String ratingDec = '.${ratingParts.last}';
+    String description = restaurant.reason.isNotEmpty
+        ? restaurant.reason
+        : restaurant.shortIntroduction;
+    if (description.isEmpty) description = restaurant.input.summary;
+
     return Opacity(
       opacity: opacity,
       child: Dismissible(
@@ -54,7 +65,7 @@ class RestaurantCard extends StatelessWidget {
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             // swipe right → maps
-            context.read<RatingProvider>().setPending('品田牧場日式豬排咖哩'); // ← NEW
+            context.read<RatingProvider>().setPending(restaurant.input.name);
             nav.goMaps();
           } else if (direction == DismissDirection.endToStart) {
             // swipe left → delete (fade-out handled by parent)
@@ -116,7 +127,7 @@ class RestaurantCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '品田牧場日式豬排咖哩',
+                                name,
                                 style: TextStyle(
                                   fontSize: titleFont,
                                   fontWeight: FontWeight.bold,
@@ -166,13 +177,13 @@ class RestaurantCard extends StatelessWidget {
                                           textBaseline: TextBaseline.alphabetic,
                                           children: [
                                             Text(
-                                              '4',
+                                              ratingInt,
                                               style: TextStyle(
                                                 fontSize: digitFont,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            Text('.7',
+                                            Text(ratingDec,
                                                 style: TextStyle(
                                                     fontSize: dotFont)),
                                           ],
@@ -194,9 +205,9 @@ class RestaurantCard extends StatelessWidget {
                   const Spacer(),
 
                   /* bottom text */
-                  const Text(
-                    '如果你想吃咖哩，品田牧場提供多樣的日式咖哩料理',
-                    style: TextStyle(fontSize: 14),
+                  Text(
+                    description.isNotEmpty ? description : '無餐廳簡介',
+                    style: const TextStyle(fontSize: 14),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),
