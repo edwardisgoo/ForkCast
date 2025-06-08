@@ -2,9 +2,9 @@ import { ai,API } from "../../config";
 import { z } from 'zod';
 import { GooglePlacesService } from '../services/GooglePlacesService';
 import * as functions from 'firebase-functions';
+import { RestaurantRawSchema } from "../services/GooglePlacesSchemas";
 
 import {
-  BusinessStatus,
   PriceLevel
 } from '../services/GooglePlacesTypes';
 
@@ -22,47 +22,6 @@ export const RestaurantQuerySchema = z.object({
   note: z.string().optional(),
   unwanted_restaurants: z.array(z.string()).optional().default([]) // Add this line
 });
-
-
-// Output Schema
-export const RestaurantRawSchema = z.object({
-  id: z.string(),
-  name: z.string(),
-  address: z.string(),
-  latitude: z.number(),
-  longitude: z.number(),
-  businessStatus: z.nativeEnum(BusinessStatus),
-  openingHours: z.array(
-    z.object({
-      start: z.object({ hour: z.number(), minute: z.number() }),
-      end: z.object({ hour: z.number(), minute: z.number() })
-    })
-  ).optional(),
-  rating: z.number().optional(),
-  reviews: z.array(
-    z.object({
-      authorName: z.string().optional(),
-      rating: z.number(),
-      time: z.number(),
-      text: z.string(),
-      language: z.string().optional()
-    })
-  ),
-  photos: z.array(z.string()),
-  types: z.instanceof(Set), // Fixed: Remove the generic type parameter
-  url: z.string().url().optional(),
-  priceLevel: z.nativeEnum(PriceLevel).optional(),
-  // Amenities
-  dineIn: z.boolean(),
-  takeout: z.boolean(),
-  delivery: z.boolean(),
-  reservable: z.boolean(),
-  servesBeer: z.boolean(),
-  servesWine: z.boolean(),
-  wheelchairAccessibleEntrance: z.boolean()
-});
-
-
 
 // Update the flow implementation
 export const placesGetRestaurantRawFlow = ai.defineFlow(
@@ -82,8 +41,10 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
       radius: params.maxDistance ? params.maxDistance : 5000,
       minprice: priceLevels.min,
       maxprice: priceLevels.max,
-      type: 'restaurant'
+      type: 'restaurant',
+      maxResults: 20
     };
+
     
     let results = await service.nearbySearch(nearbyParams);
     let numNearbysearch = results.length;

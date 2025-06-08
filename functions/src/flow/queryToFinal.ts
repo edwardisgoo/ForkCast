@@ -1,9 +1,10 @@
 import { z } from "genkit";
 import { ai } from "../config";
-import { restaurantQueryFlow, RestaurantInputSchema } from './queryToRestaurantInput'; // Flow 5
+import { restaurantQueryFlow} from './queryToRestaurantInput'; // Flow 5
 import { findRestaurantsFlow, QuerySchema, UserSettingSchema, RecommendationSchema } from './findRestaurants'; // Flow 6
 import { detailGenerationFlow, DetailSchema } from './detailGeneration'; // Flow 7
 import { RestaurantQuerySchema } from './actions/GooglePlacesGetRestaurantRaw';
+import { RestaurantInputSchema } from './RestaurantInputSchema';
 
 // 定義QueryTime Schema (從Flow 5複製)
 const QueryTimeSchema = z.object({
