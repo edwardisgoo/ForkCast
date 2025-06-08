@@ -1,6 +1,6 @@
 import { z } from "genkit";
 import { ai } from "../config";
-import { RestaurantInputSchema } from './queryToRestaurantInput'; // Flow 5
+import { RestaurantInputSchema } from './RestaurantInputSchema'; // Flow 5
 import { UserSettingSchema, RecommendationSchema } from './findRestaurants'; // Flow 6
 import { DetailSchema } from './detailGeneration'; // Flow 7
 import { RestaurantQuerySchema } from './actions/GooglePlacesGetRestaurantRaw';
@@ -54,7 +54,8 @@ const generateMockRestaurantData = () => {
       summary: "",
       types: "餐廳",
       priceInformation: "中等",
-      extraInformation: "外送 / 內用 / 可預約 / 提供紅酒 / 外帶"
+      extraInformation: "外送 / 內用 / 可預約 / 提供紅酒 / 外帶",
+      openingHours:[],
     },
     {
       id:"bbbbbb",
@@ -83,7 +84,8 @@ const generateMockRestaurantData = () => {
       summary: "",
       types: "餐廳",
       priceInformation: "中等",
-      extraInformation: "外送 / 內用 / 外帶 / 提供清酒"
+      extraInformation: "外送 / 內用 / 外帶 / 提供清酒",
+      openingHours:[],
     },
     {
       id:"cccccc",
@@ -112,7 +114,8 @@ const generateMockRestaurantData = () => {
       summary: "",
       types: "餐廳",
       priceInformation: "高等",
-      extraInformation: "內用 / 可預約 / 提供紅酒 / 代客泊車 / 包廂服務"
+      extraInformation: "內用 / 可預約 / 提供紅酒 / 代客泊車 / 包廂服務",
+      openingHours:[],
     }
   ];
 

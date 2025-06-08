@@ -1,24 +1,9 @@
 import { z } from "genkit";
 import { ai } from "../config";
 import { gemini20Flash } from "@genkit-ai/vertexai";
+import { RestaurantInputSchema } from './RestaurantInputSchema';
 
-// 定義 RestaurantInput schema
-const RestaurantInputSchema = z.object({
-    distance: z.number(),
-    opening: z.boolean(),
-    rating: z.number(),
-    reviews: z.array(z.object({
-        rating: z.number(),
-        time: z.string(),
-        text: z.string()
-    })),
-    photoInformation: z.string(),
-    name: z.string(),
-    summary: z.string(),
-    types: z.string(),
-    priceInformation: z.string(),
-    extraInformation: z.string(),
-});
+
 
 // 定義使用者查詢參數
 export const QuerySchema = z.object({

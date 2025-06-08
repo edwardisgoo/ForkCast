@@ -1,179 +1,189 @@
+// src/services/GooglePlacesService.ts
+
 import {
-  PlacesApiResponse,
-  PlaceBasic,
-  NearbyPlace,
-  PlaceDetails,
-  NearbySearchParams,
-  DetailsSearchParams
+    PlacesApiResponse,
+    PlaceBasic,
+    NearbyPlace,
+    PlaceDetails,
+    NearbySearchParams,
+    DetailsSearchParams,
+    CurrentOpeningHoursRaw, // 導入原始 current_opening_hours 類型
 } from './GooglePlacesTypes';
 
-
 import {
-  parseBusinessStatus,
-  parsePriceLevel,
-  parseOpeningHours,
-  parseReviews,
-  parseTypes
+    parseBusinessStatus,
+    parsePriceLevel,
+    parseOpeningHours, // 確保導入
+    parseReviews,
+    parseTypes
 } from './GooglePlacesUtils';
 
-
+// You might need to import API from your config.ts
+// import { API } from '../config'; // Assuming API key is in config.ts or passed in
 
 export class GooglePlacesService {
-  private apiKey: string;
+    private apiKey: string;
+    // Assuming you have a basic HTTP client library or you use fetch directly
+    // private client: AxiosInstance; // If using axios or similar
 
-  constructor(apiKey: string) {
-    if (!apiKey) throw new Error('Google Places API key is required');
-    this.apiKey = apiKey;
-  }
-
-  async nearbySearch(params: NearbySearchParams): Promise<NearbyPlace[]> {
-    const {
-      latitude,
-      longitude,
-      radius,
-      rankby,
-      maxResults = 20, // Default to 20 if not specified
-      ...rest
-    } = params;
-
-    // Validate mutually exclusive params
-    if (rankby === 'distance' && radius) {
-      console.warn("'radius' will be ignored when rankby=distance");
+    constructor(apiKey: string) {
+        if (!apiKey) throw new Error('Google Places API key is required');
+        this.apiKey = apiKey;
+        // this.client = axios.create({ baseURL: 'https://maps.googleapis.com/maps/api/place/' });
     }
 
-    let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&key=${this.apiKey}`;
-
-    // Handle rankby vs radius
-    if (rankby === 'distance') {
-      url += `&rankby=distance`;
-    } else {
-      url += `&radius=${radius || 5000}`; // Default radius if not provided
+    // Helper to make API requests using native fetch
+    private async makeApiRequest<T>(url: string): Promise<T> {
+        const response = await fetch(url);
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`API request failed with status ${response.status}: ${errorText}`);
+        }
+        const data = await response.json();
+        return data as T;
     }
 
-    // Add other optional params
-    Object.entries(rest).forEach(([key, value]) => {
-      if (value !== undefined) url += `&${key}=${encodeURIComponent(String(value))}`;
-    });
+    async nearbySearch(params: NearbySearchParams): Promise<NearbyPlace[]> {
+        const {
+            latitude,
+            longitude,
+            radius,
+            rankby,
+            maxResults = 20,
+            ...rest
+        } = params;
 
-    try {
-      let allResults: NearbyPlace[] = [];
-      let nextPageToken: string | undefined;
-
-      do {
-        if (nextPageToken) {
-          url += `&pagetoken=${nextPageToken}`;
-          await new Promise(resolve => setTimeout(resolve, 2000)); // Required delay
+        if (rankby === 'distance' && radius) {
+            console.warn("'radius' will be ignored when rankby=distance in nearby search.");
         }
 
-        const response = await this.makeApiRequest<PlacesApiResponse<NearbyPlace>>(url);
+        let url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${latitude},${longitude}&key=${this.apiKey}`;
 
-        if (response.results) {
-          allResults.push(...response.results.map(this.transformToNearbyPlace));
+        if (rankby === 'distance') {
+            url += `&rankby=distance`;
+        } else {
+            url += `&radius=${radius || 5000}`;
         }
 
-        nextPageToken = response.next_page_token;
+        Object.entries(rest).forEach(([key, value]) => {
+            if (value !== undefined) url += `&${key}=${encodeURIComponent(String(value))}`;
+        });
 
-        // Early exit if we've collected enough results
-        if (maxResults && allResults.length >= maxResults) break;
+        try {
+            let allResults: NearbyPlace[] = [];
+            let nextPageToken: string | undefined;
+            let counter = 0; // To prevent infinite loops in case of bad next_page_token handling
 
-      } while (nextPageToken);
+            do {
+                if (nextPageToken) {
+                    url = `https://maps.googleapis.com/maps/api/place/nearbysearch/json?pagetoken=${nextPageToken}&key=${this.apiKey}`;
+                    await new Promise(resolve => setTimeout(resolve, 2000)); // Required delay for pagination
+                }
 
-      return maxResults ? allResults.slice(0, maxResults) : allResults;
-    } catch (error) {
-      console.error('Nearby search failed:', error);
-      throw error;
-    }
-  }
+                const response = await this.makeApiRequest<PlacesApiResponse<any>>(url); // Use any for raw results
 
-  async detailsSearch(params: DetailsSearchParams): Promise<PlaceDetails> {
+                if (response.results) {
+                    allResults.push(...response.results.map(this.transformToNearbyPlace));
+                }
 
-    //call api
-    const { placeId, fields } = params;
-    let url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&language=zh-TW&key=${this.apiKey}`;
+                nextPageToken = response.next_page_token;
 
-    if (fields) url += `&fields=${encodeURIComponent(fields)}`;
+                if (maxResults && allResults.length >= maxResults) break;
+                counter++;
+                if (counter > 5) { // Limit pagination to avoid excessive calls
+                    console.warn("Reached max pagination limit (5 pages). Stopping nearby search.");
+                    break;
+                }
 
-    // catch error
-    try {
-      const response = await this.makeApiRequest<PlacesApiResponse<PlaceDetails>>(url);
+            } while (nextPageToken);
 
-      if (!response.result) {
-        throw new Error('No result data in API response');
-      }
-
-      return this.transformToPlaceDetails(response.result);
-    } catch (error) {
-      console.error('Details search failed:', error);
-      throw error;
-    }
-  }
-
-  private async makeApiRequest<T>(url: string): Promise<T> {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`API request failed with status ${response.status}`);
+            return maxResults ? allResults.slice(0, maxResults) : allResults;
+        } catch (error) {
+            console.error('Nearby search failed:', error);
+            throw error;
+        }
     }
 
-    const data = await response.json() as T;
-    return data;
-  }
+    async detailsSearch(params: DetailsSearchParams): Promise<PlaceDetails> {
+        const { placeId, fields } = params;
+        // Request comprehensive fields including opening_hours.periods
+        const defaultFields = 'place_id,name,formatted_address,geometry,business_status,opening_hours,rating,reviews,photos,types,url,price_level,current_opening_hours,dine_in,takeout,delivery,reservable,serves_beer,serves_wine,wheelchair_accessible_entrance,international_phone_number,website,editorial_summary';
+        const finalFields = fields || defaultFields;
 
+        let url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&language=zh-TW&key=${this.apiKey}&fields=${encodeURIComponent(finalFields)}`;
 
-  private extractBasicFields(place: any): PlaceBasic {
-    return {
-      id: place.place_id || '',
-      name: place.name || 'Unknown',
-      address: place.vicinity || place.formatted_address || '',
-      latitude: place.geometry?.location?.lat || 0,
-      longitude: place.geometry?.location?.lng || 0,
-      types: parseTypes(place.types),
-      photos: place.photos?.map((p: any) => p.photo_reference) || [],
-      rating: place.rating,
-      priceLevel: place.price_level !== undefined ?
-        parsePriceLevel(place.price_level) : undefined,
-      businessStatus: parseBusinessStatus(place.business_status),
-      openingHours: parseOpeningHours(
-        place.current_opening_hours?.periods ||
-        place.opening_hours?.periods
-      )
-    };
-  }
+        try {
+            const response = await this.makeApiRequest<PlacesApiResponse<any>>(url); // Use any for raw result
 
+            if (!response.result) {
+                throw new Error(`No result data found for placeId: ${placeId}`);
+            }
 
-  public transformToNearbyPlace = (place: any): NearbyPlace => {
-    const basicFields = this.extractBasicFields(place);
-    return {
-      ...basicFields,
-      vicinity: place.vicinity || '',
-      userRatingsTotal: place.user_ratings_total
-    };
-  }
+            return this.transformToPlaceDetails(response.result);
+        } catch (error) {
+            console.error(`Details search for placeId ${placeId} failed:`, error);
+            throw error;
+        }
+    }
 
-  public transformToPlaceDetails(details: any): PlaceDetails {
-    const basicFields = this.extractBasicFields(details);
+    // Helper to extract common basic fields from raw API response objects
+    private extractBasicFields(place: any): PlaceBasic {
+        return {
+            id: place.place_id || '',
+            name: place.name || 'Unknown',
+            address: place.vicinity || place.formatted_address || '', // Prioritize formatted_address if available
+            latitude: place.geometry?.location?.lat || 0,
+            longitude: place.geometry?.location?.lng || 0,
+            // Pass raw types array to parseTypes
+            types: parseTypes(place.types),
+            photos: place.photos?.map((p: any) => p.photo_reference) || [],
+            rating: place.rating,
+            priceLevel: parsePriceLevel(place.price_level),
+            businessStatus: parseBusinessStatus(place.business_status),
+            // Use parseOpeningHours to transform raw opening_hours.periods to TimePeriod[]
+            openingHours: parseOpeningHours(place.opening_hours?.periods)
+        };
+    }
 
-    return {
-      ...basicFields,
-      formattedAddress: details.formatted_address || '',
-      internationalPhoneNumber: details.international_phone_number,
-      website: details.website,
-      reviews: parseReviews(details.reviews),
-      currentOpeningHours: details.current_opening_hours ? {
-        openNow: details.current_opening_hours.open_now,
-        periods: parseOpeningHours(details.current_opening_hours.periods),
-        weekdayText: details.current_opening_hours.weekday_text || []
-      } : undefined,
-      // Amenities
-      dineIn: details.dine_in || false,
-      takeout: details.takeout || false,
-      delivery: details.delivery || false,
-      reservable: details.reservable || false,
-      servesBeer: details.serves_beer || false,
-      servesWine: details.serves_wine || false,
-      // Additional fields
-      editorialSummary: details.editorial_summary?.overview,
-      url: details.url || details.website || '',
-      wheelchairAccessibleEntrance: details.wheelchair_accessible_entrance || false
-    };
-  }
+    // Transforms raw Nearby Search result to NearbyPlace
+    public transformToNearbyPlace = (place: any): NearbyPlace => {
+        const basicFields = this.extractBasicFields(place);
+        return {
+            ...basicFields,
+            vicinity: place.vicinity || '',
+            userRatingsTotal: place.user_ratings_total
+        };
+    }
+
+    // Transforms raw Details Search result to PlaceDetails
+    public transformToPlaceDetails(details: any): PlaceDetails {
+        const basicFields = this.extractBasicFields(details);
+
+        // Safely parse current_opening_hours if available
+        const currentOpeningHoursData = details.current_opening_hours as CurrentOpeningHoursRaw | undefined;
+        const currentOpeningHours = currentOpeningHoursData ? {
+            openNow: currentOpeningHoursData.open_now || false,
+            // Use parseOpeningHours to transform raw periods to TimePeriod[]
+            periods: parseOpeningHours(currentOpeningHoursData.periods) || [], // Ensure it's an array if undefined
+            weekdayText: currentOpeningHoursData.weekday_text || []
+        } : undefined;
+
+        return {
+            ...basicFields,
+            formattedAddress: details.formatted_address || '',
+            internationalPhoneNumber: details.international_phone_number,
+            website: details.website,
+            reviews: parseReviews(details.reviews), // Use parseReviews
+            dineIn: details.dine_in || false,
+            takeout: details.takeout || false,
+            delivery: details.delivery || false,
+            reservable: details.reservable || false,
+            servesBeer: details.serves_beer || false,
+            servesWine: details.serves_wine || false,
+            wheelchairAccessibleEntrance: details.wheelchair_accessible_entrance || false,
+            editorialSummary: details.editorial_summary?.overview,
+            url: details.url || details.website || '', // Prefer url, fallback to website
+            currentOpeningHours: currentOpeningHours // Assign the transformed currentOpeningHours
+        };
+    }
 }
