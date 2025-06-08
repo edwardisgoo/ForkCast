@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/userSetting.dart';
-import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/services/fetch_restaurant.dart';
 import 'package:flutter_app/services/location_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/unwanted.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:provider/provider.dart'; // Import Provider package
-import 'package:flutter_app/services/location_service.dart'; // Import your location service
-import 'package:flutter_app/services/fetch_restaurant.dart'; // Import your fetch restaurant function
-import 'package:flutter_app/models/userSetting.dart'; // Import y
-
-/// Global storage for the latest cast results.
-List<RestaurantOutput> castResults = [];
 
 /// Performs a restaurant cast using the current user location.
 /// Displays a simple progress dialog while waiting for the
 /// recommendation service and stores the returned results in
-/// [castResults].
+/// the [FetchedResults] provider.
 Future<void> performCast(BuildContext context) async {
   // show modal progress indicator
   showDialog(

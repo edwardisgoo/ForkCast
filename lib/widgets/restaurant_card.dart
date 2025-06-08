@@ -5,13 +5,12 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_app/services/navigation.dart';
 import 'package:flutter_app/providers/rating_provider.dart'; // ← NEW
-import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/utils/score_utils.dart';
+import 'package:flutter_app/models/fetchedResults.dart';
 
 /// Structured and responsive restaurant card.
 class RestaurantCard extends StatelessWidget {
   final int index;
-  final RestaurantOutput restaurant;
   final bool isExpanded;
   final VoidCallback onTap;
   final VoidCallback onDelete;
@@ -20,7 +19,6 @@ class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
     super.key,
     required this.index,
-    required this.restaurant,
     required this.isExpanded,
     required this.onTap,
     required this.onDelete,
@@ -30,6 +28,7 @@ class RestaurantCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final nav = Provider.of<NavigationService>(context, listen: false);
+    final restaurant = context.watch<FetchedResults>().fetchedResults[index];
 
     // Base sizes that stay constant
     final double baseCardH =

@@ -3,7 +3,8 @@ import '../widgets/title_text.dart';
 import '../widgets/restaurant_card.dart';
 import '../widgets/expanded_card.dart';
 import '../widgets/cast_helper.dart';
-import '../models/restaurant_output.dart';
+import 'package:flutter_app/models/fetchedResults.dart';
+import 'package:provider/provider.dart';
 
 class ResultPage extends StatefulWidget {
   const ResultPage({super.key});
@@ -22,8 +23,6 @@ class _ResultPageState extends State<ResultPage> {
 
   // Track which cards are fading out
   final Set<int> _fadingIndices = {};
-
-  List<RestaurantOutput> get _restaurants => castResults;
 
   @override
   void initState() {
@@ -151,15 +150,17 @@ class _ResultPageState extends State<ResultPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16),
                 child: LayoutBuilder(
                   builder: (context, constraints) {
+                    final restaurants =
+                        context.watch<FetchedResults>().fetchedResults;
                     final totalHeight = constraints.maxHeight - 80;
-                    final cardHeight = _restaurants.isEmpty
+                    final cardHeight = restaurants.isEmpty
                         ? totalHeight
-                        : (totalHeight - 12 * (_restaurants.length - 1)) /
-                            _restaurants.length;
+                        : (totalHeight - 12 * (restaurants.length - 1)) /
+                            restaurants.length;
 
                     // Get indices of cards that haven't been deleted
                     final remainingIndices =
-                        List.generate(_restaurants.length, (i) => i)
+                        List.generate(restaurants.length, (i) => i)
                             .where((i) => !_deletedIndices.contains(i))
                             .toList();
 
@@ -185,7 +186,6 @@ class _ResultPageState extends State<ResultPage> {
                               opacity: 1.0,
                               child: ExpandedCard(
                                 index: actualIndex,
-                                restaurant: _restaurants[actualIndex],
                                 onCollapse: () =>
                                     setState(() => _expandedCardIndex = null),
                                 opacity: 1.0,
@@ -213,7 +213,6 @@ class _ResultPageState extends State<ResultPage> {
                                   : 0.0,
                               child: RestaurantCard(
                                 index: actualIndex,
-                                restaurant: _restaurants[actualIndex],
                                 isExpanded: false,
                                 onTap: () => _handleExpand(actualIndex),
                                 opacity: 1.0,
