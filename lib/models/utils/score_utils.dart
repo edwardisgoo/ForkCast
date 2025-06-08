@@ -11,13 +11,19 @@ class ScoreUtils {
   /// Returns the top two scoring categories for the given restaurant.
   /// Requirement score is ignored when ranking.
   /// The map keys are human readable labels.
-  static List<MapEntry<String, double>> topTwo(RestaurantOutput r) {
+  static List<MapEntry<String, double>> topTwo(
+    RestaurantOutput r, [
+    List<String>? sortedPrefs,
+  ]) {
+    final hasUserTags = sortedPrefs?.any((p) => !builtIns.contains(p)) ?? false;
     final entries = <MapEntry<String, double>>[
       MapEntry('價格', r.priceScore),
       MapEntry('距離', r.distanceScore),
       MapEntry('評價', r.ratingScore),
-      MapEntry('偏好', r.preferenceScore),
     ];
+    if (hasUserTags) {
+      entries.add(MapEntry('偏好', r.preferenceScore));
+    }
     entries.sort((a, b) => b.value.compareTo(a.value));
     return entries.take(2).toList();
   }

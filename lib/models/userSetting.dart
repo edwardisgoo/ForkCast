@@ -15,9 +15,9 @@ class UserSetting extends ChangeNotifier {
   UserSetting({
     List<String>? sortedPreference,
     this.minCost = 0.0,
-    this.maxCost = 1000.0,
+    this.maxCost = 300.0,
     this.minDist = 0.0,
-    this.maxDist = 1000.0,
+    this.maxDist = 1.5,
     this.queryTime = const HourMin.fromInts(12, 0), // 預設中午12點
     this.requirements = '',
     this.notes = '',
@@ -78,6 +78,11 @@ class UserSetting extends ChangeNotifier {
 
   void updateNotes(String value) {
     notes = value;
+    notifyListeners();
+  }
+
+  void updateQueryTime(HourMin time) {
+    queryTime = time;
     notifyListeners();
   }
 

@@ -16,7 +16,6 @@ import 'firebase_options.dart';
 import 'providers/rating_provider.dart'; // ★ new
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/services/location_service.dart'; // Import your location service
-import 'package:flutter_app/services/fetch_restaurant.dart'; //
 
 final theme = ThemeData(
   useMaterial3: true,
