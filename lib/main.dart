@@ -58,7 +58,7 @@ void main() async {
         ChangeNotifierProvider(create: (_) => RatingProvider()), // ★
         ChangeNotifierProvider(
           create: (_) =>
-              UserSetting(sortedPreference: const ['金額', '距離', '評價']),
+              UserSetting(sortedPreference: const ['價格', '距離', '評價']),
         ),
         ChangeNotifierProvider(create: (_) => LocationService()),
         ChangeNotifierProvider(create: (_) => UnwantedList(unwantedIds: [])),

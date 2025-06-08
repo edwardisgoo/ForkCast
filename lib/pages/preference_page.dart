@@ -19,7 +19,7 @@ class _PrefItem {
 
 class _PreferencePageState extends State<PreferencePage> {
   /// ONE list that drives the UI with deletion info.
-  static const _builtIns = ['金額', '距離', '評價'];
+  static const _builtIns = ['價格', '距離', '評價'];
 
   final _textCtrl = TextEditingController();
 

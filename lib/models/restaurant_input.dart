@@ -1,8 +1,4 @@
-import 'package:flutter_app/models/openingHours.dart';
-import 'package:flutter_app/models/types.dart';
 import 'package:flutter_app/models/review.dart';
-import 'package:flutter_app/models/utils/distance_cal.dart';
-import 'package:flutter_app/models/utils/ocr.dart';
 
 /*
 光齊：針對呼叫fetchRestaurant時所需Input設計的Data Structure
@@ -42,5 +38,4 @@ class RestaurantInput {
   final String priceInformation; //描述價格的文字
   //9.布林值補充資訊相關
   final String extraInformation;
-
 }
