@@ -2,8 +2,8 @@ import { ai } from "../config";
 import { z } from 'zod';
 import { placesGetRestaurantRawFlow, RestaurantQuerySchema } from './actions/GooglePlacesGetRestaurantRaw';
 import {RestaurantRawSchema} from './services/GooglePlacesSchemas';
-import { photosOCRFlow } from './getImageText'; // 導入 OCR flow
-import { RestaurantInputSchema } from './RestaurantInputSchema';
+import { photosOCRFlow } from './actions/GetImageText'; // 導入 OCR flow
+import { RestaurantInputSchema } from './services/RestaurantInputSchema';
 import {
   PriceLevel,
   typeMap,
@@ -167,13 +167,14 @@ async function convertRawToInput(
     opening: isOpen,
     rating: raw.rating || 0,
     reviews: processedReviews,
-    photoInformation: photoInfo,
+    photoInformation: photoInfo.message,
     name: raw.name,
     summary: '',
     types: typeStrings,
     priceInformation: priceInfo,
     extraInformation: extraInfo,
     openingHours:raw.openingHours,
+    photoURL:photoInfo.imageUrls
   };
 }
 
@@ -197,10 +198,30 @@ function calculateDistanceMeters(
   return R * c;
 }
 
+interface OcrProcessOutput {
+  message: string;
+  imageUrls: string[]; // 新增一個用於存放圖片 URL 的陣列
+}
+
 // OCR 圖片處理函數 - 使用真實的 OCR flow
-async function ocrImageProcess(photos: string[]): Promise<string> {
+interface OcrProcessOutput {
+  message: string;
+  imageUrls: string[]; // 存放所有處理過的圖片 URL
+}
+
+// 假設 photosOCRFlow 已經在其他地方定義和導出
+// import { photosOCRFlow } from './photos_ocr_flow'; // 根據你的實際路徑調整
+
+
+async function ocrImageProcess(photos: string[]): Promise<OcrProcessOutput> {
+  // 初始化一個空陣列來存放圖片 URL
+  const extractedImageUrls: string[] = [];
+
   if (!photos || photos.length === 0) {
-    return '無照片資訊';
+    return {
+      message: '無照片資訊',
+      imageUrls: extractedImageUrls
+    };
   }
 
   try {
@@ -210,18 +231,38 @@ async function ocrImageProcess(photos: string[]): Promise<string> {
       maxHeight: 1600
     });
 
+    // 從 ocrResult.results 中提取所有成功處理的圖片的 imageUrl
+    // 注意：ocrResult.results 是一個陣列，每個元素是 SinglePhotoOCROutputSchema 的型別
+    ocrResult.results.forEach(result => {
+      if (result.imageUrl) {
+        extractedImageUrls.push(result.imageUrl);
+      }
+    });
+
     if (ocrResult.menuImageCount > 0 && ocrResult.information.length > 0) {
-      return `共 ${photos.length} 張照片，成功辨識 ${ocrResult.menuImageCount} 張菜單圖片。菜單內容：${ocrResult.information.substring(0, 500)}${ocrResult.information.length > 500 ? '...' : ''}`;
+      return {
+        message: `共 ${photos.length} 張照片，成功辨識 ${ocrResult.menuImageCount} 張菜單圖片。菜單內容：${ocrResult.information.substring(0, 500)}${ocrResult.information.length > 500 ? '...' : ''}`,
+        imageUrls: extractedImageUrls
+      };
     }
 
     if (ocrResult.successCount > 0) {
-      return `共 ${photos.length} 張照片，成功處理 ${ocrResult.successCount} 張，但未辨識到明確的菜單內容`;
+      return {
+        message: `共 ${photos.length} 張照片，成功處理 ${ocrResult.successCount} 張，但未辨識到明確的菜單內容`,
+        imageUrls: extractedImageUrls
+      };
     }
 
-    return `共 ${photos.length} 張照片，處理失敗`;
+    return {
+      message: `共 ${photos.length} 張照片，處理失敗`,
+      imageUrls: extractedImageUrls // 即使失敗也回傳已嘗試獲取的 URL
+    };
 
   } catch (error) {
     console.error('OCR 處理錯誤:', error);
-    return `共 ${photos.length} 張照片，OCR 處理時發生錯誤`;
+    return {
+      message: `共 ${photos.length} 張照片，OCR 處理時發生錯誤`,
+      imageUrls: extractedImageUrls // 錯誤時也回傳已嘗試獲取的 URL
+    };
   }
 }

@@ -25,8 +25,8 @@ import './flow/actions/GooglePlacesGetRestaurantRaw';
 import { placesGetRestaurantRawFlow} from './flow/actions/GooglePlacesGetRestaurantRaw';
 export const placesGetRestaurantRaw = onCallGenkit(placesGetRestaurantRawFlow);
 
-import './flow/getImageText';
-import { photosOCRFlow } from './flow/getImageText';
+import './flow/actions/GetImageText';
+import { photosOCRFlow } from './flow/actions/GetImageText';
 export const photosOCR = onCallGenkit(photosOCRFlow);
 
 import './flow/queryToRestaurantInput';

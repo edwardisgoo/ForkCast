@@ -1,7 +1,7 @@
 import { z } from "genkit";
 import { ai } from "../config";
 import { gemini20Flash } from "@genkit-ai/vertexai";
-import { RestaurantInputSchema } from './RestaurantInputSchema';
+import { RestaurantInputSchema } from './services/RestaurantInputSchema';
 
 
 

@@ -12,6 +12,7 @@ export const RestaurantInputSchema = z.object({
         text: z.string()
     })),
     photoInformation: z.string(),
+    photoURL:z.array(z.string()),
     name: z.string(),
     summary: z.string(),
     types: z.string(),
