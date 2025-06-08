@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
+import 'package:flutter_app/models/utils/score_utils.dart';
 
 class ExpandedCard extends StatefulWidget {
   final int index;
@@ -184,10 +185,17 @@ class _Header extends StatelessWidget {
     final double digitFont = cardH * 0.32;
     final double dotFont = cardH * 0.16;
 
-    final String priceRating = restaurant.priceScore.toStringAsFixed(0);
+    final topScores = ScoreUtils.topTwo(restaurant);
+    final String p1Label = topScores[0].key;
+    final String p1Score =
+        ScoreUtils.scaleToFive(topScores[0].value).toString();
+    final String p2Label = topScores[1].key;
+    final String p2Score =
+        ScoreUtils.scaleToFive(topScores[1].value).toString();
     final String name =
         restaurant.input.name.isNotEmpty ? restaurant.input.name : '未知餐廳';
-    final String ratingStr = restaurant.input.rating.toStringAsFixed(1);
+    final double overall = 1 + restaurant.matchScore * 4;
+    final String ratingStr = overall.toStringAsFixed(1);
     final List<String> ratingParts = ratingStr.split('.');
     final String ratingInt = ratingParts.first;
     final String ratingDec = '.${ratingParts.last}';
@@ -244,15 +252,15 @@ class _Header extends StatelessWidget {
           Text(description.isNotEmpty ? description : '無餐廳簡介',
               style: const TextStyle(fontSize: 14)),
           _PillBlock(
-            label: '價格',
-            score: priceRating,
+            label: p1Label,
+            score: p1Score,
             desc:
                 '主餐價格多在100至200元之間，根據你設定的預算在100元以下，建議可以選擇豬排咖哩或平日午間套餐，更划算又能吃得超有飽足感！',
           ),
           const SizedBox(height: 16),
           _PillBlock(
-            label: '口味',
-            score: '5',
+            label: p2Label,
+            score: p2Score,
             desc: '日式咖哩香氣濃郁、滋味溫潤，搭配外酥內嫩的炸豬排，每一口都讓人安心又滿足，絕對是想吃咖哩時值得推薦的好去處！',
           ),
           const SizedBox(height: 12),

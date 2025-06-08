@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:flutter_app/providers/rating_provider.dart'; // ← NEW
 import 'package:flutter_app/models/restaurant_output.dart';
+import 'package:flutter_app/models/utils/score_utils.dart';
 
 /// Structured and responsive restaurant card.
 class RestaurantCard extends StatelessWidget {
@@ -40,11 +41,18 @@ class RestaurantCard extends StatelessWidget {
     final double dotFont = baseCardH * 0.16;
 
     // Price ratings based on index
-    final String priceRating = (index + 3).toString();
+    final topScores = ScoreUtils.topTwo(restaurant);
+    final String p1Label = topScores[0].key;
+    final String p1Score =
+        ScoreUtils.scaleToFive(topScores[0].value).toString();
+    final String p2Label = topScores[1].key;
+    final String p2Score =
+        ScoreUtils.scaleToFive(topScores[1].value).toString();
 
     final String name =
         restaurant.input.name.isNotEmpty ? restaurant.input.name : '未知餐廳';
-    final String ratingStr = restaurant.input.rating.toStringAsFixed(1);
+    final double overall = 1 + restaurant.matchScore * 4;
+    final String ratingStr = overall.toStringAsFixed(1);
     final List<String> ratingParts = ratingStr.split('.');
     final String ratingInt = ratingParts.first;
     final String ratingDec = '.${ratingParts.last}';
@@ -144,10 +152,10 @@ class RestaurantCard extends StatelessWidget {
                                   /* P1 */
                                   Column(
                                     children: [
-                                      _ratingCircle(priceRating, ratingSize),
+                                      _ratingCircle(p1Score, ratingSize),
                                       const SizedBox(height: 4),
-                                      const Text('價格',
-                                          style: TextStyle(fontSize: 14)),
+                                      Text(p1Label,
+                                          style: const TextStyle(fontSize: 14)),
                                     ],
                                   ),
                                   const SizedBox(width: 8),
@@ -155,10 +163,10 @@ class RestaurantCard extends StatelessWidget {
                                   /* P2 */
                                   Column(
                                     children: [
-                                      _ratingCircle('5', ratingSize),
+                                      _ratingCircle(p2Score, ratingSize),
                                       const SizedBox(height: 4),
-                                      const Text('口味',
-                                          style: TextStyle(fontSize: 14)),
+                                      Text(p2Label,
+                                          style: const TextStyle(fontSize: 14)),
                                     ],
                                   ),
                                   const SizedBox(width: 16),
