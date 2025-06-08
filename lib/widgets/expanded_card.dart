@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_app/models/restaurant_output.dart';
 
 class ExpandedCard extends StatefulWidget {
   final int index;
+  final RestaurantOutput restaurant;
   final VoidCallback onCollapse;
   final VoidCallback onDelete;
   final double opacity;
@@ -11,6 +13,7 @@ class ExpandedCard extends StatefulWidget {
   const ExpandedCard({
     super.key,
     required this.index,
+    required this.restaurant,
     required this.onCollapse,
     required this.onDelete,
     required this.opacity,
