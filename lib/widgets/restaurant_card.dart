@@ -52,6 +52,10 @@ class RestaurantCard extends StatelessWidget {
           if (direction == DismissDirection.startToEnd) {
             // swipe right → maps
             context.read<RatingProvider>().setPending('品田牧場日式豬排咖哩'); // ← NEW
+            // nav.goMaps(); // This call is now valid as restaurant is optional
+            // If you have a specific RestaurantRaw object for "品田牧場日式豬排咖哩", pass it:
+            // nav.goMaps(restaurant: yourRestaurantRawInstance);
+            // For now, calling without args will navigate to MapsPage with restaurant = null
             nav.goMaps();
           } else if (direction == DismissDirection.endToStart) {
             // swipe left → delete (fade-out handled by parent)

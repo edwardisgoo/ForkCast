@@ -7,8 +7,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_app/firebase_options.dart';
 
-import 'providers/rating_provider.dart'; // ★ new
+import 'package:flutter_app/providers/rating_provider.dart';
+import 'package:flutter_app/services/location_service.dart';
+import 'package:flutter_app/providers/user_settings_provider.dart'; // Import the new provider
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -29,12 +33,31 @@ final theme = ThemeData(
 );
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized(); // ★ ensure binding
+  WidgetsFlutterBinding.ensureInitialized();
+  // Initialize Firebase for the main application
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    print('Failed to initialize Firebase in main.dart: $e');
+    // Handle Firebase initialization error, e.g., show an error screen
+    // For now, we'll let it proceed, but in a production app, you might stop.
+    if (!e.toString().contains('duplicate-app')) {
+        // Potentially rethrow or handle critical failure
+    }
+  }
+
   runApp(
     MultiProvider(
       providers: [
-        Provider<NavigationService>(create: (_) => NavigationService()),
-        ChangeNotifierProvider(create: (_) => RatingProvider()), // ★
+        // Pass the routerConfig (GoRouter instance) to NavigationService
+        Provider<NavigationService>(create: (_) => NavigationService(routerConfig)),
+        ChangeNotifierProvider(create: (_) => RatingProvider()),
+        Provider<LocationService>(create: (_) => LocationService()),
+        ChangeNotifierProvider(create: (_) => UserSettingsProvider()), // Add UserSettingsProvider
       ],
       child: const App(),
     ),
@@ -48,8 +71,9 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: theme,
-      routerConfig: routerConfig,
+      routerConfig: routerConfig, // Use the routerConfig from navigation.dart
       restorationScopeId: 'app',
+      debugShowCheckedModeBanner: false,
     );
   }
 }
