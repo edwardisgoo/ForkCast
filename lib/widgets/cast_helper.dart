@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/models/openingHours.dart';
-import 'package:flutter_app/models/query.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/services/fetch_restaurant.dart';
 import 'package:flutter_app/services/location_service.dart';
+import 'package:provider/provider.dart';
 
 /// Global storage for the latest cast results.
 List<RestaurantOutput> castResults = [];
@@ -28,15 +28,8 @@ Future<void> performCast(BuildContext context) async {
     // use current time and simple defaults for now
     final now = DateTime.now();
     final queryTime = HourMin.fromInts(now.hour, now.minute);
-    var query = Query(
-      minPrice: 0,
-      maxPrice: 500,
-      minDistance: 0,
-      maxDistance: 3000,
-      requirement: '',
-      note: '',
-    );
-    var setting = UserSetting(sortedPreference: ['價格', '距離', '評價', '人潮']);
+    final setting = context.read<UserSetting>();
+    var query = setting.query;
 
     final result = await fetchRestaurant(
       queryTime,

@@ -12,6 +12,7 @@ import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'providers/rating_provider.dart'; // ★ new
+import 'package:flutter_app/models/userSetting.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -51,6 +52,10 @@ void main() async {
       providers: [
         Provider<NavigationService>(create: (_) => NavigationService()),
         ChangeNotifierProvider(create: (_) => RatingProvider()), // ★
+        ChangeNotifierProvider(
+          create: (_) =>
+              UserSetting(sortedPreference: const ['金額', '距離', '評價']),
+        ),
       ],
       child: const App(),
     ),

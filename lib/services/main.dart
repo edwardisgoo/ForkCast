@@ -108,7 +108,7 @@ class _RestaurantTestPageState extends State<RestaurantTestPage> {
 
       buffer.writeln('=== 餐廳 ${i + 1} ===');
       buffer.writeln('ID!!!!:');
-      buffer.writeln(input.id!='' ? '  ${input.id}' : '  （無資料）');
+      buffer.writeln(input.id != '' ? '  ${input.id}' : '  （無資料）');
       buffer.writeln('名稱: ${input.name}');
       buffer.writeln('評分: ${input.rating} ⭐');
       buffer.writeln('距離: ${input.distance.toStringAsFixed(0)}m');
@@ -166,9 +166,11 @@ class _RestaurantTestPageState extends State<RestaurantTestPage> {
       // 顯示用戶評論
       if (input.reviews.isNotEmpty) {
         buffer.writeln('⭐ 用戶評論:');
-        for (int j = 0; j < input.reviews.length && j < 3; j++) { // 只顯示前3個評論
+        for (int j = 0; j < input.reviews.length && j < 3; j++) {
+          // 只顯示前3個評論
           final review = input.reviews[j];
-          buffer.writeln('  ${review.rating}⭐ (${review.time}): ${review.text}');
+          buffer
+              .writeln('  ${review.rating}⭐ (${review.time}): ${review.text}');
         }
         if (input.reviews.length > 3) {
           buffer.writeln('  ... 還有 ${input.reviews.length - 3} 個評論');
@@ -208,13 +210,23 @@ class _RestaurantTestPageState extends State<RestaurantTestPage> {
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold)),
                       SizedBox(height: 8),
-                      Text('位置: ($_queryLat, $_queryLng)', style: TextStyle(fontSize: 18)),
-                      Text('查詢時間: ${_queryTime.hour}:${_queryTime.minute.toString().padLeft(2, '0')}', style: TextStyle(fontSize: 18)),
-                      Text('價格範圍: \$${_extraPreference.minPrice} - \$${_extraPreference.maxPrice}', style: TextStyle(fontSize: 18)),
-                      Text('距離範圍: ${_extraPreference.minDistance}m - ${_extraPreference.maxDistance}m', style: TextStyle(fontSize: 18)),
-                      Text('需求: ${_extraPreference.requirement}', style: TextStyle(fontSize: 18)),
-                      Text('備註: ${_extraPreference.note}', style: TextStyle(fontSize: 18)),
-                      Text('偏好排序: ${_userSetting.sortedPreference.join(' > ')}', style: TextStyle(fontSize: 18)),
+                      Text('位置: ($_queryLat, $_queryLng)',
+                          style: TextStyle(fontSize: 18)),
+                      Text(
+                          '查詢時間: ${_queryTime.hour}:${_queryTime.minute.toString().padLeft(2, '0')}',
+                          style: TextStyle(fontSize: 18)),
+                      Text(
+                          '價格範圍: \$${_extraPreference.minPrice} - \$${_extraPreference.maxPrice}',
+                          style: TextStyle(fontSize: 18)),
+                      Text(
+                          '距離範圍: ${_extraPreference.minDistance}m - ${_extraPreference.maxDistance}m',
+                          style: TextStyle(fontSize: 18)),
+                      Text('需求: ${_extraPreference.requirement}',
+                          style: TextStyle(fontSize: 18)),
+                      Text('備註: ${_extraPreference.note}',
+                          style: TextStyle(fontSize: 18)),
+                      Text('偏好排序: ${_userSetting.sortedPreference.join(' > ')}',
+                          style: TextStyle(fontSize: 18)),
                     ],
                   ),
                 ),
