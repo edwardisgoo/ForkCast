@@ -58,7 +58,7 @@ class _RestaurantTestPageState extends State<RestaurantTestPage> {
     note: "可以外帶",
   );
   final UserSetting _userSetting = UserSetting(
-    sortedPreference: ["價格", "特殊需求", "人潮", "距離"],
+    sortedPreference: ["金額", "特殊需求", "人潮", "距離"],
   );
 
   Future<void> _testFetchRestaurant() async {

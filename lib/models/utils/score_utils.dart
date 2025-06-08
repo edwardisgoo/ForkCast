@@ -13,7 +13,7 @@ class ScoreUtils {
   /// The map keys are human readable labels.
   static List<MapEntry<String, double>> topTwo(RestaurantOutput r) {
     final entries = <MapEntry<String, double>>[
-      MapEntry('價格', r.priceScore),
+      MapEntry('金額', r.priceScore),
       MapEntry('距離', r.distanceScore),
       MapEntry('評價', r.ratingScore),
       MapEntry('偏好', r.preferenceScore),
