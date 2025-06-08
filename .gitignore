@@ -96,3 +96,9 @@ CMakeCache.txt
 /*.lib
 /*.zip
 /firebase_cpp_sdk_windows/
+
+#additional files
+/.dart_tool/
+/functions/.genkit/
+.flutter-plugins
+.flutter-plugins-dependencies

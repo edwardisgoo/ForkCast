@@ -28,7 +28,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
   try {
     final HttpsCallable callableFindRestaurants =
         FirebaseFunctions.instance.httpsCallable(
-      'restaurantRecommendationMock',
+      'restaurantRecommendation',
       options: HttpsCallableOptions(
         timeout: const Duration(seconds: 40), // 增加Timeout
       ),
@@ -36,6 +36,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
     // 準備 Cloud Function 的輸入參數
     final Map<String, dynamic> functionInput = {
       'restaurantQuery': {
+        'unwanted_restaurants':[],
         'latitude': queryLat,
         'longitude': queryLng,
         'minPrice': extraPreference.minPrice,

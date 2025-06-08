@@ -18,6 +18,7 @@ const QueryTimeSchema = z.object({
 
 // RestaurantInput Schema (對應 Dart 的 RestaurantInput)
 export const RestaurantInputSchema = z.object({
+  id:z.string(),
   distance: z.number(),
   opening: z.boolean(),
   rating: z.number(),
@@ -137,6 +138,7 @@ async function convertRawToInput(
   }));
   
   return {
+    id:raw.id,
     distance: distance,
     opening: isOpen,
     rating: raw.rating || 0,
