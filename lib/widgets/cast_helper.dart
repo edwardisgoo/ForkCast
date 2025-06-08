@@ -1,10 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/openingHours.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/services/fetch_restaurant.dart';
 import 'package:flutter_app/services/location_service.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_app/models/fetchedResults.dart';
+import 'package:flutter_app/models/unwanted.dart';
+import 'package:geolocator/geolocator.dart';
+import 'package:provider/provider.dart'; // Import Provider package
+import 'package:flutter_app/services/location_service.dart'; // Import your location service
+import 'package:flutter_app/services/fetch_restaurant.dart'; // Import your fetch restaurant function
+import 'package:flutter_app/models/userSetting.dart'; // Import y
 
 /// Global storage for the latest cast results.
 List<RestaurantOutput> castResults = [];
@@ -22,24 +28,30 @@ Future<void> performCast(BuildContext context) async {
   );
 
   try {
-    // acquire location
-    final pos = await LocationService().getCurrentLocation();
+    LocationService locationService = LocationService();
+    Position userLocation = await locationService.getCurrentLocation();
 
-    // use current time and simple defaults for now
-    final now = DateTime.now();
-    final queryTime = HourMin.fromInts(now.hour, now.minute);
-    final setting = context.read<UserSetting>();
-    var query = setting.query;
+    // Step 2: Fetch unwanted list from user settings using Provider
+    UserSetting userSettings = Provider.of<UserSetting>(context, listen: false);
+    UnwantedList unwantedList =
+        Provider.of<UnwantedList>(context, listen: false);
+    FetchedResults fetchedResults =
+        Provider.of<FetchedResults>(context, listen: false);
 
-    final result = await fetchRestaurant(
-      queryTime,
-      pos.latitude,
-      pos.longitude,
-      query,
-      setting,
+    // Step 3: Call fetchRestaurant function to get restaurant recommendations
+    Map<String, dynamic> restaurantResult = await fetchRestaurant(
+      userSettings.queryTime,
+      userLocation.latitude,
+      userLocation.longitude,
+      userSettings.query,
+      unwantedList,
+      userSettings,
     );
 
-    castResults = List<RestaurantOutput>.from(result['result'] ?? []);
+    // Step 4: Store fetched results using another Provider (FetchedResults)
+    fetchedResults.setFetchedResults(
+      restaurantResult['result'],
+    );
   } catch (e) {
     debugPrint('performCast error: $e');
   } finally {
