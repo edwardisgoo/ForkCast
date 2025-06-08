@@ -8,10 +8,9 @@ import {
   PriceLevel
 } from '../services/GooglePlacesTypes';
 
-// const API = "AIzaSyBKQqbW8A7wIbwRN6ebdelrpn-eV9SFtno";
 const service = new GooglePlacesService(API);
 
-// Input Schema
+// Update the input schema to include unwanted_restaurants
 export const RestaurantQuerySchema = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
@@ -19,9 +18,11 @@ export const RestaurantQuerySchema = z.object({
   maxPrice: z.number().min(0).optional(),
   minDistance: z.number().min(0).optional(),
   maxDistance: z.number().min(0).optional(),
-  requirement: z.string().optional(), // Currently unused
-  note: z.string().optional() // Currently unused
+  requirement: z.string().optional(),
+  note: z.string().optional(),
+  unwanted_restaurants: z.array(z.string()).optional().default([]) // Add this line
 });
+
 
 // Output Schema
 export const RestaurantRawSchema = z.object({
@@ -61,6 +62,9 @@ export const RestaurantRawSchema = z.object({
   wheelchairAccessibleEntrance: z.boolean()
 });
 
+
+
+// Update the flow implementation
 export const placesGetRestaurantRawFlow = ai.defineFlow(
   {
     name: 'placesGetRestaurantRaw',
@@ -75,7 +79,7 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
     const nearbyParams = {
       latitude: params.latitude,
       longitude: params.longitude,
-      radius: params.maxDistance ? params.maxDistance : 5000, // Convert km to meters
+      radius: params.maxDistance ? params.maxDistance : 5000,
       minprice: priceLevels.min,
       maxprice: priceLevels.max,
       type: 'restaurant'
@@ -95,12 +99,25 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
         ) >= (params.minDistance || 0)
       );
     }
-    let numFilteredNearbysearch = results.length;
-    if (numFilteredNearbysearch === 0) {
-      throw new Error(`placesGetRestaurantRawFlow內將${numNearbysearch}家餐廳filter到剩下0家餐廳`)
+    
+    // Filter out unwanted restaurants
+    if (params.unwanted_restaurants && params.unwanted_restaurants.length > 0) {
+      results = results.filter(place => 
+        !params.unwanted_restaurants?.includes(place.id)
+      );
     }
     
-    // Get details for each restaurant (limited to 10 for performance)
+    let numFilteredNearbysearch = results.length;
+    if (numFilteredNearbysearch === 0) {
+      throw new Error(
+        `placesGetRestaurantRawFlow內將${numNearbysearch}家餐廳filter到剩下0家餐廳\n` +
+        `過濾條件:\n` +
+        `- 最小距離: ${params.minDistance}km\n` +
+        `- 排除餐廳數量: ${params.unwanted_restaurants?.length || 0}`
+      );
+    }
+    
+    // Get details for remaining restaurants (limited to 10 for performance)
     const detailedResults = await Promise.all(
       results.slice(0, 10).map(place => 
         service.detailsSearch({ placeId: place.id })
@@ -131,7 +148,6 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
     }));
   }
 );
-
 // Helper function to convert NTD to Google's price level
 function convertNtdToPriceLevel(min?: number, max?: number): { min: PriceLevel, max: PriceLevel } {
   // Simple conversion - adjust based on your needs
