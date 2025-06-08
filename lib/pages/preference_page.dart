@@ -11,7 +11,7 @@ class PreferencePage extends StatefulWidget {
 
 class _PreferencePageState extends State<PreferencePage> {
   /// ONE list that drives the UI.
-  final List<String> _prefs = ['金額', '距離', '評價', '人潮'];
+  final List<String> _prefs = ['金額', '距離', '評價'];
 
   final _textCtrl = TextEditingController();
 
