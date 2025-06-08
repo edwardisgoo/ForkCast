@@ -5,7 +5,7 @@ import 'package:flutter/foundation.dart'; // 導入 kDebugMode
 用於取得使用者經緯度位置的服務
 */
 
-class LocationService {
+class LocationService extends ChangeNotifier {
   /// 檢查位置服務是否可用。
   /// 如果位置服務被禁用，則返回 false。
   Future<bool> _isLocationServiceEnabled() async {
@@ -42,7 +42,8 @@ class LocationService {
     if (permission == LocationPermission.deniedForever) {
       // 權限被永久拒絕，無法請求。
       if (kDebugMode) {
-        print('Location permissions are permanently denied, we cannot request permissions.');
+        print(
+            'Location permissions are permanently denied, we cannot request permissions.');
       }
       return Future.error(
           'Location permissions are permanently denied, we cannot request permissions.');
@@ -60,12 +61,14 @@ class LocationService {
     bool serviceEnabled = await _isLocationServiceEnabled();
     if (!serviceEnabled) {
       // 如果位置服務被禁用，可以提示使用者開啟
-      throw Exception('Location services are disabled. Please enable them in your device settings.');
+      throw Exception(
+          'Location services are disabled. Please enable them in your device settings.');
     }
 
     // 2. 檢查並請求權限
     LocationPermission permission = await _checkAndRequestPermission();
-    if (permission == LocationPermission.denied || permission == LocationPermission.deniedForever) {
+    if (permission == LocationPermission.denied ||
+        permission == LocationPermission.deniedForever) {
       // 權限問題已經在 _checkAndRequestPermission 中處理並拋出異常
       // 這裡再次拋出以確保調用者知道
       throw Exception('Location permissions are not granted.');
@@ -101,4 +104,3 @@ class LocationService {
     return Geolocator.getPositionStream(locationSettings: locationSettings);
   }
 }
-

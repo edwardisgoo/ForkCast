@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:provider/provider.dart';
-import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/utils/score_utils.dart';
+import 'package:flutter_app/models/fetchedResults.dart';
+import 'package:flutter_app/models/restaurant_output.dart';
 
 class ExpandedCard extends StatefulWidget {
   final int index;
-  final RestaurantOutput restaurant;
   final VoidCallback onCollapse;
   final VoidCallback onDelete;
   final double opacity;
@@ -14,7 +14,6 @@ class ExpandedCard extends StatefulWidget {
   const ExpandedCard({
     super.key,
     required this.index,
-    required this.restaurant,
     required this.onCollapse,
     required this.onDelete,
     required this.opacity,
@@ -58,6 +57,8 @@ class _ExpandedCardState extends State<ExpandedCard> {
     final double baseCardH =
         (size.height * 0.25).clamp(180.0, 320.0); // collapsed-height reference
     final double imgH = baseCardH * 0.70;
+    final restaurant =
+        context.watch<FetchedResults>().fetchedResults[widget.index];
 
     return Dismissible(
       key: ValueKey('expanded_${widget.index}'),
@@ -95,7 +96,7 @@ class _ExpandedCardState extends State<ExpandedCard> {
                     child: _Header(
                       imgH: imgH,
                       cardH: baseCardH,
-                      restaurant: widget.restaurant,
+                      restaurant: restaurant,
                     ),
                   ),
                   SliverPersistentHeader(
@@ -125,9 +126,9 @@ class _ExpandedCardState extends State<ExpandedCard> {
                         ? const BouncingScrollPhysics()
                         : const NeverScrollableScrollPhysics(),
                     children: [
-                      _IntroPane(restaurant: widget.restaurant),
-                      _MenuPane(restaurant: widget.restaurant),
-                      _ReviewPane(restaurant: widget.restaurant),
+                      _IntroPane(restaurant: restaurant),
+                      _MenuPane(restaurant: restaurant),
+                      _ReviewPane(restaurant: restaurant),
                     ],
                   ),
                 ),

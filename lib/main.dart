@@ -6,6 +6,8 @@
 
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/fetchedResults.dart';
+import 'package:flutter_app/models/unwanted.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
@@ -13,6 +15,8 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'providers/rating_provider.dart'; // ★ new
 import 'package:flutter_app/models/userSetting.dart';
+import 'package:flutter_app/services/location_service.dart'; // Import your location service
+import 'package:flutter_app/services/fetch_restaurant.dart'; //
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -56,6 +60,9 @@ void main() async {
           create: (_) =>
               UserSetting(sortedPreference: const ['金額', '距離', '評價']),
         ),
+        ChangeNotifierProvider(create: (_) => LocationService()),
+        ChangeNotifierProvider(create: (_) => UnwantedList(unwantedIds: [])),
+        ChangeNotifierProvider(create: (_) => FetchedResults()),
       ],
       child: const App(),
     ),
