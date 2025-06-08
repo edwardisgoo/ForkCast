@@ -1,4 +1,5 @@
 import 'package:flutter/foundation.dart';
+import 'package:flutter_app/models/openingHours.dart';
 import 'package:flutter_app/models/query.dart';
 
 class UserSetting extends ChangeNotifier {
@@ -7,6 +8,7 @@ class UserSetting extends ChangeNotifier {
   double maxCost;
   double minDist;
   double maxDist;
+  HourMin queryTime;
   String requirements;
   String notes;
 
@@ -16,6 +18,7 @@ class UserSetting extends ChangeNotifier {
     this.maxCost = 1000.0,
     this.minDist = 0.0,
     this.maxDist = 1000.0,
+    this.queryTime = const HourMin.fromInts(12, 0), // 預設中午12點
     this.requirements = '',
     this.notes = '',
   }) : sortedPreference = sortedPreference ?? [];

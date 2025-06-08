@@ -2,6 +2,7 @@ import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_app/models/openingHours.dart';
 import 'package:flutter_app/models/restaurant_input.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
+import 'package:flutter_app/models/unwanted.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/models/query.dart';
 import 'package:flutter_app/models/review.dart';
@@ -23,6 +24,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
   double queryLat,
   double queryLng,
   Query extraPreference,
+  UnwantedList unwantedList,
   UserSetting userSetting,
 ) async {
   try {
@@ -36,11 +38,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
     // 準備 Cloud Function 的輸入參數
     final Map<String, dynamic> functionInput = {
       'restaurantQuery': {
-        'unwanted_restaurants': [
-          "ChIJ66ayunI2aDQR2J-2bgklJ9I",
-          "ChIJ_UmSJ3M2aDQRGpQ4UoYLGqg",
-          "ChIJa1FP13I2aDQRxBkPogHSIPE"
-        ],
+        'unwanted_restaurants': unwantedList.unwantedIds,
         'latitude': queryLat,
         'longitude': queryLng,
         'minPrice': extraPreference.minPrice,
