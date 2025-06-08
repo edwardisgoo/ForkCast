@@ -21,7 +21,8 @@ class UserSetting extends ChangeNotifier {
     this.queryTime = const HourMin.fromInts(12, 0), // 預設中午12點
     this.requirements = '',
     this.notes = '',
-  }) : sortedPreference = sortedPreference ?? [];
+  }) : sortedPreference =
+            sortedPreference != null ? List<String>.from(sortedPreference) : [];
 
   // 更新 sortedPreference（覆蓋整份）
   void updatePreferences(List<String> newPreferences) {
