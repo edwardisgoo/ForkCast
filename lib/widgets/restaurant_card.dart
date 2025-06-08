@@ -5,10 +5,13 @@ import 'package:provider/provider.dart';
 
 import 'package:flutter_app/services/navigation.dart';
 import 'package:flutter_app/providers/rating_provider.dart'; // ← NEW
+import 'package:flutter_app/models/restaurant_output.dart';
+import 'package:flutter_app/models/utils/score_utils.dart';
 
 /// Structured and responsive restaurant card.
 class RestaurantCard extends StatelessWidget {
   final int index;
+  final RestaurantOutput restaurant;
   final bool isExpanded;
   final VoidCallback onTap;
   final VoidCallback onDelete;
@@ -17,6 +20,7 @@ class RestaurantCard extends StatelessWidget {
   const RestaurantCard({
     super.key,
     required this.index,
+    required this.restaurant,
     required this.isExpanded,
     required this.onTap,
     required this.onDelete,
@@ -37,7 +41,25 @@ class RestaurantCard extends StatelessWidget {
     final double dotFont = baseCardH * 0.16;
 
     // Price ratings based on index
-    final String priceRating = (index + 3).toString();
+    final topScores = ScoreUtils.topTwo(restaurant);
+    final String p1Label = topScores[0].key;
+    final String p1Score =
+        ScoreUtils.scaleToFive(topScores[0].value).toString();
+    final String p2Label = topScores[1].key;
+    final String p2Score =
+        ScoreUtils.scaleToFive(topScores[1].value).toString();
+
+    final String name =
+        restaurant.input.name.isNotEmpty ? restaurant.input.name : '未知餐廳';
+    final double overall = 1 + restaurant.matchScore * 4;
+    final String ratingStr = overall.toStringAsFixed(1);
+    final List<String> ratingParts = ratingStr.split('.');
+    final String ratingInt = ratingParts.first;
+    final String ratingDec = '.${ratingParts.last}';
+    String description = restaurant.reason.isNotEmpty
+        ? restaurant.reason
+        : restaurant.shortIntroduction;
+    if (description.isEmpty) description = restaurant.input.summary;
 
     return Opacity(
       opacity: opacity,
@@ -51,11 +73,7 @@ class RestaurantCard extends StatelessWidget {
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
             // swipe right → maps
-            context.read<RatingProvider>().setPending('品田牧場日式豬排咖哩'); // ← NEW
-            // nav.goMaps(); // This call is now valid as restaurant is optional
-            // If you have a specific RestaurantRaw object for "品田牧場日式豬排咖哩", pass it:
-            // nav.goMaps(restaurant: yourRestaurantRawInstance);
-            // For now, calling without args will navigate to MapsPage with restaurant = null
+            context.read<RatingProvider>().setPending(restaurant.input.name);
             nav.goMaps();
           } else if (direction == DismissDirection.endToStart) {
             // swipe left → delete (fade-out handled by parent)
@@ -117,7 +135,7 @@ class RestaurantCard extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                '品田牧場日式豬排咖哩',
+                                name,
                                 style: TextStyle(
                                   fontSize: titleFont,
                                   fontWeight: FontWeight.bold,
@@ -134,10 +152,10 @@ class RestaurantCard extends StatelessWidget {
                                   /* P1 */
                                   Column(
                                     children: [
-                                      _ratingCircle(priceRating, ratingSize),
+                                      _ratingCircle(p1Score, ratingSize),
                                       const SizedBox(height: 4),
-                                      const Text('價格',
-                                          style: TextStyle(fontSize: 14)),
+                                      Text(p1Label,
+                                          style: const TextStyle(fontSize: 14)),
                                     ],
                                   ),
                                   const SizedBox(width: 8),
@@ -145,10 +163,10 @@ class RestaurantCard extends StatelessWidget {
                                   /* P2 */
                                   Column(
                                     children: [
-                                      _ratingCircle('5', ratingSize),
+                                      _ratingCircle(p2Score, ratingSize),
                                       const SizedBox(height: 4),
-                                      const Text('口味',
-                                          style: TextStyle(fontSize: 14)),
+                                      Text(p2Label,
+                                          style: const TextStyle(fontSize: 14)),
                                     ],
                                   ),
                                   const SizedBox(width: 16),
@@ -167,13 +185,13 @@ class RestaurantCard extends StatelessWidget {
                                           textBaseline: TextBaseline.alphabetic,
                                           children: [
                                             Text(
-                                              '4',
+                                              ratingInt,
                                               style: TextStyle(
                                                 fontSize: digitFont,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            Text('.7',
+                                            Text(ratingDec,
                                                 style: TextStyle(
                                                     fontSize: dotFont)),
                                           ],
@@ -195,9 +213,9 @@ class RestaurantCard extends StatelessWidget {
                   const Spacer(),
 
                   /* bottom text */
-                  const Text(
-                    '如果你想吃咖哩，品田牧場提供多樣的日式咖哩料理',
-                    style: TextStyle(fontSize: 14),
+                  Text(
+                    description.isNotEmpty ? description : '無餐廳簡介',
+                    style: const TextStyle(fontSize: 14),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

@@ -4,14 +4,15 @@
 // Only change → wrap `NavigationService` and the new `RatingProvider`
 // in a `MultiProvider` so the rating-prompt logic can work.
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/services/navigation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_app/firebase_options.dart';
 
-import 'package:flutter_app/providers/rating_provider.dart';
-import 'package:flutter_app/services/location_service.dart';
+import 'firebase_options.dart';
+import 'providers/rating_provider.dart'; // ★ new
+
 final theme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
@@ -31,8 +32,8 @@ final theme = ThemeData(
 );
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  // Initialize Firebase for the main application
+  WidgetsFlutterBinding.ensureInitialized(); // ★ ensure binding
+
   try {
     if (Firebase.apps.isEmpty) {
       await Firebase.initializeApp(
@@ -40,22 +41,17 @@ void main() async {
       );
     }
   } catch (e) {
-    print('Failed to initialize Firebase in main.dart: $e');
-    // Handle Firebase initialization error, e.g., show an error screen
-    // For now, we'll let it proceed, but in a production app, you might stop.
     if (!e.toString().contains('duplicate-app')) {
-        // Potentially rethrow or handle critical failure
+      rethrow;
     }
   }
 
   runApp(
     MultiProvider(
       providers: [
-        // Pass the routerConfig (GoRouter instance) to NavigationService
-        Provider<NavigationService>(create: (_) => NavigationService(routerConfig)),
-        ChangeNotifierProvider(create: (_) => RatingProvider()),
-        Provider<LocationService>(create: (_) => LocationService()),
-        ],
+        Provider<NavigationService>(create: (_) => NavigationService()),
+        ChangeNotifierProvider(create: (_) => RatingProvider()), // ★
+      ],
       child: const App(),
     ),
   );
@@ -68,9 +64,8 @@ class App extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp.router(
       theme: theme,
-      routerConfig: routerConfig, // Use the routerConfig from navigation.dart
+      routerConfig: routerConfig,
       restorationScopeId: 'app',
-      debugShowCheckedModeBanner: false,
     );
   }
 }

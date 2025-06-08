@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import '../widgets/title_text.dart';
 import '../services/navigation.dart';
+import '../widgets/cast_helper.dart';
 
 class ComplexCastPage extends StatefulWidget {
   const ComplexCastPage({super.key});
@@ -132,7 +133,12 @@ class _ComplexCastPageState extends State<ComplexCastPage> {
       );
 
   Widget _castBtn() => ElevatedButton(
-        onPressed: () => context.read<NavigationService>().goResult(),
+        onPressed: () async {
+          await performCast(context);
+          if (mounted) {
+            context.read<NavigationService>().goResult();
+          }
+        },
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
           padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),

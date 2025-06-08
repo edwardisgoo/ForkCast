@@ -9,9 +9,20 @@ class PreferencePage extends StatefulWidget {
   State<PreferencePage> createState() => _PreferencePageState();
 }
 
+class _PrefItem {
+  _PrefItem(this.label, {required this.deletable});
+
+  String label;
+  bool deletable;
+}
+
 class _PreferencePageState extends State<PreferencePage> {
-  /// ONE list that drives the UI.
-  final List<String> _prefs = ['金額', '距離', '評價', '人潮'];
+  /// ONE list that drives the UI with deletion info.
+  final List<_PrefItem> _prefs = [
+    _PrefItem('金額', deletable: false),
+    _PrefItem('距離', deletable: false),
+    _PrefItem('評價', deletable: false),
+  ];
 
   final _textCtrl = TextEditingController();
 
@@ -36,7 +47,7 @@ class _PreferencePageState extends State<PreferencePage> {
       ),
     );
     if (res != null && res.trim().isNotEmpty) {
-      setState(() => _prefs.add(res.trim()));
+      setState(() => _prefs.add(_PrefItem(res.trim(), deletable: true)));
       _textCtrl.clear();
     }
   }
@@ -74,11 +85,17 @@ class _PreferencePageState extends State<PreferencePage> {
                     _prefs.insert(newIdx, item);
                   });
                 },
-                itemBuilder: (_, i) => _PrefChip(
-                  key: ValueKey(_prefs[i]),
-                  label: _prefs[i],
-                  onDelete: () => setState(() => _prefs.removeAt(i)),
-                ),
+                itemBuilder: (_, i) {
+                  final pref = _prefs[i];
+                  return _PrefChip(
+                    key: ValueKey(pref),
+                    label: pref.label,
+                    deletable: pref.deletable,
+                    onDelete: pref.deletable
+                        ? () => setState(() => _prefs.removeAt(i))
+                        : null,
+                  );
+                },
               ),
             ),
 
@@ -131,11 +148,14 @@ class _PrefChip extends StatelessWidget {
   const _PrefChip({
     required Key key,
     required this.label,
-    required this.onDelete,
-  }) : super(key: key);
+    required this.deletable,
+    this.onDelete,
+  })  : assert(!deletable || onDelete != null),
+        super(key: key);
 
   final String label;
-  final VoidCallback onDelete;
+  final bool deletable;
+  final VoidCallback? onDelete;
 
   @override
   Widget build(BuildContext context) {
@@ -150,11 +170,14 @@ class _PrefChip extends StatelessWidget {
         child: Row(
           children: [
             // close icon (left)
-            IconButton(
-              icon: const Icon(Icons.close, color: Colors.white),
-              splashRadius: 24,
-              onPressed: onDelete,
-            ),
+            if (deletable)
+              IconButton(
+                icon: const Icon(Icons.close, color: Colors.white),
+                splashRadius: 24,
+                onPressed: onDelete,
+              )
+            else
+              const SizedBox(width: 48),
             // centred label
             Expanded(
               child: Center(

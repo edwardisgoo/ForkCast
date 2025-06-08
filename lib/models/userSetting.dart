@@ -96,13 +96,13 @@ class UserSetting extends ChangeNotifier {
     if (newNotes != null) notes = newNotes;
     notifyListeners();
   }
-  Query get query => Query(
-      minPrice: minCost.round(),
-      maxPrice: maxCost.round(),
-      minDistance: minDist,
-      maxDistance: maxDist,
-      requirement: requirements,
-      note: notes,
-    );
 
+  Query get query => Query(
+        minPrice: minCost.round(),
+        maxPrice: maxCost.round(),
+        minDistance: minDist,
+        maxDistance: maxDist,
+        requirement: requirements,
+        note: notes,
+      );
 }

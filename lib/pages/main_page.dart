@@ -9,6 +9,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/services/navigation.dart';
 import '../widgets/title_text.dart';
 import '../providers/rating_provider.dart'; // ★ new
+import '../widgets/cast_helper.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -125,7 +126,7 @@ class _MainPageState extends State<MainPage> {
           '[MAIN] title start pos=${box.localToGlobal(Offset.zero)} size=${box.size}');
     }
 
-    Future.delayed(const Duration(milliseconds: 650), () {
+    performCast(context).then((_) {
       if (!mounted) return;
       final ctx = _titleKey.currentContext;
       if (ctx != null) {
