@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:provider/provider.dart';
+import '../models/userSetting.dart';
 
 class PreferencePage extends StatefulWidget {
   const PreferencePage({super.key});
@@ -18,11 +19,7 @@ class _PrefItem {
 
 class _PreferencePageState extends State<PreferencePage> {
   /// ONE list that drives the UI with deletion info.
-  final List<_PrefItem> _prefs = [
-    _PrefItem('金額', deletable: false),
-    _PrefItem('距離', deletable: false),
-    _PrefItem('評價', deletable: false),
-  ];
+  static const _builtIns = ['金額', '距離', '評價'];
 
   final _textCtrl = TextEditingController();
 
@@ -47,7 +44,8 @@ class _PreferencePageState extends State<PreferencePage> {
       ),
     );
     if (res != null && res.trim().isNotEmpty) {
-      setState(() => _prefs.add(_PrefItem(res.trim(), deletable: true)));
+      final setting = context.read<UserSetting>();
+      setting.addPreference(res.trim());
       _textCtrl.clear();
     }
   }
@@ -55,6 +53,12 @@ class _PreferencePageState extends State<PreferencePage> {
   @override
   Widget build(BuildContext context) {
     final nav = context.read<NavigationService>();
+    final setting = context.watch<UserSetting>();
+
+    final prefs = setting.sortedPreference;
+    final List<_PrefItem> items = prefs
+        .map((p) => _PrefItem(p, deletable: !_builtIns.contains(p)))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
@@ -77,22 +81,26 @@ class _PreferencePageState extends State<PreferencePage> {
             Expanded(
               child: ReorderableListView.builder(
                 padding: const EdgeInsets.all(16),
-                itemCount: _prefs.length,
+                itemCount: items.length,
                 onReorder: (oldIdx, newIdx) {
-                  setState(() {
-                    if (oldIdx < newIdx) newIdx--;
-                    final item = _prefs.removeAt(oldIdx);
-                    _prefs.insert(newIdx, item);
-                  });
+                  final list = List<String>.from(prefs);
+                  if (oldIdx < newIdx) newIdx--;
+                  final item = list.removeAt(oldIdx);
+                  list.insert(newIdx, item);
+                  setting.updatePreferences(list);
                 },
                 itemBuilder: (_, i) {
-                  final pref = _prefs[i];
+                  final pref = items[i];
                   return _PrefChip(
-                    key: ValueKey(pref),
+                    key: ValueKey(pref.label),
                     label: pref.label,
                     deletable: pref.deletable,
                     onDelete: pref.deletable
-                        ? () => setState(() => _prefs.removeAt(i))
+                        ? () {
+                            final list = List<String>.from(prefs);
+                            list.removeAt(i);
+                            setting.updatePreferences(list);
+                          }
                         : null,
                   );
                 },
