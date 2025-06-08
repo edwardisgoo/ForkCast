@@ -28,7 +28,7 @@ Future<void> performCast(BuildContext context) async {
     // use current time and simple defaults for now
     final now = DateTime.now();
     final queryTime = HourMin.fromInts(now.hour, now.minute);
-    const query = Query(
+    var query = Query(
       minPrice: 0,
       maxPrice: 500,
       minDistance: 0,
@@ -36,7 +36,7 @@ Future<void> performCast(BuildContext context) async {
       requirement: '',
       note: '',
     );
-    const setting = UserSetting(sortedPreference: ['價格', '距離', '評價', '人潮']);
+    var setting = UserSetting(sortedPreference: ['價格', '距離', '評價', '人潮']);
 
     final result = await fetchRestaurant(
       queryTime,

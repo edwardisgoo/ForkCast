@@ -28,6 +28,7 @@ const generateMockRestaurantData = () => {
   // 模擬餐廳基本資料 (符合範例格式)
   const mockRestaurants = [
     {
+      id:"aaaaaa",
       distance: 85.5,
       opening: true,
       rating: 4.3,
@@ -56,6 +57,7 @@ const generateMockRestaurantData = () => {
       extraInformation: "外送 / 內用 / 可預約 / 提供紅酒 / 外帶"
     },
     {
+      id:"bbbbbb",
       distance: 120.8,
       opening: true,
       rating: 4.1,
@@ -84,6 +86,7 @@ const generateMockRestaurantData = () => {
       extraInformation: "外送 / 內用 / 外帶 / 提供清酒"
     },
     {
+      id:"cccccc",
       distance: 180.3,
       opening: true,
       rating: 4.5,

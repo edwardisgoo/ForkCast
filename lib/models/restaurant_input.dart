@@ -9,6 +9,7 @@ import 'package:flutter_app/models/utils/ocr.dart';
 */
 class RestaurantInput {
   const RestaurantInput({
+    required this.id,
     required this.distance,
     required this.opening,
     required this.rating,
@@ -20,6 +21,7 @@ class RestaurantInput {
     required this.priceInformation,
     required this.extraInformation,
   });
+  final String id;
   //1.位置相關
   final double distance; //單位公尺
   //2.營業狀況時間相關

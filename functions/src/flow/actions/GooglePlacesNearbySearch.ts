@@ -4,8 +4,6 @@ import { GooglePlacesService } from '../services/GooglePlacesService';
 import { NearbySearchParamsSchema,NearbyPlaceSchema } from '../services/GooglePlacesSchemas';
 import * as functions from 'firebase-functions';
 
-// const API = "AIzaSyBKQqbW8A7wIbwRN6ebdelrpn-eV9SFtno";
-// const API = process.env.GOOGLE_PLACES_API_KEY;
 const service = new GooglePlacesService(API);
 
 export const placesNearbySearchFlow = ai.defineFlow(

@@ -4,12 +4,14 @@
 // Only change → wrap `NavigationService` and the new `RatingProvider`
 // in a `MultiProvider` so the rating-prompt logic can work.
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_app/services/navigation.dart';
+import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
-import 'package:firebase_core/firebase_core.dart';
+
+import 'firebase_options.dart';
 import 'providers/rating_provider.dart'; // ★ new
-import 'package:flutter_app/firebase_options.dart';
 
 final theme = ThemeData(
   useMaterial3: true,
@@ -31,9 +33,19 @@ final theme = ThemeData(
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized(); // ★ ensure binding
-  await Firebase.initializeApp(
-    options: DefaultFirebaseOptions.currentPlatform,
-  );
+
+  try {
+    if (Firebase.apps.isEmpty) {
+      await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform,
+      );
+    }
+  } catch (e) {
+    if (!e.toString().contains('duplicate-app')) {
+      rethrow;
+    }
+  }
+
   runApp(
     MultiProvider(
       providers: [

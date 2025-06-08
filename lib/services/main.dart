@@ -107,6 +107,8 @@ class _RestaurantTestPageState extends State<RestaurantTestPage> {
       final input = r.input; // 使用 input 而不是 raw
 
       buffer.writeln('=== 餐廳 ${i + 1} ===');
+      buffer.writeln('ID!!!!:');
+      buffer.writeln(input.id!='' ? '  ${input.id}' : '  （無資料）');
       buffer.writeln('名稱: ${input.name}');
       buffer.writeln('評分: ${input.rating} ⭐');
       buffer.writeln('距離: ${input.distance.toStringAsFixed(0)}m');
