@@ -1,16 +1,16 @@
 import 'package:cloud_functions/cloud_functions.dart';
 import 'package:flutter_app/models/openingHours.dart';
-import 'package:flutter_app/models/restaurant_raw.dart';
 import 'package:flutter_app/models/restaurant_input.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/models/query.dart';
+import 'package:flutter_app/models/review.dart';
 
 /*
-光齊：主要排序餐廳的Flow
 Input:
-List<RestaurantInput> dataRestaurants:
-由GoogleMap API得到的可能餐廳清單
+HourMin queryTime
+double queryLat,
+double queryLng,
 Query:extraPreference
 調整需求頁面的所有資訊
 UserSetting:
@@ -19,167 +19,161 @@ UserSetting:
 Ouput:{'result':List<RestaurantOutput>}經由Flow流程得出的
 */
 Future<Map<String, dynamic>> fetchRestaurant(
-  List<RestaurantRaw> rawdataRestaurants,
   HourMin queryTime,
   double queryLat,
   double queryLng,
   Query extraPreference,
   UserSetting userSetting,
 ) async {
-  List<RestaurantInput> dataRestaurants = [];
-  for (var rawRestaurant in rawdataRestaurants) {
-    dataRestaurants.add(
-        RestaurantInput.fromRaw(rawRestaurant, queryTime, queryLat, queryLng));
-  }
   try {
-    //還沒實作
     final HttpsCallable callableFindRestaurants =
         FirebaseFunctions.instance.httpsCallable(
-      'findRestaurants',
+      'restaurantRecommendationMock',
       options: HttpsCallableOptions(
-        timeout: const Duration(seconds: 30), // 增加Timeout
+        timeout: const Duration(seconds: 40), // 增加Timeout
       ),
     );
-    final HttpsCallable callableDetailGeneration =
-        FirebaseFunctions.instance.httpsCallable(
-      'detailGeneration',
-      options: HttpsCallableOptions(
-        timeout: const Duration(seconds: 30), // 增加Timeout
-      ),
-    );
-    final List<Map<String, dynamic>> serializedRestaurants =
-        dataRestaurants.map((restaurant) => restaurant.toJson()).toList();
-    for (var restaurant in serializedRestaurants) {}
-    final Map<String, dynamic> requestData = {
-      "restaurants": serializedRestaurants,
-      "query": {
-        "minPrice": extraPreference.minPrice,
-        "maxPrice": extraPreference.maxPrice,
-        "minDistance": extraPreference.minDistance,
-        "maxDistance": extraPreference.maxDistance,
-        "requirement": extraPreference.requirement,
-        "note": extraPreference.note,
+    // 準備 Cloud Function 的輸入參數
+    final Map<String, dynamic> functionInput = {
+      'restaurantQuery': {
+        'latitude': queryLat,
+        'longitude': queryLng,
+        'minPrice': extraPreference.minPrice,
+        'maxPrice': extraPreference.maxPrice,
+        'minDistance': extraPreference.minDistance,
+        'maxDistance': extraPreference.maxDistance,
+        'requirement': extraPreference.requirement,
+        'note': extraPreference.note,
       },
-      "userSetting": {
-        "sortedPreference": userSetting.sortedPreference,
+      'userSetting': {
+        'sortedPreference': userSetting.sortedPreference,
+      },
+      'queryTime': {
+        'hour': queryTime.hour,
+        'minute': queryTime.minute,
       },
     };
-    print('Request data of findRestaurants: $requestData');
-    final responseFindRestaurants =
-        await callableFindRestaurants.call(requestData);
-    print(
-        'Firebase response of findRestaurants: ${responseFindRestaurants.data}');
 
-    if (responseFindRestaurants.data == null) {
-      print("Error: Response data is null");
-      throw Exception("Response data is null");
-    }
-    final rawData = responseFindRestaurants.data as Map<String, dynamic>;
-    final data = <String, dynamic>{};
-    try {
-      rawData.forEach((key, value) {
-        data[key.toString()] = value;
-      });
-    } catch (e) {
-      throw Exception(
-          "Error happens in converting data to type Map<String, dynamic> $e");
-    }
-    if (!data.containsKey("topIndexes")) {
-      print("Error: 'topIndexes' key not found in response");
-      throw Exception("'topIndexes' key not found in response");
-    }
-    if (!data.containsKey("recommendations")) {
-      print("Error: 'recommendations' key not found in response");
-      throw Exception("'recommendations' key not found in response");
-    }
+    // 呼叫 Cloud Function
+    final HttpsCallableResult functionResult = await callableFindRestaurants.call(functionInput);
+    
+    // 取得回傳結果
+    final Map<String, dynamic> responseData = Map<String, dynamic>.from(functionResult.data);
+    
+    // 印出完整的 Flow response 進行 debug
+    print('=== Cloud Function Response ===');
+    print('Full response: ${functionResult.data}');
+    print('Response type: ${functionResult.data.runtimeType}');
+    print('================================');
+    
+    // 解析 topThreeRestaurants
+    final List<dynamic> topThreeRestaurants = responseData['topThreeRestaurants'] ?? [];
+    
+    // 轉換成 RestaurantOutput 列表
     List<RestaurantOutput> result = [];
-    final List<int> topIndexes = data["topIndexes"].whereType<int>().toList();
-    final List<Map<String, dynamic>> recommendations =
-        (data["recommendations"] as List)
-            .map((e) => Map<String, dynamic>.from(e as Map))
-            .toList();
-    for (int i = 0; i < topIndexes.length; i++) {
-      final int index = topIndexes[i];
-      final Map<String, dynamic> recommendation =
-          recommendations.firstWhere((r) => r["index"] == index);
-
-      if (recommendation != null && index < dataRestaurants.length) {
-        final Map<String, dynamic> requestData = {
-          "restaurant": serializedRestaurants[index],
-          "query": {
-            "minPrice": extraPreference.minPrice,
-            "maxPrice": extraPreference.maxPrice,
-            "minDistance": extraPreference.minDistance,
-            "maxDistance": extraPreference.maxDistance,
-            "requirement": extraPreference.requirement,
-            "note": extraPreference.note,
-          },
-          "userSetting": {
-            "sortedPreference": userSetting.sortedPreference,
-          },
-          "previousRecommendation": recommendation
-        };
-        print('Request data of detailGeneration: $requestData');
-        final HttpsCallableResult response;
-        RestaurantOutput fetchedRestaurant = RestaurantOutput(
-          raw: rawdataRestaurants[index],
-          reason: recommendation["reason"] ?? "",
-          matchScore: recommendation["matchScore"].toDouble() ?? 0.0,
-          priceScore: recommendation["matchDetail"]["price"].toDouble() ?? 0.0,
-          distanceScore:
-              recommendation["matchDetail"]["distance"].toDouble() ?? 0.0,
-          ratingScore:
-              recommendation["matchDetail"]["rating"].toDouble() ?? 0.0,
-          preferenceScore:
-              recommendation["matchDetail"]["preference"].toDouble() ?? 0.0,
-          requirementScore:
-              recommendation["matchDetail"]["requirement"].toDouble() ?? 0.0,
+    
+    for (var restaurantData in topThreeRestaurants) {
+      try {
+        // 印出每個餐廳的詳細資料結構
+        print('--- Restaurant Data Structure ---');
+        print('Restaurant data: $restaurantData');
+        print('Restaurant data type: ${restaurantData.runtimeType}');
+        
+        // 解析 restaurant (RestaurantInput) - 正確處理類型轉換
+        final Map<String, dynamic> restaurantMap = Map<String, dynamic>.from(restaurantData['restaurant']);
+        print('Restaurant map: $restaurantMap');
+        
+        // 解析 recommendation - 正確處理類型轉換
+        final Map<String, dynamic> recommendationMap = Map<String, dynamic>.from(restaurantData['recommendation']);
+        print('Recommendation map: $recommendationMap');
+        print('MatchDetail: ${recommendationMap['matchDetail']}');
+        print('MatchDetail type: ${recommendationMap['matchDetail'].runtimeType}');
+        
+        // 解析 details - 正確處理類型轉換
+        final Map<String, dynamic> detailsMap = Map<String, dynamic>.from(restaurantData['details']);
+        print('Details map: $detailsMap');
+        print('-------------------------------');
+        
+        // 從 RestaurantInput 數據創建 RestaurantInput 物件
+        final RestaurantInput restaurantInput = _parseRestaurantInput(restaurantMap);
+        
+        // 正確解析 matchDetail 物件
+        final Map<String, dynamic> matchDetailMap = Map<String, dynamic>.from(recommendationMap['matchDetail'] ?? {});
+        
+        // 創建 RestaurantOutput，使用 RestaurantInput
+        final RestaurantOutput restaurantOutput = RestaurantOutput(
+          input: restaurantInput,
+          reason: recommendationMap['reason'] ?? '',
+          matchScore: (recommendationMap['matchScore'] ?? 0.0).toDouble(),
+          priceScore: (matchDetailMap['price'] ?? 0.0).toDouble(),
+          distanceScore: (matchDetailMap['distance'] ?? 0.0).toDouble(),
+          ratingScore: (matchDetailMap['rating'] ?? 0.0).toDouble(),
+          preferenceScore: (matchDetailMap['preference'] ?? 0.0).toDouble(),
+          requirementScore: (matchDetailMap['requirement'] ?? 0.0).toDouble(),
         );
-        try {
-          response = await callableDetailGeneration.call(requestData);
-          print(
-              'After calling detailGeneration, response.data ${response.data}');
-          final data = response.data;
-
-          // 修改:檢查回傳的鍵值是否存在，包括新的 preferenceAnalysis 鍵
-          if (!data.containsKey("shortIntroduction") ||
-              !data.containsKey("fullIntroduction") ||
-              !data.containsKey("menu") ||
-              !data.containsKey("reviews") ||
-              !data.containsKey("preferenceAnalysis")) {
-            print("Error: some keys are not found in response.data");
-            print("response.data.keys: ${data.keys}");
-            throw Exception("key not found in response of detailGeneration");
-          }
-
-          // 修改: 將 preferenceAnalysis 處理為 Map<String, String> 格式
-          Map<String, String> reasons = {};
-          if (data["preferenceAnalysis"] is Map) {
-            (data["preferenceAnalysis"] as Map).forEach((key, value) {
-              reasons[key.toString()] = value.toString();
+        
+        // 添加詳細信息 - 處理嵌套的 preferenceAnalysis map
+        final Map<String, String> reasonsMap = {};
+        if (detailsMap['preferenceAnalysis'] != null) {
+          final dynamic reasonsData = detailsMap['preferenceAnalysis'];
+          if (reasonsData is Map) {
+            reasonsData.forEach((key, value) {
+              reasonsMap[key.toString()] = value.toString();
             });
           }
-
-          // 將分析結果傳遞給 fetchedRestaurant
-          fetchedRestaurant.addDetails(
-              short: data["shortIntroduction"],
-              full: data["fullIntroduction"],
-              menu: data["menu"],
-              reviews: data["reviews"],
-              reasons: reasons);
-        } catch (err) {
-          throw Exception("Error happens in calling detailGeneration: $err");
         }
-        result.add(fetchedRestaurant);
+        
+        restaurantOutput.addDetails(
+          short: detailsMap['shortIntroduction'] ?? '',
+          full: detailsMap['fullIntroduction'] ?? '',
+          menu: detailsMap['menu'] ?? '',
+          reviews: detailsMap['reviews'] ?? '',
+          reasons: reasonsMap,
+        );
+        
+        result.add(restaurantOutput);
+        
+      } catch (parseError) {
+        print('Error parsing restaurant data: $parseError');
+        // 跳過這個餐廳，繼續處理下一個
+        continue;
       }
     }
-    if (recommendations.length != result.length) {
-      print("Didn't match all indexes");
-    }
+    
     return {'result': result};
+    
   } catch (e) {
-    print(
-        "Error calling fetchRestaurants in services/fetchRestaurants.dart: $e");
-    throw Exception("Failed to fetch custom recipe $e");
+    print('Error in fetchRestaurant: $e');
+    throw Exception('Failed to fetch restaurant recommendations: ${e.toString()}');
   }
+}
+
+// 新增：解析 RestaurantInput 的函數
+RestaurantInput _parseRestaurantInput(Map<String, dynamic> data) {
+  // 解析 reviews
+  List<Review> reviews = [];
+  if (data['reviews'] != null && data['reviews'] is List) {
+    for (var reviewData in data['reviews']) {
+      if (reviewData is Map) {
+        reviews.add(Review(
+          rating: (reviewData['rating'] ?? 0.0).toDouble(),
+          time: reviewData['time']?.toString() ?? '',
+          text: reviewData['text']?.toString() ?? '',
+        ));
+      }
+    }
+  }
+  
+  return RestaurantInput(
+    distance: (data['distance'] ?? 0.0).toDouble(),
+    opening: data['opening'] ?? false,
+    rating: (data['rating'] ?? 0.0).toDouble(),
+    reviews: reviews,
+    photoImformation: data['photoInformation'] ?? data['photoImformation'] ?? '', // 處理可能的拼寫錯誤
+    name: data['name'] ?? '',
+    summary: data['summary'] ?? '',
+    types: data['types'] ?? '',
+    priceInformation: data['priceInformation'] ?? '',
+    extraInformation: data['extraInformation'] ?? '',
+  );
 }

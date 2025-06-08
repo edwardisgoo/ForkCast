@@ -1,0 +1,12 @@
+{
+    "latitude": 24.80971800853479,
+    "longitude": 120.974836422959480,
+    "radius": 300,
+    "rankby": "prominence",
+    "maxResults": 10,
+    "type": "restaurants",
+    "keyword": "",
+    "minprice": 0,
+    "maxprice": 4,
+    "opennow": false
+}

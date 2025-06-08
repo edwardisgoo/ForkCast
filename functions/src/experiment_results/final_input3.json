@@ -1,0 +1,24 @@
+{
+    "restaurantQuery": {
+        "latitude": 24.797654607789465,
+        "longitude": 120.99796646277547,
+        "minPrice": 0,
+        "maxPrice": 300,
+        "minDistance": 0,
+        "maxDistance": 300,
+        "requirement": "炸物",
+        "note": "可以外帶"
+    },
+    "userSetting": {
+        "sortedPreference": [
+            "價格",
+            "特殊需求",
+            "人潮",
+            "距離"
+        ]
+    },
+    "queryTime": {
+        "hour": 18,
+        "minute": 0
+    }
+}

@@ -12,7 +12,7 @@ const RestaurantInputSchema = z.object({
         time: z.string(),
         text: z.string()
     })),
-    photoImformation: z.string(),
+    photoInformation: z.string(),
     name: z.string(),
     summary: z.string(),
     types: z.string(),
@@ -21,7 +21,7 @@ const RestaurantInputSchema = z.object({
 });
 
 // 定義使用者查詢參數
-const QuerySchema = z.object({
+export const QuerySchema = z.object({
     minPrice: z.number(),
     maxPrice: z.number(),
     minDistance: z.number(),
@@ -31,12 +31,12 @@ const QuerySchema = z.object({
 });
 
 // 定義使用者設定
-const UserSettingSchema = z.object({
+export const UserSettingSchema = z.object({
     sortedPreference: z.array(z.string()), // 排序偏好，第0個為最高排序優先度
 });
 
 // 定義推薦理由的輸出結構
-const RecommendationSchema = z.object({
+export const RecommendationSchema = z.object({
     index: z.number(),
     reason: z.string(),  // 推薦理由
     matchScore: z.number(), // 匹配分數

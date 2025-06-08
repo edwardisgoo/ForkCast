@@ -89,7 +89,7 @@ export class GooglePlacesService {
 
     //call api
     const { placeId, fields } = params;
-    let url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&key=${this.apiKey}`;
+    let url = `https://maps.googleapis.com/maps/api/place/details/json?place_id=${placeId}&language=zh-TW&key=${this.apiKey}`;
 
     if (fields) url += `&fields=${encodeURIComponent(fields)}`;
 

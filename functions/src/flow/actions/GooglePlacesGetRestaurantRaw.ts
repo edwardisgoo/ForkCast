@@ -1,4 +1,4 @@
-import { ai } from "../../config";
+import { ai,API } from "../../config";
 import { z } from 'zod';
 import { GooglePlacesService } from '../services/GooglePlacesService';
 import * as functions from 'firebase-functions';
@@ -8,11 +8,11 @@ import {
   PriceLevel
 } from '../services/GooglePlacesTypes';
 
-const API = "AIzaSyBKQqbW8A7wIbwRN6ebdelrpn-eV9SFtno";
+// const API = "AIzaSyBKQqbW8A7wIbwRN6ebdelrpn-eV9SFtno";
 const service = new GooglePlacesService(API);
 
 // Input Schema
-const RestaurantQuerySchema = z.object({
+export const RestaurantQuerySchema = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
   minPrice: z.number().min(0).optional(),
@@ -24,7 +24,7 @@ const RestaurantQuerySchema = z.object({
 });
 
 // Output Schema
-const RestaurantRawSchema = z.object({
+export const RestaurantRawSchema = z.object({
   id: z.string(),
   name: z.string(),
   address: z.string(),
@@ -48,7 +48,7 @@ const RestaurantRawSchema = z.object({
     })
   ),
   photos: z.array(z.string()),
-  types: z.instanceof(Set<number>),
+  types: z.instanceof(Set), // Fixed: Remove the generic type parameter
   url: z.string().url().optional(),
   priceLevel: z.nativeEnum(PriceLevel).optional(),
   // Amenities
@@ -82,6 +82,7 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
     };
     
     let results = await service.nearbySearch(nearbyParams);
+    let numNearbysearch = results.length;
     
     // Filter by min distance if specified
     if (params.minDistance) {
@@ -93,6 +94,10 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
           place.longitude
         ) >= (params.minDistance || 0)
       );
+    }
+    let numFilteredNearbysearch = results.length;
+    if (numFilteredNearbysearch === 0) {
+      throw new Error(`placesGetRestaurantRawFlow內將${numNearbysearch}家餐廳filter到剩下0家餐廳`)
     }
     
     // Get details for each restaurant (limited to 10 for performance)
@@ -132,10 +137,10 @@ function convertNtdToPriceLevel(min?: number, max?: number): { min: PriceLevel, 
   // Simple conversion - adjust based on your needs
   const convert = (amount?: number): PriceLevel => {
     if (!amount) return PriceLevel.MODERATE;
-    if (amount <= 50) return PriceLevel.FREE;
-    if (amount <= 200) return PriceLevel.INEXPENSIVE;
-    if (amount <= 400) return PriceLevel.MODERATE;
-    if (amount <= 1000) return PriceLevel.EXPENSIVE;
+    if (amount <= 20) return PriceLevel.FREE;
+    if (amount <= 50) return PriceLevel.INEXPENSIVE;
+    if (amount <= 1000) return PriceLevel.MODERATE;
+    if (amount <= 3000) return PriceLevel.EXPENSIVE;
     return PriceLevel.VERY_EXPENSIVE;
   };
   
