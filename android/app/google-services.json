@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "343066555968",
-    "project_id": "forkcast-c8d06",
-    "storage_bucket": "forkcast-c8d06.firebasestorage.app"
+    "project_number": "268007894301",
+    "project_id": "forkcast-test-version",
+    "storage_bucket": "forkcast-test-version.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:343066555968:android:5b28a74d000cfdb3c0d1a5",
+        "mobilesdk_app_id": "1:268007894301:android:2f4ed77895bf4f3e2745f4",
         "android_client_info": {
           "package_name": "com.example.lab07_example"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyD31nQkgsPXhyb1gHuRtbVZ4bC3toG0HIY"
+          "current_key": "AIzaSyAEMar2c_UqhkLHIjQ6wh9M5ywNp3wgOL4"
         }
       ],
       "services": {

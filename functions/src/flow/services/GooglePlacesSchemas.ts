@@ -76,7 +76,7 @@ export const PlaceDetailsSchema = PlaceBasicSchema.extend({
     z.object({
       authorName: z.string().optional(),
       rating: z.number(),
-      time: z.number(),  // Change from string to number
+      time: z.number(),
       text: z.string(),
       language: z.string().optional()
     })
@@ -102,4 +102,45 @@ export const PlaceDetailsSchema = PlaceBasicSchema.extend({
   editorialSummary: z.string().optional(),
   url: z.string().url().optional(),
   wheelchairAccessibleEntrance: z.boolean()
+});
+
+
+//重要schema
+
+export const RestaurantRawSchema = z.object({
+    id: z.string(),
+    name: z.string(),
+    address: z.string(),
+    latitude: z.number(),
+    longitude: z.number(),
+    businessStatus: z.nativeEnum(BusinessStatus),
+    openingHours: z.array(
+        z.object({
+            day: z.number().min(0).max(6),
+            start: z.object({ hour: z.number(), minute: z.number() }),
+            end: z.object({ hour: z.number(), minute: z.number() })
+        })
+    ).optional(),
+    rating: z.number().optional(),
+    reviews: z.array(
+        z.object({
+            authorName: z.string().optional(),
+            rating: z.number(),
+            time: z.number(),
+            text: z.string(),
+            language: z.string().optional()
+        })
+    ),
+    photos: z.array(z.string()),
+    types: z.instanceof(Set),
+    url: z.string().url().optional(),
+    priceLevel: z.nativeEnum(PriceLevel).optional(),
+    // Amenities
+    dineIn: z.boolean(),
+    takeout: z.boolean(),
+    delivery: z.boolean(),
+    reservable: z.boolean(),
+    servesBeer: z.boolean(),
+    servesWine: z.boolean(),
+    wheelchairAccessibleEntrance: z.boolean()
 });
