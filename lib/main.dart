@@ -12,8 +12,6 @@ import 'package:flutter_app/firebase_options.dart';
 
 import 'package:flutter_app/providers/rating_provider.dart';
 import 'package:flutter_app/services/location_service.dart';
-import 'package:flutter_app/providers/user_settings_provider.dart'; // Import the new provider
-
 final theme = ThemeData(
   useMaterial3: true,
   brightness: Brightness.light,
@@ -57,8 +55,7 @@ void main() async {
         Provider<NavigationService>(create: (_) => NavigationService(routerConfig)),
         ChangeNotifierProvider(create: (_) => RatingProvider()),
         Provider<LocationService>(create: (_) => LocationService()),
-        ChangeNotifierProvider(create: (_) => UserSettingsProvider()), // Add UserSettingsProvider
-      ],
+        ],
       child: const App(),
     ),
   );

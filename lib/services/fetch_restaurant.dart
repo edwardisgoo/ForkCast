@@ -83,6 +83,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
         // 解析 restaurant (RestaurantInput) - 正確處理類型轉換
         final Map<String, dynamic> restaurantMap = Map<String, dynamic>.from(restaurantData['restaurant']);
         print('Restaurant map: $restaurantMap');
+        print('THIS IS ID: ${restaurantMap['id']}');
         
         // 解析 recommendation - 正確處理類型轉換
         final Map<String, dynamic> recommendationMap = Map<String, dynamic>.from(restaurantData['recommendation']);
@@ -166,6 +167,7 @@ RestaurantInput _parseRestaurantInput(Map<String, dynamic> data) {
   }
   
   return RestaurantInput(
+    id:data['id']??'invalid',
     distance: (data['distance'] ?? 0.0).toDouble(),
     opening: data['opening'] ?? false,
     rating: (data['rating'] ?? 0.0).toDouble(),
