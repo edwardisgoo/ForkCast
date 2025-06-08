@@ -188,7 +188,7 @@ class _Header extends StatelessWidget {
     final double dotFont = cardH * 0.16;
 
     final setting = context.read<UserSetting>();
-    final topScores = ScoreUtils.topTwo(restaurant);
+    final topScores = ScoreUtils.topTwo(restaurant, setting.sortedPreference);
     String p1Label = topScores[0].key;
     String p2Label = topScores[1].key;
     String p1Desc;

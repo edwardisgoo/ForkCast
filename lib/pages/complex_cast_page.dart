@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
+import '../models/openingHours.dart';
 import '../widgets/title_text.dart';
 import '../services/navigation.dart';
 import '../widgets/cast_helper.dart';
+import '../models/userSetting.dart';
 
 class ComplexCastPage extends StatefulWidget {
   const ComplexCastPage({super.key});
@@ -12,11 +14,16 @@ class ComplexCastPage extends StatefulWidget {
 }
 
 class _ComplexCastPageState extends State<ComplexCastPage> {
-  double _money = 200;
-  double _distance = 1.5;
-  DateTime _selected = DateTime.now();
-  final _foodCtrl = TextEditingController();
-  final _noteCtrl = TextEditingController();
+  late TextEditingController _foodCtrl;
+  late TextEditingController _noteCtrl;
+
+  @override
+  void initState() {
+    super.initState();
+    final setting = context.read<UserSetting>();
+    _foodCtrl = TextEditingController(text: setting.requirements);
+    _noteCtrl = TextEditingController(text: setting.notes);
+  }
 
   /* identical helpers used by ResultPage */
   double _titleY(BuildContext c) {
@@ -64,60 +71,86 @@ class _ComplexCastPageState extends State<ComplexCastPage> {
   }
 
   /* –– money / distance selectors –– */
-  Widget _moneySelector() => Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.remove_circle_outline, size: 40),
-            onPressed: () => setState(() {
-              if (_money > 100) _money -= 100;
-            }),
-          ),
-          SizedBox(
-            width: 80,
-            child: Center(
-              child: Text('${_money.toInt()}',
-                  style: const TextStyle(fontSize: 30)),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.add_circle_outline, size: 40),
-            onPressed: () => setState(() => _money += 100),
-          ),
-        ],
-      );
-
-  Widget _distanceSelector() => Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.remove_circle_outline, size: 40),
-            onPressed: () => setState(() {
-              if (_distance > 0.5) _distance -= 0.5;
-            }),
-          ),
-          SizedBox(
-            width: 80,
-            child: Center(
-              child: Text(_distance.toStringAsFixed(1),
-                  style: const TextStyle(fontSize: 30)),
-            ),
-          ),
-          IconButton(
-            icon: const Icon(Icons.add_circle_outline, size: 40),
-            onPressed: () => setState(() => _distance += 0.5),
-          ),
-        ],
-      );
-
-  Widget _timeSelector() => SizedBox(
-        height: 110,
-        child: CupertinoDatePicker(
-          mode: CupertinoDatePickerMode.time,
-          initialDateTime: _selected,
-          onDateTimeChanged: (d) => setState(() => _selected = d),
+  Widget _moneySelector() {
+    final setting = context.watch<UserSetting>();
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.remove_circle_outline, size: 40),
+          onPressed: () {
+            final newVal =
+                (setting.maxCost - 100).clamp(0, double.infinity) as double;
+            context.read<UserSetting>().updateMaxCost(newVal);
+          },
         ),
-      );
+        SizedBox(
+          width: 80,
+          child: Center(
+            child: Text('${setting.maxCost.toInt()}',
+                style: const TextStyle(fontSize: 30)),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add_circle_outline, size: 40),
+          onPressed: () {
+            context.read<UserSetting>().updateMaxCost(setting.maxCost + 100);
+          },
+        ),
+      ],
+    );
+  }
 
-  Widget _input(String hint, TextEditingController c) => Padding(
+  Widget _distanceSelector() {
+    final setting = context.watch<UserSetting>();
+    return Row(
+      children: [
+        IconButton(
+          icon: const Icon(Icons.remove_circle_outline, size: 40),
+          onPressed: () {
+            final newVal =
+                (setting.maxDist - 0.5).clamp(0, double.infinity) as double;
+            context.read<UserSetting>().updateMaxDist(newVal);
+          },
+        ),
+        SizedBox(
+          width: 80,
+          child: Center(
+            child: Text(setting.maxDist.toStringAsFixed(1),
+                style: const TextStyle(fontSize: 30)),
+          ),
+        ),
+        IconButton(
+          icon: const Icon(Icons.add_circle_outline, size: 40),
+          onPressed: () {
+            context.read<UserSetting>().updateMaxDist(setting.maxDist + 0.5);
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _timeSelector() {
+    final setting = context.watch<UserSetting>();
+    final now = DateTime.now();
+    final initial = DateTime(now.year, now.month, now.day,
+        setting.queryTime.hour, setting.queryTime.minute);
+    return SizedBox(
+      height: 110,
+      child: CupertinoDatePicker(
+        mode: CupertinoDatePickerMode.time,
+        initialDateTime: initial,
+        onDateTimeChanged: (d) {
+          context
+              .read<UserSetting>()
+              .updateQueryTime(HourMin.fromInts(d.hour, d.minute));
+        },
+      ),
+    );
+  }
+
+  Widget _input(String hint, TextEditingController c,
+          ValueChanged<String> onChanged) =>
+      Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30),
         child: TextField(
           controller: c,
@@ -129,6 +162,7 @@ class _ComplexCastPageState extends State<ComplexCastPage> {
             contentPadding: const EdgeInsets.symmetric(
                 horizontal: 10, vertical: 10), // Increased vertical padding
           ),
+          onChanged: onChanged,
         ),
       );
 
@@ -189,9 +223,17 @@ class _ComplexCastPageState extends State<ComplexCastPage> {
                       selector: _timeSelector(),
                     ),
                     const SizedBox(height: 24),
-                    _input('我想吃…', _foodCtrl),
+                    _input(
+                      '我想吃…',
+                      _foodCtrl,
+                      (v) => context.read<UserSetting>().updateRequirements(v),
+                    ),
                     const SizedBox(height: 16),
-                    _input('備註…', _noteCtrl),
+                    _input(
+                      '備註…',
+                      _noteCtrl,
+                      (v) => context.read<UserSetting>().updateNotes(v),
+                    ),
                     const SizedBox(height: 120),
                   ],
                 ),

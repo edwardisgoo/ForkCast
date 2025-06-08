@@ -7,6 +7,7 @@ import 'package:flutter_app/services/navigation.dart';
 import 'package:flutter_app/providers/rating_provider.dart'; // ← NEW
 import 'package:flutter_app/models/utils/score_utils.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
+import 'package:flutter_app/models/userSetting.dart';
 
 /// Structured and responsive restaurant card.
 class RestaurantCard extends StatelessWidget {
@@ -29,6 +30,7 @@ class RestaurantCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final nav = Provider.of<NavigationService>(context, listen: false);
     final restaurant = context.watch<FetchedResults>().fetchedResults[index];
+    final setting = context.read<UserSetting>();
 
     // Base sizes that stay constant
     final double baseCardH =
@@ -40,7 +42,7 @@ class RestaurantCard extends StatelessWidget {
     final double dotFont = baseCardH * 0.16;
 
     // Price ratings based on index
-    final topScores = ScoreUtils.topTwo(restaurant);
+    final topScores = ScoreUtils.topTwo(restaurant, setting.sortedPreference);
     final String p1Label = topScores[0].key;
     final String p1Score =
         ScoreUtils.scaleToFive(topScores[0].value).toString();
