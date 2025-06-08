@@ -1,6 +1,7 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_app/models/openingHours.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
+import 'package:flutter_app/models/unwanted.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/models/query.dart';
 import 'package:flutter_app/services/fetch_restaurant.dart';
@@ -44,12 +45,7 @@ class RestaurantViewModel extends ChangeNotifier {
 
     try {
       final result = await fetchRestaurant(
-        _queryTime,
-        _queryLat,
-        _queryLng,
-        _extraPreference,
-        _userSetting,
-      );
+          _queryTime, _queryLat, _queryLng, _extraPreference, _userSetting);
 
       final List<RestaurantOutput> fetchedRestaurants =
           List<RestaurantOutput>.from(result['result'] ?? []);
@@ -136,7 +132,8 @@ class RestaurantViewModel extends ChangeNotifier {
         buffer.writeln('⭐ 用戶評論:');
         for (int j = 0; j < input.reviews.length && j < 3; j++) {
           final review = input.reviews[j];
-          buffer.writeln('  ${review.rating}⭐ (${review.time}): ${review.text}');
+          buffer
+              .writeln('  ${review.rating}⭐ (${review.time}): ${review.text}');
         }
         if (input.reviews.length > 3) {
           buffer.writeln('  ... 還有 ${input.reviews.length - 3} 個評論');

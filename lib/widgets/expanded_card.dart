@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/models/utils/score_utils.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
+import 'package:flutter_app/models/userSetting.dart';
 
 class ExpandedCard extends StatefulWidget {
   final int index;
@@ -186,11 +187,32 @@ class _Header extends StatelessWidget {
     final double digitFont = cardH * 0.32;
     final double dotFont = cardH * 0.16;
 
+    final setting = context.read<UserSetting>();
     final topScores = ScoreUtils.topTwo(restaurant);
-    final String p1Label = topScores[0].key;
+    String p1Label = topScores[0].key;
+    String p2Label = topScores[1].key;
+    String p1Desc;
+    String p2Desc;
+
+    if (p1Label == '偏好') {
+      final tag =
+          ScoreUtils.bestPreferenceTag(restaurant, setting.sortedPreference);
+      if (tag.isNotEmpty) p1Label = tag;
+      p1Desc = restaurant.reasons[p1Label] ?? '';
+    } else {
+      p1Desc = restaurant.reasons[p1Label] ?? '';
+    }
+
+    if (p2Label == '偏好') {
+      final tag =
+          ScoreUtils.bestPreferenceTag(restaurant, setting.sortedPreference);
+      if (tag.isNotEmpty) p2Label = tag;
+      p2Desc = restaurant.reasons[p2Label] ?? '';
+    } else {
+      p2Desc = restaurant.reasons[p2Label] ?? '';
+    }
     final String p1Score =
         ScoreUtils.scaleToFive(topScores[0].value).toString();
-    final String p2Label = topScores[1].key;
     final String p2Score =
         ScoreUtils.scaleToFive(topScores[1].value).toString();
     final String name =
@@ -255,14 +277,13 @@ class _Header extends StatelessWidget {
           _PillBlock(
             label: p1Label,
             score: p1Score,
-            desc:
-                '主餐價格多在100至200元之間，根據你設定的預算在100元以下，建議可以選擇豬排咖哩或平日午間套餐，更划算又能吃得超有飽足感！',
+            desc: p1Desc.isNotEmpty ? p1Desc : '無相關推薦原因',
           ),
           const SizedBox(height: 16),
           _PillBlock(
             label: p2Label,
             score: p2Score,
-            desc: '日式咖哩香氣濃郁、滋味溫潤，搭配外酥內嫩的炸豬排，每一口都讓人安心又滿足，絕對是想吃咖哩時值得推薦的好去處！',
+            desc: p2Desc.isNotEmpty ? p2Desc : '無相關推薦原因',
           ),
           const SizedBox(height: 12),
         ],
