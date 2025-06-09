@@ -15,8 +15,8 @@ class ResultPage extends StatefulWidget {
 class _ResultPageState extends State<ResultPage> {
   final GlobalKey _titleKey = GlobalKey();
   bool _showCards = false;
-  double _titleHeightPx = 30;
-  static const double _extraGapPx = 30;
+  double _titleHeightPx = 30; // Initial estimate, will be measured
+  // static const double _extraGapPx = 30; // Replaced by dynamic calculation
   int? _expandedCardIndex;
   Set<int> _deletedIndices = {};
   bool _isTransitioning = false;
@@ -99,42 +99,68 @@ class _ResultPageState extends State<ResultPage> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+    final screenWidth = size.width;
+    final screenHeight = size.height;
     final insets = MediaQuery.of(context).padding;
     final safeTop = insets.top;
     final safeBottom = insets.bottom;
 
-    final double titleY = 2 * (safeTop + 16 + 15) / size.height - 1;
-    final double buttonY =
-        2 * (size.height - safeBottom - 16 - 30) / size.height - 1;
-    final double listTop = safeTop + 16 + _titleHeightPx + _extraGapPx;
-    const double btnPadPx = 16 + 60;
-    final double listBottom = safeBottom + btnPadPx;
-    const double baselineShift = (30 - 14) / 2;
+    final double titleMainFontSize = (screenWidth * 0.075).clamp(26.0, 34.0);
+    final double helperTextSize = (screenWidth * 0.035).clamp(12.0, 16.0);
+
+    // Dynamic gap after title
+    final double extraGapPx = (screenHeight * 0.03).clamp(20.0, 40.0);
+
+    // Dynamic calculations for title and button vertical alignment
+    final double topPaddingForTitle = (screenHeight * 0.02).clamp(12.0, 20.0);
+    final titleY = 2 * (safeTop + topPaddingForTitle + _titleHeightPx / 2) / screenHeight - 1;
+
+    final double buttonVerticalPadding = (screenHeight * 0.025).clamp(15.0, 25.0);
+    final double buttonMinHeight = (screenHeight * 0.07).clamp(50.0, 70.0); // For text + padding
+    final buttonY = 2 * (screenHeight - safeBottom - topPaddingForTitle - buttonMinHeight / 2) / screenHeight - 1;
+
+
+    final double listTop = safeTop + topPaddingForTitle + _titleHeightPx + extraGapPx;
+    
+    final double buttonPaddingHorizontal = (screenWidth * 0.15).clamp(50.0, 70.0);
+    final double buttonFontSize = (screenWidth * 0.07).clamp(24.0, 32.0);
+    final double estimatedButtonHeightWithPadding = buttonMinHeight + 2 * buttonVerticalPadding;
+    final double btnPadPx = topPaddingForTitle + estimatedButtonHeightWithPadding; // Space for button area from bottom
+
+    // Recalculate listBottom to push the button lower (thus giving more room 
+    // to the restaurant cards above). Previously: 
+    // final double listBottom = safeBottom + btnPadPx;
+    final double listBottom = safeBottom + btnPadPx + (screenHeight * 0.05); // Increased bottom margin
+    
+    // Adjusted baselineShift for helper texts relative to title
+    // This is an approximation. Fine-tuning might be needed based on specific font metrics.
+    final double baselineShift = (_titleHeightPx * 0.1).clamp(5.0, 12.0);
+
 
     return Scaffold(
       body: Stack(
         children: [
           Align(
             alignment: Alignment(0, titleY),
-            child: TitleText(key: _titleKey, fontSize: 30),
+            child: TitleText(key: _titleKey, fontSize: titleMainFontSize),
           ),
           Align(
-            alignment: Alignment(-0.8, titleY),
+            alignment: const Alignment(-0.8, 0), // Centered with title Y by default
             child: Transform.translate(
-              offset: Offset(0, baselineShift),
-              child: const Text(
+              offset: Offset(0, titleY * (screenHeight / 2) + _titleHeightPx / 2 + baselineShift), // Adjust to be below title
+              child: Text(
                 '左滑刪除餐廳',
-                style: TextStyle(color: Colors.red, fontSize: 14),
+                style: TextStyle(color: Colors.red, fontSize: helperTextSize),
               ),
             ),
           ),
           Align(
-            alignment: Alignment(0.8, titleY),
+            alignment: const Alignment(0.8, 0), // Centered with title Y by default
             child: Transform.translate(
-              offset: Offset(0, baselineShift),
-              child: const Text(
+              offset: Offset(0, titleY * (screenHeight/2) + _titleHeightPx / 2 + baselineShift), // Adjust to be below title
+              child: Text(
                 '右滑前往餐廳',
-                style: TextStyle(color: Colors.green, fontSize: 14),
+                style: TextStyle(color: Colors.green, fontSize: helperTextSize),
               ),
             ),
           ),
@@ -147,16 +173,20 @@ class _ResultPageState extends State<ResultPage> {
               opacity: _showCards ? 1 : 0,
               duration: const Duration(milliseconds: 600),
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
+                padding: EdgeInsets.symmetric(horizontal: (screenWidth * 0.04).clamp(12.0,20.0)), // Dynamic horizontal padding
                 child: LayoutBuilder(
                   builder: (context, constraints) {
                     final restaurants =
                         context.watch<FetchedResults>().fetchedResults;
-                    final totalHeight = constraints.maxHeight - 80;
-                    final cardHeight = restaurants.isEmpty
-                        ? totalHeight
-                        : (totalHeight - 12 * (restaurants.length - 1)) /
-                            restaurants.length;
+                    
+                    final double cardSpacing = (screenHeight * 0.015).clamp(8.0, 16.0); // Dynamic card spacing
+                    // The '80' was likely for button area, now covered by listBottom calculation
+                    final totalHeight = constraints.maxHeight; // Use full available height
+
+                    final cardHeight = restaurants.isEmpty || restaurants.length > 5 // Cap max cards visible without scrolling for very small heights
+                        ? (totalHeight / 3.5 - cardSpacing).clamp( (screenHeight * 0.25).clamp(180.0, 320.0) , 280.0) // Fallback or max visible cards logic
+                        : (totalHeight - cardSpacing * (restaurants.length -1).clamp(0,double.infinity) ) / restaurants.length;
+
 
                     // Get indices of cards that haven't been deleted
                     final remainingIndices =
@@ -168,9 +198,9 @@ class _ResultPageState extends State<ResultPage> {
                       children: remainingIndices.asMap().entries.map((entry) {
                         final visualIndex = entry.key; // Position in the stack
                         final actualIndex = entry.value; // Original card index
-                        final top = visualIndex * (cardHeight + 12);
-                        final isExpanded = _expandedCardIndex == actualIndex;
-
+                        final bool isExpanded = _expandedCardIndex == actualIndex; // Defined locally
+                        final double top = visualIndex * (cardHeight + cardSpacing);
+                        
                         if (isExpanded) {
                           return AnimatedPositioned(
                             duration: const Duration(milliseconds: 300),
@@ -179,22 +209,22 @@ class _ResultPageState extends State<ResultPage> {
                             left: 0,
                             right: 0,
                             height: totalHeight,
-                            onEnd: () =>
-                                setState(() => _isTransitioning = false),
+                            onEnd: () => setState(() => _isTransitioning = false),
                             child: AnimatedOpacity(
                               duration: const Duration(milliseconds: 300),
                               opacity: 1.0,
-                              child: ExpandedCard(
-                                index: actualIndex,
-                                onCollapse: () =>
-                                    setState(() => _expandedCardIndex = null),
-                                opacity: 1.0,
-                                onDelete: () => _handleDeletion(actualIndex),
+                              child: Center( // <-- Wrap to center horizontally
+                                child: ExpandedCard(
+                                  index: actualIndex,
+                                  onCollapse: () => setState(() => _expandedCardIndex = null),
+                                  opacity: 1.0,
+                                  onDelete: () => _handleDeletion(actualIndex),
+                                ),
                               ),
                             ),
                           );
                         }
-
+                        
                         return AnimatedPositioned(
                           duration: const Duration(milliseconds: 300),
                           curve: Curves.easeInOut,
@@ -211,12 +241,14 @@ class _ResultPageState extends State<ResultPage> {
                                       !_fadingIndices.contains(actualIndex)
                                   ? 1.0
                                   : 0.0,
-                              child: RestaurantCard(
-                                index: actualIndex,
-                                isExpanded: false,
-                                onTap: () => _handleExpand(actualIndex),
-                                opacity: 1.0,
-                                onDelete: () => _handleDeletion(actualIndex),
+                              child: Center( // <-- Wrap to center horizontally
+                                child: RestaurantCard(
+                                  index: actualIndex,
+                                  isExpanded: false,
+                                  onTap: () => _handleExpand(actualIndex),
+                                  opacity: 1.0,
+                                  onDelete: () => _handleDeletion(actualIndex),
+                                ),
                               ),
                             ),
                           ),
@@ -228,8 +260,9 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
           ),
+          // Revert button alignment to use buttonY without extra offset.
           Align(
-            alignment: Alignment(0, buttonY),
+            alignment: Alignment(0, buttonY), // Removed added offset previously applied
             child: ElevatedButton(
               onPressed: () async {
                 await performCast(context);
@@ -244,9 +277,12 @@ class _ResultPageState extends State<ResultPage> {
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.black,
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-                textStyle: const TextStyle(fontSize: 28),
+                padding: EdgeInsets.symmetric(
+                    horizontal: buttonPaddingHorizontal, 
+                    vertical: buttonVerticalPadding 
+                ),
+                textStyle: TextStyle(fontSize: buttonFontSize),
+                minimumSize: Size(0, buttonMinHeight),
               ),
               child: const Text('Cast!', style: TextStyle(color: Colors.white)),
             ),

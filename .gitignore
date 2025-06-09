@@ -99,6 +99,7 @@ CMakeCache.txt
 
 # Flutter/Dart specific
 /.dart_tool/
+/.dart_tool/*
 /functions/.genkit/
 .flutter-plugins
 .flutter-plugins-dependencies
