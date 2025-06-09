@@ -14,6 +14,7 @@ import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 import 'providers/rating_provider.dart'; // ★ new
 import 'providers/permanent_blacklist.dart';
+import 'providers/selected_restaurant_provider.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/services/location_service.dart'; // Import your location service
 
@@ -54,6 +55,7 @@ void main() async {
   // running the app.
   final navigationService = NavigationService();
   final ratingProvider = RatingProvider();
+  final selectedRestaurantProvider = SelectedRestaurantProvider();
   final userSetting = UserSetting(sortedPreference: const ['價格', '距離', '評價']);
   final locationService = LocationService();
   final permanentBlacklist = PermanentBlacklist();
@@ -68,6 +70,7 @@ void main() async {
       providers: [
         Provider<NavigationService>.value(value: navigationService),
         ChangeNotifierProvider.value(value: ratingProvider), // ★
+        ChangeNotifierProvider.value(value: selectedRestaurantProvider),
         ChangeNotifierProvider.value(value: userSetting),
         ChangeNotifierProvider.value(value: locationService),
         ChangeNotifierProvider.value(value: unwantedList),

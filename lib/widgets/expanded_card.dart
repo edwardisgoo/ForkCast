@@ -7,6 +7,7 @@ import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/providers/rating_provider.dart';
+import 'package:flutter_app/providers/selected_restaurant_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter_app/widgets/time_period_text.dart';
 
@@ -55,6 +56,7 @@ class _ExpandedCardState extends State<ExpandedCard> {
       context
           .read<RatingProvider>()
           .setPending(id: restaurant.input.id, name: restaurant.input.name);
+      context.read<SelectedRestaurantProvider>().setRestaurant(restaurant);
       nav.goMaps(); // Use the local variable
       widget.onCollapse();
     } else {

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:flutter_app/providers/rating_provider.dart';
+import 'package:flutter_app/providers/selected_restaurant_provider.dart';
 import 'package:flutter_app/models/utils/score_utils.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/userSetting.dart';
@@ -84,7 +85,9 @@ class RestaurantCard extends StatelessWidget {
           if (direction == DismissDirection.startToEnd) {
             context.read<RatingProvider>().setPending(
                 id: restaurant.input.id, name: restaurant.input.name);
-
+            context
+                .read<SelectedRestaurantProvider>()
+                .setRestaurant(restaurant);
             nav.goMaps();
           } else if (direction == DismissDirection.endToStart) {
             onDelete();
