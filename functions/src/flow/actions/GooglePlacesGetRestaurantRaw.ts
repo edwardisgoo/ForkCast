@@ -1,4 +1,4 @@
-import { ai,API } from "../../config";
+import { ai, API } from "../../config";
 import { z } from 'zod';
 import { GooglePlacesService } from '../services/GooglePlacesService';
 import * as functions from 'firebase-functions';
@@ -33,7 +33,7 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
   async (params) => {
     // Convert NTD to Google's price level (0-4)
     const priceLevels = convertNtdToPriceLevel(params.minPrice, params.maxPrice);
-    
+
     // Perform nearby search
     const nearbyParams = {
       latitude: params.latitude,
@@ -42,32 +42,33 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
       minprice: priceLevels.min,
       maxprice: priceLevels.max,
       type: 'restaurant',
-      maxResults: 20
+      maxResults: 60,
+      opennow:true
     };
 
-    
+
     let results = await service.nearbySearch(nearbyParams);
     let numNearbysearch = results.length;
-    
+
     // Filter by min distance if specified
     if (params.minDistance) {
-      results = results.filter(place => 
+      results = results.filter(place =>
         calculateDistance(
-          params.latitude, 
+          params.latitude,
           params.longitude,
           place.latitude,
           place.longitude
         ) >= (params.minDistance || 0)
       );
     }
-    
+
     // Filter out unwanted restaurants
     if (params.unwanted_restaurants && params.unwanted_restaurants.length > 0) {
-      results = results.filter(place => 
+      results = results.filter(place =>
         !params.unwanted_restaurants?.includes(place.id)
       );
     }
-    
+
     let numFilteredNearbysearch = results.length;
     if (numFilteredNearbysearch === 0) {
       throw new Error(
@@ -77,14 +78,17 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
         `- 排除餐廳數量: ${params.unwanted_restaurants?.length || 0}`
       );
     }
-    
-    // Get details for remaining restaurants (limited to 10 for performance)
+
+    const shuffled = results.sort(() => 0.5 - Math.random());
+    const selected = shuffled.slice(0, 10);
+    // Get details for selected random restaurants
     const detailedResults = await Promise.all(
-      results.slice(0, 10).map(place => 
+      selected.map(place =>
         service.detailsSearch({ placeId: place.id })
       )
     );
-    
+
+
     return detailedResults.map(details => ({
       id: details.id,
       name: details.name,
@@ -98,7 +102,7 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
       photos: details.photos,
       types: details.types,
       url: details.url,
-      phoneNumber:details.internationalPhoneNumber,
+      phoneNumber: details.internationalPhoneNumber,
       priceLevel: details.priceLevel,
       dineIn: details.dineIn,
       takeout: details.takeout,
@@ -121,7 +125,7 @@ function convertNtdToPriceLevel(min?: number, max?: number): { min: PriceLevel, 
     if (amount <= 3000) return PriceLevel.EXPENSIVE;
     return PriceLevel.VERY_EXPENSIVE;
   };
-  
+
   return {
     min: convert(min),
     max: convert(max)
@@ -133,11 +137,11 @@ function calculateDistance(lat1: number, lon1: number, lat2: number, lon2: numbe
   const R = 6371; // Earth's radius in km
   const dLat = (lat2 - lat1) * Math.PI / 180;
   const dLon = (lon2 - lon1) * Math.PI / 180;
-  const a = 
-    Math.sin(dLat/2) * Math.sin(dLat/2) +
-    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-    Math.sin(dLon/2) * Math.sin(dLon/2);
-  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+  const a =
+    Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+    Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) *
+    Math.sin(dLon / 2) * Math.sin(dLon / 2);
+  const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
   return R * c;
 }
 
