@@ -10,6 +10,8 @@ import 'package:flutter_app/services/navigation.dart';
 import '../widgets/title_text.dart';
 import '../providers/rating_provider.dart'; // ★ new
 import '../widgets/cast_helper.dart';
+import '../providers/permanent_blacklist.dart';
+import '../models/unwanted.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -86,9 +88,18 @@ class _MainPageState extends State<MainPage> {
               child: const Text('跳過'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 // (store stars if needed)
-                prov.clearPending();
+                if (stars <= 2) {
+                  final blacklist = context.read<PermanentBlacklist>();
+                  final unwanted = context.read<UnwantedList>();
+                  final id = prov.restaurantId;
+                  if (id != null) {
+                    await blacklist.add(id);
+                    unwanted.replaceAll(blacklist.ids);
+                  }
+                }
+                await prov.clearPending();
                 Navigator.pop(dCtx);
               },
               child: const Text('送出'),
