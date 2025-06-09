@@ -6,17 +6,17 @@
 // for feedback.
 
 import 'package:flutter/material.dart';
-import 'package:flutter_app/models/restaurant_raw.dart';
+import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:transparent_image/transparent_image.dart';
 
 import '../providers/rating_provider.dart'; // ★ new import
+import '../providers/selected_restaurant_provider.dart';
 
 class MapsPage extends StatelessWidget {
-  const MapsPage({super.key, this.restaurant});
-
-  final RestaurantRaw? restaurant;
+  const MapsPage({super.key});
 
   /* ─────────────── helpers ─────────────── */
 
@@ -25,10 +25,10 @@ class MapsPage extends StatelessWidget {
     if (await canLaunchUrl(uri)) await launchUrl(uri);
   }
 
-  Future<void> _openInGoogleMaps() async {
+  Future<void> _openInGoogleMaps(RestaurantOutput? restaurant) async {
     // Use name as query.  If lat/lng available you could switch to
     // https://www.google.com/maps/search/?api=1&query=<lat>,<lng>
-    final name = restaurant?.name ?? '品田牧場日式豬排咖哩';
+    final name = restaurant?.input.name ?? '品田牧場日式豬排咖哩';
     final url = Uri.parse(
         'https://www.google.com/maps/search/?api=1&query=${Uri.encodeComponent(name)}');
     if (await canLaunchUrl(url)) {
@@ -42,6 +42,7 @@ class MapsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final nav = context.read<NavigationService>();
     final rating = context.read<RatingProvider>(); // ★ rating provider
+    final selected = context.watch<SelectedRestaurantProvider>().restaurant;
 
     return Scaffold(
       body: SafeArea(
@@ -57,7 +58,7 @@ class MapsPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 40),
 
-                /* placeholder image */
+                /* restaurant image */
                 Container(
                   width: 240,
                   height: 240,
@@ -65,14 +66,24 @@ class MapsPage extends StatelessWidget {
                     color: Colors.grey[300],
                     borderRadius: BorderRadius.circular(20),
                   ),
-                  child: const Icon(Icons.restaurant,
-                      size: 100, color: Colors.grey),
+                  child: (selected != null &&
+                          selected.input.photoUrl.isNotEmpty)
+                      ? ClipRRect(
+                          borderRadius: BorderRadius.circular(20),
+                          child: FadeInImage(
+                            placeholder: MemoryImage(kTransparentImage),
+                            image: NetworkImage(selected.input.photoUrl.first),
+                            fit: BoxFit.cover,
+                          ),
+                        )
+                      : const Icon(Icons.restaurant,
+                          size: 100, color: Colors.grey),
                 ),
                 const SizedBox(height: 40),
 
                 /* restaurant name */
                 Text(
-                  restaurant?.name ?? '品田牧場日式豬排咖哩',
+                  selected?.input.name ?? '品田牧場日式豬排咖哩',
                   textAlign: TextAlign.center,
                   style: const TextStyle(
                       fontSize: 36, fontWeight: FontWeight.bold),
@@ -81,10 +92,11 @@ class MapsPage extends StatelessWidget {
 
                 /* tel link */
                 GestureDetector(
-                  onTap: () => _makePhoneCall('03-5420130'),
-                  child: const Text(
-                    '03-5420130',
-                    style: TextStyle(
+                  onTap: () => _makePhoneCall(
+                      selected?.input.phoneNumber ?? '03-5420130'),
+                  child: Text(
+                    selected?.input.phoneNumber ?? '03-5420130',
+                    style: const TextStyle(
                       fontSize: 28,
                       color: Colors.blue,
                       decoration: TextDecoration.underline,
@@ -98,7 +110,7 @@ class MapsPage extends StatelessWidget {
                   icon: const Icon(Icons.map, size: 80),
                   iconSize: 80,
                   tooltip: 'Open in Google Maps',
-                  onPressed: _openInGoogleMaps,
+                  onPressed: () => _openInGoogleMaps(selected),
                 ),
                 const Spacer(),
 
