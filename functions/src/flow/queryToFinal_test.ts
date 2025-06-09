@@ -28,7 +28,10 @@ const generateMockRestaurantData = () => {
   // 模擬餐廳基本資料 (符合範例格式)
   const mockRestaurants = [
     {
-      id:"aaaaaa",
+      id: "aaaaaa",
+      address: "哈哈市",
+      phoneNumber: "0800092000",
+      URL: "https://maps.app.goo.gl/ZPrnD2dUYCpNRqPd7",
       distance: 85.5,
       opening: true,
       rating: 4.3,
@@ -55,11 +58,14 @@ const generateMockRestaurantData = () => {
       types: "餐廳",
       priceInformation: "中等",
       extraInformation: "外送 / 內用 / 可預約 / 提供紅酒 / 外帶",
-      photoURL:["https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/250px-Meme_Man_on_transparent_background.webp.png"],
-      openingHours:[],
+      photoURL: ["https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/250px-Meme_Man_on_transparent_background.webp.png"],
+      openingHours: [],
     },
     {
-      id:"bbbbbb",
+      id: "bbbbbb",
+      address: "哈哈市",
+      phoneNumber: "0800092000",
+      URL: "https://maps.app.goo.gl/ZPrnD2dUYCpNRqPd7",
       distance: 120.8,
       opening: true,
       rating: 4.1,
@@ -86,11 +92,14 @@ const generateMockRestaurantData = () => {
       types: "餐廳",
       priceInformation: "中等",
       extraInformation: "外送 / 內用 / 外帶 / 提供清酒",
-      photoURL:["https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/250px-Meme_Man_on_transparent_background.webp.png"],
-      openingHours:[],
+      photoURL: ["https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/250px-Meme_Man_on_transparent_background.webp.png"],
+      openingHours: [],
     },
     {
-      id:"cccccc",
+      id: "cccccc",
+      address: "哈哈市",
+      phoneNumber: "0800092000",
+      URL: "https://maps.app.goo.gl/ZPrnD2dUYCpNRqPd7",
       distance: 180.3,
       opening: true,
       rating: 4.5,
@@ -117,8 +126,8 @@ const generateMockRestaurantData = () => {
       types: "餐廳",
       priceInformation: "高等",
       extraInformation: "內用 / 可預約 / 提供紅酒 / 代客泊車 / 包廂服務",
-      photoURL:["https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/250px-Meme_Man_on_transparent_background.webp.png"],
-      openingHours:[],
+      photoURL: ["https://upload.wikimedia.org/wikipedia/en/thumb/9/96/Meme_Man_on_transparent_background.webp/250px-Meme_Man_on_transparent_background.webp.png"],
+      openingHours: [],
     }
   ];
 
