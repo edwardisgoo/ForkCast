@@ -50,19 +50,29 @@ void main() async {
     }
   }
 
+  // Instantiate providers so we can perform initialization logic before
+  // running the app.
+  final navigationService = NavigationService();
+  final ratingProvider = RatingProvider();
+  final userSetting = UserSetting(sortedPreference: const ['價格', '距離', '評價']);
+  final locationService = LocationService();
+  final permanentBlacklist = PermanentBlacklist();
+  await permanentBlacklist.initialized;
+  final unwantedList = UnwantedList(unwantedIds: []);
+  // Copy the persistent blacklist into the temporary unwanted list.
+  unwantedList.replaceAll(permanentBlacklist.ids);
+  final fetchedResults = FetchedResults();
+
   runApp(
     MultiProvider(
       providers: [
-        Provider<NavigationService>(create: (_) => NavigationService()),
-        ChangeNotifierProvider(create: (_) => RatingProvider()), // ★
-        ChangeNotifierProvider(
-          create: (_) =>
-              UserSetting(sortedPreference: const ['價格', '距離', '評價']),
-        ),
-        ChangeNotifierProvider(create: (_) => LocationService()),
-        ChangeNotifierProvider(create: (_) => UnwantedList(unwantedIds: [])),
-        ChangeNotifierProvider(create: (_) => PermanentBlacklist()),
-        ChangeNotifierProvider(create: (_) => FetchedResults()),
+        Provider<NavigationService>.value(value: navigationService),
+        ChangeNotifierProvider.value(value: ratingProvider), // ★
+        ChangeNotifierProvider.value(value: userSetting),
+        ChangeNotifierProvider.value(value: locationService),
+        ChangeNotifierProvider.value(value: unwantedList),
+        ChangeNotifierProvider.value(value: permanentBlacklist),
+        ChangeNotifierProvider.value(value: fetchedResults),
       ],
       child: const App(),
     ),

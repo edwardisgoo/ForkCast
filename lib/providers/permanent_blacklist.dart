@@ -6,9 +6,14 @@ const _kKey = 'permanent_blacklist_ids';
 /// A [ChangeNotifier] that keeps a persistent list of permanently
 /// blacklisted restaurant IDs.
 class PermanentBlacklist extends ChangeNotifier {
+  late final Future<void> _initialized;
   PermanentBlacklist() {
     _load();
+    _initialized = _load();
   }
+
+  /// Future that completes when the blacklist has finished loading.
+  Future<void> get initialized => _initialized;
 
   List<String> _ids = [];
 
