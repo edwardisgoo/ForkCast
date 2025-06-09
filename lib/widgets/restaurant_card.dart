@@ -30,18 +30,28 @@ class RestaurantCard extends StatelessWidget {
     final nav = Provider.of<NavigationService>(context, listen: false);
     final restaurant = context.watch<FetchedResults>().fetchedResults[index];
     final setting = context.read<UserSetting>();
-    final double screenWidth = MediaQuery.of(context).size.width;
-    final double cardPadding = 12.0;
+    final screenSize = MediaQuery.of(context).size;
+    final screenWidth = screenSize.width;
+    final screenHeight = screenSize.height;
+
+    final double cardPadding = 12.0; // This is internal padding for the card content
     final double availableWidth = screenWidth * 0.9 - (cardPadding * 2);
     final double baseCardH =
         (MediaQuery.of(context).size.height * 0.25).clamp(180.0, 320.0);
+    final double textLine = baseCardH * 0.07;  // one line of text height
 
-    final double imgH = baseCardH * 0.70;
+    // Modified image dimensions: image height reduced by two text lines instead of one
+    final double imgH = (baseCardH * 0.70) - (2 * textLine);
     final double imgW = imgH * 0.60;
-    final double ratingSize = baseCardH * 0.20;
+    final double ratingSize = baseCardH * 0.15; // reduced from 0.20 for a smaller ratings row
     final double titleFont = baseCardH * 0.07;
     final double digitFont = baseCardH * 0.28;
     final double dotFont = baseCardH * 0.08;
+
+    // Dynamic font sizes for smaller labels
+    final double smallLabelFont = (baseCardH * 0.06).clamp(10.0, 14.0);
+    final double descriptionFont = (baseCardH * 0.065).clamp(11.0, 15.0);
+
     final topScores = ScoreUtils.topTwo(restaurant, setting.sortedPreference);
     final String p1Label = topScores[0].key;
     final String p1Score =
@@ -81,13 +91,13 @@ class RestaurantCard extends StatelessWidget {
         background: Container(
           color: Colors.green,
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.only(left: 20),
+          padding: EdgeInsets.only(left: screenWidth * 0.05),
           child: const Icon(Icons.map, color: Colors.white),
         ),
         secondaryBackground: Container(
           color: Colors.red,
           alignment: Alignment.centerRight,
-          padding: const EdgeInsets.only(right: 20),
+          padding: EdgeInsets.only(right: screenWidth * 0.05),
           child: const Icon(Icons.delete, color: Colors.white),
         ),
         child: GestureDetector(
@@ -118,9 +128,10 @@ class RestaurantCard extends StatelessWidget {
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: const Center(child: Icon(Icons.image, size: 48)),
+                        child: Center(child: Icon(Icons.image, size: imgH * 0.5)), // Relative icon size
                       ),
-                      const SizedBox(width: 12),
+                      // Use dynamic spacing for right column separation
+                      SizedBox(width: availableWidth * 0.03),
 
                       /* right column */
 
@@ -142,93 +153,68 @@ class RestaurantCard extends StatelessWidget {
                                 ),
                               ),
 
-                              const Spacer(),
+                              SizedBox(height: baseCardH * 0.02), // dynamic smaller spacing
 
                               /* ratings row */
-
-                              // 移除 IntrinsicHeight，因為我們將使用更精確的 Baseline 對齊
-
                               Row(
-                                // 將 crossAxisAlignment 改為 CrossAxisAlignment.baseline
-
-                                // 並設定 textBaseline
-
                                 crossAxisAlignment: CrossAxisAlignment.baseline,
-
-                                textBaseline: TextBaseline.alphabetic, // 文本的基準線
-
+                                textBaseline: TextBaseline.alphabetic,
                                 children: [
                                   /* P1 */
-
                                   Column(
-                                    // 調整 Column 的 alignment 為 Center，讓圓圈居中
-
                                     mainAxisAlignment: MainAxisAlignment.center,
-
                                     children: [
                                       _ratingCircle(p1Score, ratingSize),
-                                      const SizedBox(height: 4),
-                                      Text(p1Label,
-                                          style: const TextStyle(fontSize: 14)),
+                                      SizedBox(height: baseCardH * 0.015), // reduced spacing
+                                      Text(
+                                        p1Label,
+                                        style: TextStyle(fontSize: (baseCardH * 0.055).clamp(10.0, 14.0)),
+                                      ),
                                     ],
                                   ),
-
-                                  const SizedBox(width: 8),
-
+                                  SizedBox(width: availableWidth * 0.02), // dynamic spacing
                                   /* P2 */
-
                                   Column(
-                                    // 調整 Column 的 alignment 為 Center，讓圓圈居中
-
                                     mainAxisAlignment: MainAxisAlignment.center,
-
                                     children: [
                                       _ratingCircle(p2Score, ratingSize),
-                                      const SizedBox(height: 4),
-                                      Text(p2Label,
-                                          style: const TextStyle(fontSize: 14)),
+                                      SizedBox(height: baseCardH * 0.015), // reduced spacing
+                                      Text(
+                                        p2Label,
+                                        style: TextStyle(fontSize: (baseCardH * 0.055).clamp(10.0, 14.0)),
+                                      ),
                                     ],
                                   ),
-
-                                  const SizedBox(width: 16),
-
+                                  SizedBox(width: availableWidth * 0.03), // dynamic spacing
                                   /* overall */
-
-                                  // 將 FittedBox 內容直接放入 Row 中，並利用 Baseline 對齊
-
-                                  // 移除原有的 Container 和其 alignment: Alignment.bottomLeft
-
                                   FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment
-                                          .center, // 讓整體評價文字也垂直居中
-
+                                      mainAxisAlignment: MainAxisAlignment.center,
                                       children: [
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
-
-                                          crossAxisAlignment: CrossAxisAlignment
-                                              .baseline, // 這裡也要設定 Baseline
-
+                                          crossAxisAlignment: CrossAxisAlignment.baseline,
                                           textBaseline: TextBaseline.alphabetic,
-
                                           children: [
                                             Text(
                                               ratingInt,
                                               style: TextStyle(
-                                                fontSize: digitFont,
+                                                fontSize: (baseCardH * 0.25).clamp(20.0, 30.0),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            Text(ratingDec,
-                                                style: TextStyle(
-                                                    fontSize: dotFont)),
+                                            Text(
+                                              ratingDec,
+                                              style: TextStyle(fontSize: (baseCardH * 0.10).clamp(10.0, 15.0)),
+                                            ),
                                           ],
                                         ),
-                                        const SizedBox(height: 5),
-                                        const Text('綜合評價',
-                                            style: TextStyle(fontSize: 14)),
+                                        SizedBox(height: baseCardH * 0.02),
+                                        Text(
+                                          '綜合評價',
+                                          style: TextStyle(fontSize: (baseCardH * 0.055).clamp(10.0, 14.0)),
+                                        ),
                                       ],
                                     ),
                                   ),
@@ -240,18 +226,18 @@ class RestaurantCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  const Spacer(),
+                  SizedBox(height: baseCardH * 0.02), // Reduced vertical spacing
 
                   /* bottom text */
 
                   Flexible(
                     child: Text(
                       description.isNotEmpty ? description : '無餐廳簡介',
-                      style: const TextStyle(fontSize: 14),
+                      style: TextStyle(fontSize: descriptionFont),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                  ),
+                  )
                 ],
               ),
             ),
@@ -269,7 +255,7 @@ class RestaurantCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.greenAccent,
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey[400]!),
+          border: Border.all(color: Colors.grey[400]!, width: (size * 0.05).clamp(1.0, 2.5)), // Relative border width
         ),
         alignment: Alignment.center,
         child: FittedBox(
