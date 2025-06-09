@@ -43,8 +43,8 @@ Future<Map<String, dynamic>> fetchRestaurant(
         'longitude': queryLng,
         'minPrice': extraPreference.minPrice,
         'maxPrice': extraPreference.maxPrice,
-        'minDistance': extraPreference.minDistance,
-        'maxDistance': extraPreference.maxDistance,
+        'minDistance': extraPreference.minDistance * 1000,
+        'maxDistance': extraPreference.maxDistance * 1000,//add
         'requirement': extraPreference.requirement,
         'note': extraPreference.note,
       },
@@ -57,9 +57,16 @@ Future<Map<String, dynamic>> fetchRestaurant(
       },
     };
 
+    print(functionInput);
+
     // 呼叫 Cloud Function
     final HttpsCallableResult functionResult =
         await callableFindRestaurants.call(functionInput);
+
+    if (functionResult.data == null || functionResult.data.isEmpty) {
+      print('Error: Cloud Function returned null or empty data.');
+      throw Exception('Cloud Function returned no data.');
+    }
 
     // 取得回傳結果
     final Map<String, dynamic> responseData =
