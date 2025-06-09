@@ -22,6 +22,25 @@ class MainPage extends StatefulWidget {
 class _MainPageState extends State<MainPage> with RouteAware {
   bool _startAnim = false;
   final GlobalKey _titleKey = GlobalKey();
+  bool _routeSubscribed = false;
+  late final VoidCallback _ratingListener;
+
+  @override
+  void initState() {
+    super.initState();
+    final rating = context.read<RatingProvider>();
+    _ratingListener = () {
+      if (rating.pending && mounted) {
+        _maybeAskForRating(context);
+      }
+    };
+    rating.addListener(_ratingListener);
+    if (rating.pending) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) _maybeAskForRating(context);
+      });
+    }
+  }
 
   /* ─ helpers (unchanged) ─ */
   double _titleEndY(BuildContext ctx) {
@@ -62,6 +81,7 @@ class _MainPageState extends State<MainPage> with RouteAware {
     showDialog(
       context: ctx,
       barrierDismissible: false,
+      useRootNavigator: true,
       builder: (dCtx) {
         int stars = 0;
         return AlertDialog(
@@ -117,7 +137,13 @@ class _MainPageState extends State<MainPage> with RouteAware {
     if (context.read<RatingProvider>().pending) {
       _dialogShown = false;
     }
-    routeObserver.subscribe(this, ModalRoute.of(context)!);
+    if (!_routeSubscribed) {
+      final route = ModalRoute.of(context);
+      if (route != null) {
+        routeObserver.subscribe(this, route);
+        _routeSubscribed = true;
+      }
+    }
   }
 
   /* ───────── CAST pressed ───────── */
@@ -158,18 +184,16 @@ class _MainPageState extends State<MainPage> with RouteAware {
 
   @override
   void dispose() {
-    routeObserver.unsubscribe(this);
+    context.read<RatingProvider>().removeListener(_ratingListener);
+    if (_routeSubscribed) {
+      routeObserver.unsubscribe(this);
+    }
     super.dispose();
   }
 
   /* ───────────────────────── */
   @override
   Widget build(BuildContext context) {
-    // show rating after first frame
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (mounted) _maybeAskForRating(context);
-    });
-
     /* static alignments (start positions) */
     const titleStart = Alignment(0, -0.40);
     const castStart = Alignment(0, -0.15);
