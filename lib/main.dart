@@ -13,6 +13,7 @@ import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'providers/rating_provider.dart'; // ★ new
+import 'providers/permanent_blacklist.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/services/location_service.dart'; // Import your location service
 
@@ -60,6 +61,7 @@ void main() async {
         ),
         ChangeNotifierProvider(create: (_) => LocationService()),
         ChangeNotifierProvider(create: (_) => UnwantedList(unwantedIds: [])),
+        ChangeNotifierProvider(create: (_) => PermanentBlacklist()),
         ChangeNotifierProvider(create: (_) => FetchedResults()),
       ],
       child: const App(),
