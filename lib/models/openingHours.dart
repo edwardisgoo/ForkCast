@@ -18,16 +18,19 @@ class TimePeriod {
   //由兩個時間構成的一個營業時段
   final HourMin start;
   final HourMin end;
+  final int day;
   // Constructor 1: from HourMin objects
-  TimePeriod(this.start, this.end);
+  TimePeriod(this.start, this.end,this.day);
 
   // Constructor 2: from two strings like "0900", "1730"
   TimePeriod.fromStrings(String openStr, String closeStr)
       : start = HourMin(openStr),
-        end = HourMin(closeStr);
+        end = HourMin(closeStr),
+        day = 0;
 
   // Constructor 3: from four integers (openHour, openMin, closeHour, closeMin)
-  TimePeriod.fromInts(int openHour, int openMin, int closeHour, int closeMin)
+  TimePeriod.fromInts(int openHour, int openMin, int closeHour, int closeMin,int weekDay)
       : start = HourMin.fromInts(openHour, openMin),
-        end = HourMin.fromInts(closeHour, closeMin);
+        end = HourMin.fromInts(closeHour, closeMin),
+        day = weekDay;
 }

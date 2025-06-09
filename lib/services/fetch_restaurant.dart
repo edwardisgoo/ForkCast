@@ -30,7 +30,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
   try {
     final HttpsCallable callableFindRestaurants =
         FirebaseFunctions.instance.httpsCallable(
-      'restaurantRecommendationMock',
+      'restaurantRecommendation',
       options: HttpsCallableOptions(
         timeout: const Duration(seconds: 40), // 增加Timeout
       ),
@@ -44,7 +44,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
         'minPrice': extraPreference.minPrice,
         'maxPrice': extraPreference.maxPrice,
         'minDistance': extraPreference.minDistance * 1000,
-        'maxDistance': extraPreference.maxDistance * 1000,//add
+        'maxDistance': extraPreference.maxDistance * 1000, //add
         'requirement': extraPreference.requirement,
         'note': extraPreference.note,
       },
@@ -184,9 +184,51 @@ RestaurantInput _parseRestaurantInput(Map<String, dynamic> data) {
       }
     }
   }
+  // 解析 photoUrl
+  List<String> photoUrls = [];
+  // print('開始解析photoUrls');
+  // print('準備開搞得阿${data}');
+  // print('準備開搞得阿${data.keys}');
+  // print('內容阿${data['photoURL']}');
+  if (data['photoURL'] != null && data['photoURL'] is List) {
+    for (var url in data['photoURL']) {
+      if (url is String) {
+        photoUrls.add(url);
+      }
+    }
+  }
+  // 解析 openingHours
+  List<TimePeriod> openingHours = [];
+  if (data['openingHours'] != null && data['openingHours'] is List) {
+    for (var period in data['openingHours']) {
+      if (period is Map) {
+        try {
+          if (period.containsKey('day') &&
+              period.containsKey('start') &&
+              period.containsKey('end')) {
+            openingHours.add(TimePeriod.fromInts(
+                period['start']['hour'],
+                period['start']['minute'],
+                period['end']['hour'],
+                period['end']['minute'],
+                period['day']));
+          }
+        } catch (e) {
+          throw Exception(
+              '出事了阿伯: ${e.toString()}');
+        }
+      }
+    }
+  }
+  print('我終於解析出日期$openingHours');
 
   return RestaurantInput(
     id: data['id'] ?? 'invalid',
+    url: data['URL'] ?? '',
+    address: data['address'] ?? '未抓取到地址',
+    phoneNumber: data['phoneNumber'] ?? '未抓取到店家電話',
+    openingHours: openingHours,
+    photoUrl: photoUrls,
     distance: (data['distance'] ?? 0.0).toDouble(),
     opening: data['opening'] ?? false,
     rating: (data['rating'] ?? 0.0).toDouble(),

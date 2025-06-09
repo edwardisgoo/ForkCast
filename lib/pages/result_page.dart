@@ -106,7 +106,7 @@ class _ResultPageState extends State<ResultPage> {
     final safeBottom = insets.bottom;
 
     final double titleMainFontSize = (screenWidth * 0.075).clamp(26.0, 34.0);
-    final double helperTextSize = (screenWidth * 0.035).clamp(12.0, 16.0);
+    final double helperTextSize = (screenWidth * 0.025).clamp(12.0, 16.0);
 
     // Dynamic gap after title
     final double extraGapPx = (screenHeight * 0.03).clamp(20.0, 40.0);
@@ -292,3 +292,4 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 }
+
