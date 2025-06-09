@@ -90,16 +90,6 @@ class _ExpandedCardState extends State<ExpandedCard> {
           icon: Icons.delete,
           left: false,
           screenWidth: screenWidth),
-      background: _swipeBg(
-          color: Colors.green,
-          icon: Icons.map,
-          left: true,
-          screenWidth: screenWidth),
-      secondaryBackground: _swipeBg(
-          color: Colors.red,
-          icon: Icons.delete,
-          left: false,
-          screenWidth: screenWidth),
       child: GestureDetector(
         onTap: () {
           setState(() => _showContent = false);
