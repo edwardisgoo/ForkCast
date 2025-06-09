@@ -5,6 +5,7 @@ import 'package:flutter_app/models/utils/score_utils.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/userSetting.dart';
+import 'package:flutter_app/providers/rating_provider.dart';
 
 class ExpandedCard extends StatefulWidget {
   final int index;
@@ -40,12 +41,17 @@ class _ExpandedCardState extends State<ExpandedCard> {
   void _handleDismiss(DismissDirection dir) {
     if (_isDismissed) return;
     final nav = context.read<NavigationService>(); // Get NavigationService here
+    final restaurant =
+        context.read<FetchedResults>().fetchedResults[widget.index];
     setState(() {
       _isDismissed = true;
       _showContent = false;
     });
 
     if (dir == DismissDirection.startToEnd) {
+      context
+          .read<RatingProvider>()
+          .setPending(id: restaurant.input.id, name: restaurant.input.name);
       nav.goMaps(); // Use the local variable
       widget.onCollapse();
     } else {
@@ -71,9 +77,16 @@ class _ExpandedCardState extends State<ExpandedCard> {
     return Dismissible(
       key: ValueKey('expanded_${widget.index}'),
       onDismissed: _handleDismiss,
-      background: _swipeBg(color: Colors.green, icon: Icons.map, left: true, screenWidth: screenWidth),
-      secondaryBackground:
-          _swipeBg(color: Colors.red, icon: Icons.delete, left: false, screenWidth: screenWidth),
+      background: _swipeBg(
+          color: Colors.green,
+          icon: Icons.map,
+          left: true,
+          screenWidth: screenWidth),
+      secondaryBackground: _swipeBg(
+          color: Colors.red,
+          icon: Icons.delete,
+          left: false,
+          screenWidth: screenWidth),
       child: GestureDetector(
         onTap: () {
           setState(() => _showContent = false);
@@ -117,9 +130,12 @@ class _ExpandedCardState extends State<ExpandedCard> {
                         unselectedLabelColor: Colors.grey,
                         indicatorColor: Colors.blue,
                         labelStyle: TextStyle(
-                            fontSize: (screenWidth * 0.04).clamp(14.0, 18.0), // Dynamic font size
+                            fontSize: (screenWidth * 0.04)
+                                .clamp(14.0, 18.0), // Dynamic font size
                             fontWeight: FontWeight.w600),
-                        unselectedLabelStyle: TextStyle(fontSize: (screenWidth * 0.04).clamp(14.0, 18.0)), // Dynamic font size
+                        unselectedLabelStyle: TextStyle(
+                            fontSize: (screenWidth * 0.04)
+                                .clamp(14.0, 18.0)), // Dynamic font size
                         tabs: const [
                           Tab(text: '簡介'),
                           Tab(text: '菜單'),
@@ -137,9 +153,14 @@ class _ExpandedCardState extends State<ExpandedCard> {
                         ? const BouncingScrollPhysics()
                         : const NeverScrollableScrollPhysics(),
                     children: [
-                      _IntroPane(restaurant: restaurant, screenWidth: screenWidth, screenHeight: screenHeight),
-                      _MenuPane(restaurant: restaurant, screenWidth: screenWidth),
-                      _ReviewPane(restaurant: restaurant, screenWidth: screenWidth),
+                      _IntroPane(
+                          restaurant: restaurant,
+                          screenWidth: screenWidth,
+                          screenHeight: screenHeight),
+                      _MenuPane(
+                          restaurant: restaurant, screenWidth: screenWidth),
+                      _ReviewPane(
+                          restaurant: restaurant, screenWidth: screenWidth),
                     ],
                   ),
                 ),
@@ -152,12 +173,18 @@ class _ExpandedCardState extends State<ExpandedCard> {
   }
 
   Widget _swipeBg(
-          {required Color color, required IconData icon, required bool left, required double screenWidth}) =>
+          {required Color color,
+          required IconData icon,
+          required bool left,
+          required double screenWidth}) =>
       Container(
         color: color,
         alignment: left ? Alignment.centerLeft : Alignment.centerRight,
-        padding: EdgeInsets.symmetric(horizontal: screenWidth * 0.05), // Dynamic padding
-        child: Icon(icon, color: Colors.white, size: (screenWidth * 0.07).clamp(24.0, 32.0)), // Dynamic icon size
+        padding: EdgeInsets.symmetric(
+            horizontal: screenWidth * 0.05), // Dynamic padding
+        child: Icon(icon,
+            color: Colors.white,
+            size: (screenWidth * 0.07).clamp(24.0, 32.0)), // Dynamic icon size
       );
 }
 
@@ -165,7 +192,8 @@ class _ExpandedCardState extends State<ExpandedCard> {
 class _TabBarDelegate extends SliverPersistentHeaderDelegate {
   final TabBar tabBar;
   final double screenWidth; // Add screenWidth
-  const _TabBarDelegate({required this.tabBar, required this.screenWidth}); // Modify constructor
+  const _TabBarDelegate(
+      {required this.tabBar, required this.screenWidth}); // Modify constructor
 
   @override
   Widget build(
@@ -243,7 +271,8 @@ class _Header extends StatelessWidget {
     if (description.isEmpty) description = restaurant.input.summary;
 
     return Padding(
-      padding: EdgeInsets.all((screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
+      padding: EdgeInsets.all(
+          (screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -257,9 +286,13 @@ class _Header extends StatelessWidget {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(child: Icon(Icons.image, size: imgH * 0.5)), // Relative icon size
+                child: Center(
+                    child: Icon(Icons.image,
+                        size: imgH * 0.5)), // Relative icon size
               ),
-              SizedBox(width: (screenWidth * 0.03).clamp(8.0, 16.0)), // Dynamic spacing
+              SizedBox(
+                  width:
+                      (screenWidth * 0.03).clamp(8.0, 16.0)), // Dynamic spacing
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -267,7 +300,9 @@ class _Header extends StatelessWidget {
                     Text(name,
                         style: TextStyle(
                             fontSize: titleFont, fontWeight: FontWeight.bold)),
-                    SizedBox(height: (cardH * 0.03).clamp(4.0, 10.0)), // Dynamic spacing
+                    SizedBox(
+                        height:
+                            (cardH * 0.03).clamp(4.0, 10.0)), // Dynamic spacing
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.baseline,
                       textBaseline: TextBaseline.alphabetic,
@@ -289,7 +324,9 @@ class _Header extends StatelessWidget {
           SizedBox(height: (cardH * 0.04).clamp(8.0, 16.0)), // Dynamic spacing
           Text(description.isNotEmpty ? description : '無餐廳簡介',
               style: TextStyle(fontSize: descriptionTextFont)),
-          SizedBox(height: (cardH * 0.05).clamp(10.0, 20.0)), // Dynamic spacing for pills
+          SizedBox(
+              height: (cardH * 0.05)
+                  .clamp(10.0, 20.0)), // Dynamic spacing for pills
           _PillBlock(
             label: p1Label,
             score: p1Score,
@@ -334,33 +371,37 @@ class _PillBlock extends StatelessWidget {
     final double descFontSize = (cardH * 0.06).clamp(12.0, 16.0);
 
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Container(
-                width: circleSize, // Dynamic size
-                height: circleSize, // Dynamic size
-                decoration: const BoxDecoration(
-                    color: Colors.green, shape: BoxShape.circle),
-                alignment: Alignment.center,
-                child: Text(score,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: scoreFontSize, // Dynamic font size
-                        fontWeight: FontWeight.bold)),
-              ),
-              SizedBox(width: (screenWidth * 0.015).clamp(4.0, 8.0)), // Dynamic spacing
-              Text(label,
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: circleSize, // Dynamic size
+              height: circleSize, // Dynamic size
+              decoration: const BoxDecoration(
+                  color: Colors.green, shape: BoxShape.circle),
+              alignment: Alignment.center,
+              child: Text(score,
                   style: TextStyle(
-                      fontSize: labelFontSize, fontWeight: FontWeight.bold)), // Dynamic font size
-            ],
-          ),
-          SizedBox(height: (cardH * 0.025).clamp(3.0, 7.0)), // Dynamic spacing
-          Text(desc, style: TextStyle(fontSize: descFontSize)), // Dynamic font size
-        ],
-      );
+                      color: Colors.white,
+                      fontSize: scoreFontSize, // Dynamic font size
+                      fontWeight: FontWeight.bold)),
+            ),
+            SizedBox(
+                width:
+                    (screenWidth * 0.015).clamp(4.0, 8.0)), // Dynamic spacing
+            Text(label,
+                style: TextStyle(
+                    fontSize: labelFontSize,
+                    fontWeight: FontWeight.bold)), // Dynamic font size
+          ],
+        ),
+        SizedBox(height: (cardH * 0.025).clamp(3.0, 7.0)), // Dynamic spacing
+        Text(desc,
+            style: TextStyle(fontSize: descFontSize)), // Dynamic font size
+      ],
+    );
   }
 }
 
@@ -370,11 +411,15 @@ class _IntroPane extends StatelessWidget {
   final RestaurantOutput restaurant;
   final double screenWidth;
   final double screenHeight;
-  const _IntroPane({required this.restaurant, required this.screenWidth, required this.screenHeight});
+  const _IntroPane(
+      {required this.restaurant,
+      required this.screenWidth,
+      required this.screenHeight});
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        padding: EdgeInsets.all((screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
+        padding: EdgeInsets.all(
+            (screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -387,10 +432,17 @@ class _IntroPane extends StatelessWidget {
                         : '無介紹'),
                 screenWidth: screenWidth,
                 screenHeight: screenHeight), // Pass screenHeight
-            SizedBox(height: (screenHeight * 0.02).clamp(12.0, 20.0)), // Dynamic spacing
+            SizedBox(
+                height:
+                    (screenHeight * 0.02).clamp(12.0, 20.0)), // Dynamic spacing
             _InfoBlock(
-                title: '營業時間', body: restaurant.input.opening ? '營業中' : '未營業', screenWidth: screenWidth, screenHeight: screenHeight), // Pass screenHeight
-            SizedBox(height: (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
+                title: '營業時間',
+                body: restaurant.input.opening ? '營業中' : '未營業',
+                screenWidth: screenWidth,
+                screenHeight: screenHeight), // Pass screenHeight
+            SizedBox(
+                height:
+                    (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
             _InfoBlock(
                 title: '距離',
                 body: '${restaurant.input.distance.toStringAsFixed(0)} m',
@@ -408,10 +460,13 @@ class _MenuPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        padding: EdgeInsets.all((screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
+        padding: EdgeInsets.all(
+            (screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
         child: Text(
           restaurant.menu.isNotEmpty ? restaurant.menu : '無菜單資訊',
-          style: TextStyle(fontSize: (screenWidth * 0.035).clamp(12.0, 16.0)), // Dynamic font size
+          style: TextStyle(
+              fontSize:
+                  (screenWidth * 0.035).clamp(12.0, 16.0)), // Dynamic font size
         ),
       );
 }
@@ -423,10 +478,13 @@ class _ReviewPane extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) => SingleChildScrollView(
-        padding: EdgeInsets.all((screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
+        padding: EdgeInsets.all(
+            (screenWidth * 0.04).clamp(12.0, 20.0)), // Dynamic padding
         child: Text(
           restaurant.reviews.isNotEmpty ? restaurant.reviews : '無評論資訊',
-          style: TextStyle(fontSize: (screenWidth * 0.035).clamp(12.0, 16.0)), // Dynamic font size
+          style: TextStyle(
+              fontSize:
+                  (screenWidth * 0.035).clamp(12.0, 16.0)), // Dynamic font size
         ),
       );
 }
@@ -437,7 +495,11 @@ class _InfoBlock extends StatelessWidget {
   final String body;
   final double screenWidth;
   final double screenHeight; // Add screenHeight
-  const _InfoBlock({required this.title, required this.body, required this.screenWidth, required this.screenHeight}); // Modify constructor
+  const _InfoBlock(
+      {required this.title,
+      required this.body,
+      required this.screenWidth,
+      required this.screenHeight}); // Modify constructor
 
   @override
   Widget build(BuildContext context) {
@@ -445,15 +507,15 @@ class _InfoBlock extends StatelessWidget {
     final bodyFontSize = (screenWidth * 0.038).clamp(13.0, 17.0);
     final spacing = (screenHeight * 0.005).clamp(3.0, 6.0);
     return Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title,
-              style:
-                  TextStyle(fontSize: titleFontSize, fontWeight: FontWeight.bold)),
-          SizedBox(height: spacing), // Dynamic spacing
-          Text(body, style: TextStyle(fontSize: bodyFontSize)),
-        ],
-      );
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title,
+            style: TextStyle(
+                fontSize: titleFontSize, fontWeight: FontWeight.bold)),
+        SizedBox(height: spacing), // Dynamic spacing
+        Text(body, style: TextStyle(fontSize: bodyFontSize)),
+      ],
+    );
   }
 }
 // _MenuItem and _Bullet are not directly used in the visible part of ExpandedCard's TabBarView.
