@@ -34,16 +34,18 @@ class RestaurantCard extends StatelessWidget {
     final screenWidth = screenSize.width;
     final screenHeight = screenSize.height;
 
-    final double cardPadding = 12.0; // This is internal padding for the card content
+    final double cardPadding =
+        12.0; // This is internal padding for the card content
     final double availableWidth = screenWidth * 0.9 - (cardPadding * 2);
     final double baseCardH =
         (MediaQuery.of(context).size.height * 0.25).clamp(180.0, 320.0);
-    final double textLine = baseCardH * 0.07;  // one line of text height
+    final double textLine = baseCardH * 0.07; // one line of text height
 
     // Modified image dimensions: image height reduced by two text lines instead of one
     final double imgH = (baseCardH * 0.70) - (2 * textLine);
     final double imgW = imgH * 0.60;
-    final double ratingSize = baseCardH * 0.15; // reduced from 0.20 for a smaller ratings row
+    final double ratingSize =
+        baseCardH * 0.15; // reduced from 0.20 for a smaller ratings row
     final double titleFont = baseCardH * 0.07;
     final double digitFont = baseCardH * 0.28;
     final double dotFont = baseCardH * 0.08;
@@ -79,7 +81,8 @@ class RestaurantCard extends StatelessWidget {
         key: ValueKey(index),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            context.read<RatingProvider>().setPending(restaurant.input.name);
+            context.read<RatingProvider>().setPending(
+                id: restaurant.input.id, name: restaurant.input.name);
 
             nav.goMaps();
           } else if (direction == DismissDirection.endToStart) {
@@ -128,7 +131,9 @@ class RestaurantCard extends StatelessWidget {
                           color: Colors.grey[300],
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Center(child: Icon(Icons.image, size: imgH * 0.5)), // Relative icon size
+                        child: Center(
+                            child: Icon(Icons.image,
+                                size: imgH * 0.5)), // Relative icon size
                       ),
                       // Use dynamic spacing for right column separation
                       SizedBox(width: availableWidth * 0.03),
@@ -153,7 +158,9 @@ class RestaurantCard extends StatelessWidget {
                                 ),
                               ),
 
-                              SizedBox(height: baseCardH * 0.02), // dynamic smaller spacing
+                              SizedBox(
+                                  height: baseCardH *
+                                      0.02), // dynamic smaller spacing
 
                               /* ratings row */
                               Row(
@@ -165,55 +172,74 @@ class RestaurantCard extends StatelessWidget {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       _ratingCircle(p1Score, ratingSize),
-                                      SizedBox(height: baseCardH * 0.015), // reduced spacing
+                                      SizedBox(
+                                          height: baseCardH *
+                                              0.015), // reduced spacing
                                       Text(
                                         p1Label,
-                                        style: TextStyle(fontSize: (baseCardH * 0.055).clamp(10.0, 14.0)),
+                                        style: TextStyle(
+                                            fontSize: (baseCardH * 0.055)
+                                                .clamp(10.0, 14.0)),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: availableWidth * 0.02), // dynamic spacing
+                                  SizedBox(
+                                      width: availableWidth *
+                                          0.02), // dynamic spacing
                                   /* P2 */
                                   Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       _ratingCircle(p2Score, ratingSize),
-                                      SizedBox(height: baseCardH * 0.015), // reduced spacing
+                                      SizedBox(
+                                          height: baseCardH *
+                                              0.015), // reduced spacing
                                       Text(
                                         p2Label,
-                                        style: TextStyle(fontSize: (baseCardH * 0.055).clamp(10.0, 14.0)),
+                                        style: TextStyle(
+                                            fontSize: (baseCardH * 0.055)
+                                                .clamp(10.0, 14.0)),
                                       ),
                                     ],
                                   ),
-                                  SizedBox(width: availableWidth * 0.03), // dynamic spacing
+                                  SizedBox(
+                                      width: availableWidth *
+                                          0.03), // dynamic spacing
                                   /* overall */
                                   FittedBox(
                                     fit: BoxFit.scaleDown,
                                     child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
                                       children: [
                                         Row(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                                          crossAxisAlignment:
+                                              CrossAxisAlignment.baseline,
                                           textBaseline: TextBaseline.alphabetic,
                                           children: [
                                             Text(
                                               ratingInt,
                                               style: TextStyle(
-                                                fontSize: (baseCardH * 0.25).clamp(20.0, 30.0),
+                                                fontSize: (baseCardH * 0.25)
+                                                    .clamp(20.0, 30.0),
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             Text(
                                               ratingDec,
-                                              style: TextStyle(fontSize: (baseCardH * 0.10).clamp(10.0, 15.0)),
+                                              style: TextStyle(
+                                                  fontSize: (baseCardH * 0.10)
+                                                      .clamp(10.0, 15.0)),
                                             ),
                                           ],
                                         ),
                                         SizedBox(height: baseCardH * 0.02),
                                         Text(
                                           '綜合評價',
-                                          style: TextStyle(fontSize: (baseCardH * 0.055).clamp(10.0, 14.0)),
+                                          style: TextStyle(
+                                              fontSize: (baseCardH * 0.055)
+                                                  .clamp(10.0, 14.0)),
                                         ),
                                       ],
                                     ),
@@ -226,7 +252,8 @@ class RestaurantCard extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: baseCardH * 0.02), // Reduced vertical spacing
+                  SizedBox(
+                      height: baseCardH * 0.02), // Reduced vertical spacing
 
                   /* bottom text */
 
@@ -255,7 +282,9 @@ class RestaurantCard extends StatelessWidget {
         decoration: BoxDecoration(
           color: Colors.greenAccent,
           shape: BoxShape.circle,
-          border: Border.all(color: Colors.grey[400]!, width: (size * 0.05).clamp(1.0, 2.5)), // Relative border width
+          border: Border.all(
+              color: Colors.grey[400]!,
+              width: (size * 0.05).clamp(1.0, 2.5)), // Relative border width
         ),
         alignment: Alignment.center,
         child: FittedBox(
