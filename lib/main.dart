@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/unwanted.dart';
 import 'package:flutter_app/services/navigation.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';

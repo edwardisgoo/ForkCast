@@ -26,6 +26,8 @@ void main() async {
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -37,6 +39,8 @@ class MyApp extends StatelessWidget {
 }
 
 class RestaurantTestPage extends StatefulWidget {
+  const RestaurantTestPage({super.key});
+
   @override
   _RestaurantTestPageState createState() => _RestaurantTestPageState();
 }
@@ -235,6 +239,9 @@ class _RestaurantTestPageState extends State<RestaurantTestPage> {
               Center(
                 child: ElevatedButton(
                   onPressed: _isLoading ? null : _testFetchRestaurant,
+                  style: ElevatedButton.styleFrom(
+                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+                  ),
                   child: _isLoading
                       ? Row(
                           mainAxisSize: MainAxisSize.min,
@@ -249,9 +256,6 @@ class _RestaurantTestPageState extends State<RestaurantTestPage> {
                           ],
                         )
                       : Text('開始測試 fetchRestaurant'),
-                  style: ElevatedButton.styleFrom(
-                    padding: EdgeInsets.symmetric(horizontal: 24, vertical: 12),
-                  ),
                 ),
               ),
               SizedBox(height: 16),

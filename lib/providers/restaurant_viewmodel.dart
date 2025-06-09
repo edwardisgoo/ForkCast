@@ -31,11 +31,14 @@ class RestaurantViewModel extends ChangeNotifier {
     sortedPreference: ["價格", "特殊需求", "人潮", "距離"],
   );
 
+  final UnwantedList _unwantedList = UnwantedList(unwantedIds: []);
+
   HourMin get queryTime => _queryTime;
   double get queryLat => _queryLat;
   double get queryLng => _queryLng;
   Query get extraPreference => _extraPreference;
   UserSetting get userSetting => _userSetting;
+  UnwantedList get unwantedList => _unwantedList;
 
   Future<void> fetchRestaurants() async {
     _isLoading = true;
@@ -44,8 +47,8 @@ class RestaurantViewModel extends ChangeNotifier {
     notifyListeners();
 
     try {
-      final result = await fetchRestaurant(
-          _queryTime, _queryLat, _queryLng, _extraPreference, _userSetting);
+      final result = await fetchRestaurant(_queryTime, _queryLat, _queryLng,
+          _extraPreference, _unwantedList, _userSetting);
 
       final List<RestaurantOutput> fetchedRestaurants =
           List<RestaurantOutput>.from(result['result'] ?? []);

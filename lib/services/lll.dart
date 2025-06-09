@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:flutter_app/services/location_service.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/providers/location_viewmodel.dart'; // Updated path
 
 // Main function for standalone testing of LocationScreen
 void main() {
-  runApp(
-    MultiProvider(
-      providers: [
-        Provider<LocationService>(create: (_) => LocationService()),
-        ChangeNotifierProvider(
-          create: (context) => LocationViewModel(
-            locationService: Provider.of<LocationService>(context, listen: false),
-          ),
+  runApp(MultiProvider(
+    providers: [
+      Provider<LocationService>(create: (_) => LocationService()),
+      ChangeNotifierProvider(
+        create: (context) => LocationViewModel(
+          locationService: Provider.of<LocationService>(context, listen: false),
         ),
-      ],
-      child: const TestLocationApp(),
-    )
-  );
+      ),
+    ],
+    child: const TestLocationApp(),
+  ));
 }
 
 // Specific MyApp for testing LocationScreen
@@ -69,7 +66,10 @@ class LocationScreen extends StatelessWidget {
                     ? const Row(
                         mainAxisSize: MainAxisSize.min,
                         children: [
-                          SizedBox(width: 20, height: 20, child: CircularProgressIndicator(strokeWidth: 2)),
+                          SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(strokeWidth: 2)),
                           SizedBox(width: 8),
                           Text('獲取中...'),
                         ],
@@ -81,7 +81,8 @@ class LocationScreen extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 20.0),
                   child: Text(
                     '您的位置：(${viewModel.latitude}, ${viewModel.longitude})',
-                    style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: const TextStyle(
+                        fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
             ],
