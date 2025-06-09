@@ -82,7 +82,8 @@ class RestaurantCard extends StatelessWidget {
         key: ValueKey(index),
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            context.read<RatingProvider>().setPending(restaurant.input.name);
+            context.read<RatingProvider>().setPending(
+                id: restaurant.input.id, name: restaurant.input.name);
 
             nav.goMaps();
           } else if (direction == DismissDirection.endToStart) {
@@ -296,20 +297,21 @@ class RestaurantCard extends StatelessWidget {
 
   Widget _ratingCircle(String rating, double size) {
     Color _getColorFromRating(String score) {
-    switch (rating) {
-      case "5":
-        return Colors.green;
-      case "4":
-        return Colors.lightGreen;
-      case "3":
-        return Colors.amber;
-      case "2":
-        return Colors.orange;
-      case "1":
-      default:
-        return Colors.red;
+      switch (rating) {
+        case "5":
+          return Colors.green;
+        case "4":
+          return Colors.lightGreen;
+        case "3":
+          return Colors.amber;
+        case "2":
+          return Colors.orange;
+        case "1":
+        default:
+          return Colors.red;
+      }
     }
-  }
+
     return Container(
       width: size,
       height: size,

@@ -6,6 +6,7 @@ import 'package:flutter_app/models/utils/score_utils.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/userSetting.dart';
+import 'package:flutter_app/providers/rating_provider.dart';
 import 'package:transparent_image/transparent_image.dart';
 import 'package:flutter_app/widgets/time_period_text.dart';
 
@@ -43,12 +44,17 @@ class _ExpandedCardState extends State<ExpandedCard> {
   void _handleDismiss(DismissDirection dir) {
     if (_isDismissed) return;
     final nav = context.read<NavigationService>(); // Get NavigationService here
+    final restaurant =
+        context.read<FetchedResults>().fetchedResults[widget.index];
     setState(() {
       _isDismissed = true;
       _showContent = false;
     });
 
     if (dir == DismissDirection.startToEnd) {
+      context
+          .read<RatingProvider>()
+          .setPending(id: restaurant.input.id, name: restaurant.input.name);
       nav.goMaps(); // Use the local variable
       widget.onCollapse();
     } else {
@@ -474,8 +480,8 @@ class _IntroPane extends StatelessWidget {
                 body: restaurant.input.opening ? '營業中' : '未營業',
                 screenWidth: screenWidth,
                 screenHeight: screenHeight),
-               // Pass screenHeight
-            TimePeriodListView(periods:restaurant.input.openingHours),
+            // Pass screenHeight
+            TimePeriodListView(periods: restaurant.input.openingHours),
             SizedBox(
                 height:
                     (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing

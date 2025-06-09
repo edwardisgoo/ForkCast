@@ -7,6 +7,9 @@ import 'package:flutter_app/pages/result_page.dart';
 import 'package:flutter_app/pages/maps_page.dart';
 import 'package:go_router/go_router.dart';
 
+final RouteObserver<ModalRoute<void>> routeObserver =
+    RouteObserver<ModalRoute<void>>();
+
 final routerConfig = GoRouter(
   routes: <RouteBase>[
     GoRoute(
@@ -37,6 +40,7 @@ final routerConfig = GoRouter(
     ),
   ],
   initialLocation: '/',
+  observers: [routeObserver],
   errorBuilder: (context, state) => Scaffold(
     body: Center(
       child: Text('Page not found: ${state.uri.path}'),
@@ -66,8 +70,8 @@ class NavigationService {
     _router.go('/complex-cast');
   }
 
-  void goResult() {
-    _router.push('/result');
+  Future<T?> goResult<T>() {
+    return _router.push<T>('/result');
   }
 
   void goMaps() {

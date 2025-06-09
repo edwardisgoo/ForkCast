@@ -1,0 +1,41 @@
+import 'package:flutter/foundation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+const _kKey = 'permanent_blacklist_ids';
+
+/// A [ChangeNotifier] that keeps a persistent list of permanently
+/// blacklisted restaurant IDs.
+class PermanentBlacklist extends ChangeNotifier {
+  late final Future<void> _initialized;
+  PermanentBlacklist() {
+    _load();
+    _initialized = _load();
+  }
+
+  /// Future that completes when the blacklist has finished loading.
+  Future<void> get initialized => _initialized;
+
+  List<String> _ids = [];
+
+  /// The list of blacklisted restaurant IDs.
+  List<String> get ids => _ids;
+
+  /// Adds [id] to the blacklist if not already present and persists the list.
+  Future<void> add(String id) async {
+    if (_ids.contains(id)) return;
+    _ids.add(id);
+    notifyListeners();
+    await _save();
+  }
+
+  Future<void> _load() async {
+    final sp = await SharedPreferences.getInstance();
+    _ids = sp.getStringList(_kKey) ?? [];
+    notifyListeners();
+  }
+
+  Future<void> _save() async {
+    final sp = await SharedPreferences.getInstance();
+    await sp.setStringList(_kKey, _ids);
+  }
+}

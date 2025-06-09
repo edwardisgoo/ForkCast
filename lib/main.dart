@@ -9,11 +9,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/unwanted.dart';
 import 'package:flutter_app/services/navigation.dart';
-import 'package:go_router/go_router.dart';
 import 'package:provider/provider.dart';
 
 import 'firebase_options.dart';
 import 'providers/rating_provider.dart'; // ★ new
+import 'providers/permanent_blacklist.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/services/location_service.dart'; // Import your location service
 
@@ -50,18 +50,29 @@ void main() async {
     }
   }
 
+  // Instantiate providers so we can perform initialization logic before
+  // running the app.
+  final navigationService = NavigationService();
+  final ratingProvider = RatingProvider();
+  final userSetting = UserSetting(sortedPreference: const ['價格', '距離', '評價']);
+  final locationService = LocationService();
+  final permanentBlacklist = PermanentBlacklist();
+  await permanentBlacklist.initialized;
+  final unwantedList = UnwantedList(unwantedIds: []);
+  // Copy the persistent blacklist into the temporary unwanted list.
+  unwantedList.replaceAll(permanentBlacklist.ids);
+  final fetchedResults = FetchedResults();
+
   runApp(
     MultiProvider(
       providers: [
-        Provider<NavigationService>(create: (_) => NavigationService()),
-        ChangeNotifierProvider(create: (_) => RatingProvider()), // ★
-        ChangeNotifierProvider(
-          create: (_) =>
-              UserSetting(sortedPreference: const ['價格', '距離', '評價']),
-        ),
-        ChangeNotifierProvider(create: (_) => LocationService()),
-        ChangeNotifierProvider(create: (_) => UnwantedList(unwantedIds: [])),
-        ChangeNotifierProvider(create: (_) => FetchedResults()),
+        Provider<NavigationService>.value(value: navigationService),
+        ChangeNotifierProvider.value(value: ratingProvider), // ★
+        ChangeNotifierProvider.value(value: userSetting),
+        ChangeNotifierProvider.value(value: locationService),
+        ChangeNotifierProvider.value(value: unwantedList),
+        ChangeNotifierProvider.value(value: permanentBlacklist),
+        ChangeNotifierProvider.value(value: fetchedResults),
       ],
       child: const App(),
     ),

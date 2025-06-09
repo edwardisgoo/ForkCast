@@ -10,6 +10,8 @@ import 'package:flutter_app/services/navigation.dart';
 import '../widgets/title_text.dart';
 import '../providers/rating_provider.dart'; // ★ new
 import '../widgets/cast_helper.dart';
+import '../providers/permanent_blacklist.dart';
+import '../models/unwanted.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -17,7 +19,7 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with RouteAware {
   bool _startAnim = false;
   final GlobalKey _titleKey = GlobalKey();
 
@@ -86,9 +88,18 @@ class _MainPageState extends State<MainPage> {
               child: const Text('跳過'),
             ),
             TextButton(
-              onPressed: () {
+              onPressed: () async {
                 // (store stars if needed)
-                prov.clearPending();
+                if (stars <= 2) {
+                  final blacklist = context.read<PermanentBlacklist>();
+                  final unwanted = context.read<UnwantedList>();
+                  final id = prov.restaurantId;
+                  if (id != null) {
+                    await blacklist.add(id);
+                    unwanted.replaceAll(blacklist.ids);
+                  }
+                }
+                await prov.clearPending();
                 Navigator.pop(dCtx);
               },
               child: const Text('送出'),
@@ -106,6 +117,7 @@ class _MainPageState extends State<MainPage> {
     if (context.read<RatingProvider>().pending) {
       _dialogShown = false;
     }
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
   /* ───────── CAST pressed ───────── */
@@ -126,7 +138,7 @@ class _MainPageState extends State<MainPage> {
           '[MAIN] title start pos=${box.localToGlobal(Offset.zero)} size=${box.size}');
     }
 
-    performCast(context).then((_) {
+    performCast(context).then((_) async {
       if (!mounted) return;
       final ctx = _titleKey.currentContext;
       if (ctx != null) {
@@ -134,8 +146,20 @@ class _MainPageState extends State<MainPage> {
         debugPrint(
             '[MAIN] title end pos=${box.localToGlobal(Offset.zero)} size=${box.size}');
       }
-      context.read<NavigationService>().goResult();
+      await context.read<NavigationService>().goResult();
+      if (mounted) setState(() => _startAnim = false);
     });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() => _startAnim = false);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   /* ───────────────────────── */
