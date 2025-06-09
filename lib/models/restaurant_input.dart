@@ -1,3 +1,4 @@
+import 'package:flutter_app/models/openingHours.dart';
 import 'package:flutter_app/models/review.dart';
 
 /*
@@ -6,6 +7,11 @@ import 'package:flutter_app/models/review.dart';
 class RestaurantInput {
   const RestaurantInput({
     required this.id,
+    required this.url,
+    required this.address,
+    required this.phoneNumber,
+    required this.openingHours,
+    required this.photoUrl,
     required this.distance,
     required this.opening,
     required this.rating,
@@ -18,11 +24,16 @@ class RestaurantInput {
     required this.extraInformation,
   });
   final String id;
+  final String url;
+  final String address;
+  final String phoneNumber;
+  final List<TimePeriod> openingHours;
+  final List<String> photoUrl;
   //1.位置相關
   final double distance; //單位公尺
   //2.營業狀況時間相關
   final bool opening; //在查詢時間是否營業中
-  //*3.評論相關
+  //3.評論相關
   final double rating; //1-5之間的浮點數
   final List<Review> reviews;
   //4.圖片相關

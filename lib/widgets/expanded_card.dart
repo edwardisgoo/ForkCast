@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_app/models/openingHours.dart';
 import 'package:flutter_app/services/navigation.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_app/models/utils/score_utils.dart';
@@ -6,6 +7,8 @@ import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/restaurant_output.dart';
 import 'package:flutter_app/models/userSetting.dart';
 import 'package:flutter_app/providers/rating_provider.dart';
+import 'package:transparent_image/transparent_image.dart';
+import 'package:flutter_app/widgets/time_period_text.dart';
 
 class ExpandedCard extends StatefulWidget {
   final int index;
@@ -87,6 +90,16 @@ class _ExpandedCardState extends State<ExpandedCard> {
           icon: Icons.delete,
           left: false,
           screenWidth: screenWidth),
+      background: _swipeBg(
+          color: Colors.green,
+          icon: Icons.map,
+          left: true,
+          screenWidth: screenWidth),
+      secondaryBackground: _swipeBg(
+          color: Colors.red,
+          icon: Icons.delete,
+          left: false,
+          screenWidth: screenWidth),
       child: GestureDetector(
         onTap: () {
           setState(() => _showContent = false);
@@ -110,7 +123,7 @@ class _ExpandedCardState extends State<ExpandedCard> {
             ),
             clipBehavior: Clip.antiAlias,
             child: DefaultTabController(
-              length: 3,
+              length: 4,
               child: NestedScrollView(
                 headerSliverBuilder: (_, __) => [
                   SliverToBoxAdapter(
@@ -140,6 +153,7 @@ class _ExpandedCardState extends State<ExpandedCard> {
                           Tab(text: '簡介'),
                           Tab(text: '菜單'),
                           Tab(text: '評論'),
+                          Tab(text: '照片'),
                         ],
                       ),
                     ),
@@ -160,6 +174,8 @@ class _ExpandedCardState extends State<ExpandedCard> {
                       _MenuPane(
                           restaurant: restaurant, screenWidth: screenWidth),
                       _ReviewPane(
+                          restaurant: restaurant, screenWidth: screenWidth),
+                      _PhotoPane(
                           restaurant: restaurant, screenWidth: screenWidth),
                     ],
                   ),
@@ -286,9 +302,15 @@ class _Header extends StatelessWidget {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: Center(
-                    child: Icon(Icons.image,
-                        size: imgH * 0.5)), // Relative icon size
+                child: restaurant.input.photoUrl.length == 0
+                    ? Center(child: Icon(Icons.image, size: imgH * 0.5))
+                    : FadeInImage(
+                        placeholder: MemoryImage(kTransparentImage),
+                        image: NetworkImage(restaurant.input.photoUrl[0]),
+                        fit: BoxFit.cover,
+                        height: 200,
+                        width: double.infinity,
+                      ), // Relative icon si), // Relative icon size
               ),
               SizedBox(
                   width:
@@ -353,18 +375,38 @@ class _PillBlock extends StatelessWidget {
   final String label;
   final String score;
   final String desc;
-  final double cardH; // Add cardH
-  final double screenWidth; // Add screenWidth
+  final double cardH;
+  final double screenWidth;
 
-  const _PillBlock(
-      {required this.label,
-      required this.score,
-      required this.desc,
-      required this.cardH, // Modify constructor
-      required this.screenWidth}); // Modify constructor
+  const _PillBlock({
+    required this.label,
+    required this.score,
+    required this.desc,
+    required this.cardH,
+    required this.screenWidth,
+  });
+
+  Color _getColorFromScore(int score) {
+    switch (score) {
+      case 5:
+        return Colors.green;
+      case 4:
+        return Colors.lightGreen;
+      case 3:
+        return Colors.amber;
+      case 2:
+        return Colors.orange;
+      case 1:
+      default:
+        return Colors.red;
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
+    final int scoreInt = int.tryParse(score) ?? 0;
+    final Color color = _getColorFromScore(scoreInt);
+
     final double circleSize = (cardH * 0.12).clamp(24.0, 32.0);
     final double scoreFontSize = (cardH * 0.06).clamp(12.0, 16.0);
     final double labelFontSize = (cardH * 0.065).clamp(13.0, 17.0);
@@ -377,29 +419,37 @@ class _PillBlock extends StatelessWidget {
           mainAxisSize: MainAxisSize.min,
           children: [
             Container(
-              width: circleSize, // Dynamic size
-              height: circleSize, // Dynamic size
-              decoration: const BoxDecoration(
-                  color: Colors.green, shape: BoxShape.circle),
+              width: circleSize,
+              height: circleSize,
+              decoration: BoxDecoration(
+                color: color,
+                shape: BoxShape.circle,
+              ),
               alignment: Alignment.center,
-              child: Text(score,
-                  style: TextStyle(
-                      color: Colors.white,
-                      fontSize: scoreFontSize, // Dynamic font size
-                      fontWeight: FontWeight.bold)),
-            ),
-            SizedBox(
-                width:
-                    (screenWidth * 0.015).clamp(4.0, 8.0)), // Dynamic spacing
-            Text(label,
+              child: Text(
+                score,
                 style: TextStyle(
-                    fontSize: labelFontSize,
-                    fontWeight: FontWeight.bold)), // Dynamic font size
+                  color: Colors.white,
+                  fontSize: scoreFontSize,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+            SizedBox(width: (screenWidth * 0.015).clamp(4.0, 8.0)),
+            Text(
+              label,
+              style: TextStyle(
+                fontSize: labelFontSize,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ],
         ),
-        SizedBox(height: (cardH * 0.025).clamp(3.0, 7.0)), // Dynamic spacing
-        Text(desc,
-            style: TextStyle(fontSize: descFontSize)), // Dynamic font size
+        SizedBox(height: (cardH * 0.025).clamp(3.0, 7.0)),
+        Text(
+          desc,
+          style: TextStyle(fontSize: descFontSize),
+        ),
       ],
     );
   }
@@ -439,7 +489,9 @@ class _IntroPane extends StatelessWidget {
                 title: '營業時間',
                 body: restaurant.input.opening ? '營業中' : '未營業',
                 screenWidth: screenWidth,
-                screenHeight: screenHeight), // Pass screenHeight
+                screenHeight: screenHeight),
+            // Pass screenHeight
+            TimePeriodListView(periods: restaurant.input.openingHours),
             SizedBox(
                 height:
                     (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
@@ -447,7 +499,31 @@ class _IntroPane extends StatelessWidget {
                 title: '距離',
                 body: '${restaurant.input.distance.toStringAsFixed(0)} m',
                 screenWidth: screenWidth,
-                screenHeight: screenHeight), // Pass screenHeight
+                screenHeight: screenHeight),
+            SizedBox(
+                height:
+                    (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
+            _InfoBlock(
+                title: '電話',
+                body: '${restaurant.input.phoneNumber}',
+                screenWidth: screenWidth,
+                screenHeight: screenHeight),
+            SizedBox(
+                height:
+                    (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
+            _InfoBlock(
+                title: '地址',
+                body: '${restaurant.input.address}',
+                screenWidth: screenWidth,
+                screenHeight: screenHeight),
+            SizedBox(
+                height:
+                    (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
+            _InfoBlock(
+                title: 'Google地圖網址',
+                body: '${restaurant.input.url}',
+                screenWidth: screenWidth,
+                screenHeight: screenHeight), // // Pass screenHeight
           ],
         ),
       );
@@ -494,31 +570,116 @@ class _InfoBlock extends StatelessWidget {
   final String title;
   final String body;
   final double screenWidth;
-  final double screenHeight; // Add screenHeight
-  const _InfoBlock(
-      {required this.title,
-      required this.body,
-      required this.screenWidth,
-      required this.screenHeight}); // Modify constructor
+  final double screenHeight;
+
+  const _InfoBlock({
+    required this.title,
+    required this.body,
+    required this.screenWidth,
+    required this.screenHeight,
+  });
 
   @override
   Widget build(BuildContext context) {
     final titleFontSize = (screenWidth * 0.04).clamp(14.0, 18.0);
     final bodyFontSize = (screenWidth * 0.038).clamp(13.0, 17.0);
     final spacing = (screenHeight * 0.005).clamp(3.0, 6.0);
+
+    Color getBodyColor(String text) {
+      if (text == '營業中') {
+        return Colors.green;
+      } else if (text == '未營業') {
+        return Colors.red;
+      } else {
+        return Colors.black;
+      }
+    }
+
+    FontWeight getBodyFontWeight(String text) {
+      if (text == '營業中' || text == '未營業') {
+        return FontWeight.bold;
+      } else {
+        return FontWeight.normal;
+      }
+    }
+
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title,
-            style: TextStyle(
-                fontSize: titleFontSize, fontWeight: FontWeight.bold)),
-        SizedBox(height: spacing), // Dynamic spacing
-        Text(body, style: TextStyle(fontSize: bodyFontSize)),
+        Text(
+          title,
+          style: TextStyle(
+            fontSize: titleFontSize,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        SizedBox(height: spacing),
+        Text(
+          body,
+          style: TextStyle(
+            fontSize: bodyFontSize,
+            color: getBodyColor(body),
+            fontWeight: getBodyFontWeight(body),
+          ),
+        ),
       ],
     );
   }
 }
-// _MenuItem and _Bullet are not directly used in the visible part of ExpandedCard's TabBarView.
-// If they were, their internal fixed sizes would need similar dynamic adjustments.
-// For brevity, and as they are not in the direct rendering path of the provided screenshots/structure,
-// their detailed refactoring is omitted here but would follow the same principles.
+
+class _PhotoPane extends StatelessWidget {
+  final RestaurantOutput restaurant;
+  final double screenWidth;
+
+  const _PhotoPane({required this.restaurant, required this.screenWidth});
+
+  @override
+  Widget build(BuildContext context) => SingleChildScrollView(
+        padding: EdgeInsets.all(
+          (screenWidth * 0.04).clamp(12.0, 20.0),
+        ),
+        child: restaurant.input.photoUrl.isNotEmpty
+            ? GridView.builder(
+                shrinkWrap:
+                    true, // Important to make GridView fit inside SingleChildScrollView
+                physics:
+                    NeverScrollableScrollPhysics(), // Disable internal scrolling
+                padding: const EdgeInsets.all(8),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 8,
+                  mainAxisSpacing: 8,
+                  childAspectRatio: 1,
+                ),
+                itemCount: restaurant.input.photoUrl.length,
+                itemBuilder: (context, index) {
+                  final url = restaurant.input.photoUrl[index];
+                  return GestureDetector(
+                    onTap: () {
+                      showDialog(
+                        context: context,
+                        builder: (_) => Dialog(
+                          child: InteractiveViewer(
+                            child: FadeInImage(
+                              placeholder: MemoryImage(kTransparentImage),
+                              image: NetworkImage(url),
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(8),
+                      child: FadeInImage(
+                        placeholder: MemoryImage(kTransparentImage),
+                        image: NetworkImage(url),
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                  );
+                },
+              )
+            : const Text('此店家沒有圖片'),
+      );
+}
