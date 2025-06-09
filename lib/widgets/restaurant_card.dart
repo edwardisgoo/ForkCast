@@ -1,15 +1,14 @@
-// lib/widgets/restaurant_card.dart
 import 'dart:math' as math;
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
 import 'package:flutter_app/services/navigation.dart';
-import 'package:flutter_app/providers/rating_provider.dart'; // ← NEW
+import 'package:flutter_app/providers/rating_provider.dart';
 import 'package:flutter_app/models/utils/score_utils.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/userSetting.dart';
 
 /// Structured and responsive restaurant card.
+
 class RestaurantCard extends StatelessWidget {
   final int index;
   final bool isExpanded;
@@ -31,17 +30,18 @@ class RestaurantCard extends StatelessWidget {
     final nav = Provider.of<NavigationService>(context, listen: false);
     final restaurant = context.watch<FetchedResults>().fetchedResults[index];
     final setting = context.read<UserSetting>();
-
-    // Base sizes that stay constant
+    final double screenWidth = MediaQuery.of(context).size.width;
+    final double cardPadding = 12.0;
+    final double availableWidth = screenWidth * 0.9 - (cardPadding * 2);
     final double baseCardH =
         (MediaQuery.of(context).size.height * 0.25).clamp(180.0, 320.0);
-    final double imgH = baseCardH * 0.70;
-    final double ratingSize = baseCardH * 0.30;
-    final double titleFont = baseCardH * 0.09;
-    final double digitFont = baseCardH * 0.32;
-    final double dotFont = baseCardH * 0.16;
 
-    // Price ratings based on index
+    final double imgH = baseCardH * 0.70;
+    final double imgW = imgH * 0.60;
+    final double ratingSize = baseCardH * 0.20;
+    final double titleFont = baseCardH * 0.07;
+    final double digitFont = baseCardH * 0.28;
+    final double dotFont = baseCardH * 0.08;
     final topScores = ScoreUtils.topTwo(restaurant, setting.sortedPreference);
     final String p1Label = topScores[0].key;
     final String p1Score =
@@ -49,7 +49,6 @@ class RestaurantCard extends StatelessWidget {
     final String p2Label = topScores[1].key;
     final String p2Score =
         ScoreUtils.scaleToFive(topScores[1].value).toString();
-
     final String name =
         restaurant.input.name.isNotEmpty ? restaurant.input.name : '未知餐廳';
     final double overall = 1 + restaurant.matchScore * 4;
@@ -57,48 +56,40 @@ class RestaurantCard extends StatelessWidget {
     final List<String> ratingParts = ratingStr.split('.');
     final String ratingInt = ratingParts.first;
     final String ratingDec = '.${ratingParts.last}';
+
     String description = restaurant.reason.isNotEmpty
         ? restaurant.reason
         : restaurant.shortIntroduction;
+
     if (description.isEmpty) description = restaurant.input.summary;
 
     return Opacity(
       opacity: opacity,
       child: Dismissible(
         key: ValueKey(index),
-
-        // ──────────────────────────────────────────────
-        // use confirmDismiss so the parent fades / removes
-        // the card; Dismissible itself never pops it out.
-        // ──────────────────────────────────────────────
         confirmDismiss: (direction) async {
           if (direction == DismissDirection.startToEnd) {
-            // swipe right → maps
             context.read<RatingProvider>().setPending(restaurant.input.name);
+
             nav.goMaps();
           } else if (direction == DismissDirection.endToStart) {
-            // swipe left → delete (fade-out handled by parent)
             onDelete();
           }
-          // keep widget in the tree so fade-out can run
+
           return false;
         },
-
-        // Right swipe (green, map)
         background: Container(
           color: Colors.green,
           alignment: Alignment.centerLeft,
           padding: const EdgeInsets.only(left: 20),
           child: const Icon(Icons.map, color: Colors.white),
         ),
-        // Left swipe (red, delete)
         secondaryBackground: Container(
           color: Colors.red,
           alignment: Alignment.centerRight,
           padding: const EdgeInsets.only(right: 20),
           child: const Icon(Icons.delete, color: Colors.white),
         ),
-
         child: GestureDetector(
           onTap: isExpanded ? null : onTap,
           child: Container(
@@ -107,18 +98,21 @@ class RestaurantCard extends StatelessWidget {
               borderRadius: BorderRadius.circular(12),
               border: Border.all(color: Colors.grey[300]!, width: 1),
             ),
+            constraints: BoxConstraints(maxWidth: availableWidth),
             child: Padding(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(cardPadding),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   /* ── top row ───────────────────────────────────── */
+
                   Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       /* image */
+
                       Container(
-                        width: imgH,
+                        width: imgW,
                         height: imgH,
                         decoration: BoxDecoration(
                           color: Colors.grey[300],
@@ -129,29 +123,48 @@ class RestaurantCard extends StatelessWidget {
                       const SizedBox(width: 12),
 
                       /* right column */
+
                       Expanded(
                         child: SizedBox(
                           height: imgH,
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                name,
-                                style: TextStyle(
-                                  fontSize: titleFont,
-                                  fontWeight: FontWeight.bold,
+                              Flexible(
+                                child: Text(
+                                  name,
+                                  style: TextStyle(
+                                    fontSize: titleFont,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
                                 ),
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
                               ),
+
                               const Spacer(),
 
                               /* ratings row */
+
+                              // 移除 IntrinsicHeight，因為我們將使用更精確的 Baseline 對齊
+
                               Row(
-                                crossAxisAlignment: CrossAxisAlignment.end,
+                                // 將 crossAxisAlignment 改為 CrossAxisAlignment.baseline
+
+                                // 並設定 textBaseline
+
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+
+                                textBaseline: TextBaseline.alphabetic, // 文本的基準線
+
                                 children: [
                                   /* P1 */
+
                                   Column(
+                                    // 調整 Column 的 alignment 為 Center，讓圓圈居中
+
+                                    mainAxisAlignment: MainAxisAlignment.center,
+
                                     children: [
                                       _ratingCircle(p1Score, ratingSize),
                                       const SizedBox(height: 4),
@@ -159,10 +172,16 @@ class RestaurantCard extends StatelessWidget {
                                           style: const TextStyle(fontSize: 14)),
                                     ],
                                   ),
+
                                   const SizedBox(width: 8),
 
                                   /* P2 */
+
                                   Column(
+                                    // 調整 Column 的 alignment 為 Center，讓圓圈居中
+
+                                    mainAxisAlignment: MainAxisAlignment.center,
+
                                     children: [
                                       _ratingCircle(p2Score, ratingSize),
                                       const SizedBox(height: 4),
@@ -170,20 +189,30 @@ class RestaurantCard extends StatelessWidget {
                                           style: const TextStyle(fontSize: 14)),
                                     ],
                                   ),
+
                                   const SizedBox(width: 16),
 
                                   /* overall */
-                                  Column(
-                                    children: [
-                                      Container(
-                                        height:
-                                            math.max(digitFont + 8, ratingSize),
-                                        alignment: Alignment.bottomLeft,
-                                        child: Row(
+
+                                  // 將 FittedBox 內容直接放入 Row 中，並利用 Baseline 對齊
+
+                                  // 移除原有的 Container 和其 alignment: Alignment.bottomLeft
+
+                                  FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment
+                                          .center, // 讓整體評價文字也垂直居中
+
+                                      children: [
+                                        Row(
                                           mainAxisSize: MainAxisSize.min,
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.baseline,
+
+                                          crossAxisAlignment: CrossAxisAlignment
+                                              .baseline, // 這裡也要設定 Baseline
+
                                           textBaseline: TextBaseline.alphabetic,
+
                                           children: [
                                             Text(
                                               ratingInt,
@@ -197,11 +226,11 @@ class RestaurantCard extends StatelessWidget {
                                                     fontSize: dotFont)),
                                           ],
                                         ),
-                                      ),
-                                      const SizedBox(height: 5),
-                                      const Text('綜合評價',
-                                          style: TextStyle(fontSize: 14)),
-                                    ],
+                                        const SizedBox(height: 5),
+                                        const Text('綜合評價',
+                                            style: TextStyle(fontSize: 14)),
+                                      ],
+                                    ),
                                   ),
                                 ],
                               ),
@@ -214,11 +243,14 @@ class RestaurantCard extends StatelessWidget {
                   const Spacer(),
 
                   /* bottom text */
-                  Text(
-                    description.isNotEmpty ? description : '無餐廳簡介',
-                    style: const TextStyle(fontSize: 14),
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
+
+                  Flexible(
+                    child: Text(
+                      description.isNotEmpty ? description : '無餐廳簡介',
+                      style: const TextStyle(fontSize: 14),
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                    ),
                   ),
                 ],
               ),
@@ -230,6 +262,7 @@ class RestaurantCard extends StatelessWidget {
   }
 
   /// circular rating indicator
+
   Widget _ratingCircle(String rating, double size) => Container(
         width: size,
         height: size,
@@ -239,12 +272,15 @@ class RestaurantCard extends StatelessWidget {
           border: Border.all(color: Colors.grey[400]!),
         ),
         alignment: Alignment.center,
-        child: Text(
-          rating,
-          style: TextStyle(
-            fontSize: size * 0.5,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
+        child: FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            rating,
+            style: TextStyle(
+              fontSize: size * 0.5,
+              fontWeight: FontWeight.bold,
+              color: Colors.black,
+            ),
           ),
         ),
       );
