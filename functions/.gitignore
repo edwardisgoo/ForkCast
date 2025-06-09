@@ -11,3 +11,7 @@ node_modules/
 android/app/google-services.json
 firebase.json
 lib/firebase_options.dart
+functions/src/config.ts
+.flutter-plugins
+.flutter-plugins-dependencies
+.dart_tool/package_config.json

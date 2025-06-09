@@ -131,6 +131,7 @@ export const RestaurantRawSchema = z.object({
             language: z.string().optional()
         })
     ),
+    phoneNumber: z.string().optional(),
     photos: z.array(z.string()),
     types: z.instanceof(Set),
     url: z.string().url().optional(),
