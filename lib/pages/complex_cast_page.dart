@@ -240,7 +240,17 @@ class _ComplexCastPageState extends State<ComplexCastPage> {
               ),
             ),
           ),
-
+          Positioned(
+            top: 16,
+            left: 16,
+            child: GestureDetector(
+              onTap: () => context.read<NavigationService>().goMain(),
+              child: const CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: Icon(Icons.arrow_back, color: Colors.black),
+              ),
+            ),
+          ),
           /* Title and Settings (on top of scroll view) */
           Positioned(
             top: 16,

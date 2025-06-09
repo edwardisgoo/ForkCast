@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../services/navigation.dart';
 import '../widgets/title_text.dart';
 import '../widgets/restaurant_card.dart';
 import '../widgets/expanded_card.dart';
@@ -160,6 +161,17 @@ class _ResultPageState extends State<ResultPage> {
     return Scaffold(
       body: Stack(
         children: [
+          Positioned(
+            top: 16,
+            left: 16,
+            child: GestureDetector(
+              onTap: () => context.read<NavigationService>().goMain(),
+              child: const CircleAvatar(
+                backgroundColor: Colors.black12,
+                child: Icon(Icons.arrow_back, color: Colors.black),
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment(0, titleY),
             child: TitleText(key: _titleKey, fontSize: titleMainFontSize),

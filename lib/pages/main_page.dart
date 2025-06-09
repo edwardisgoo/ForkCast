@@ -19,7 +19,7 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-class _MainPageState extends State<MainPage> {
+class _MainPageState extends State<MainPage> with RouteAware {
   bool _startAnim = false;
   final GlobalKey _titleKey = GlobalKey();
 
@@ -117,6 +117,7 @@ class _MainPageState extends State<MainPage> {
     if (context.read<RatingProvider>().pending) {
       _dialogShown = false;
     }
+    routeObserver.subscribe(this, ModalRoute.of(context)!);
   }
 
   /* ───────── CAST pressed ───────── */
@@ -137,7 +138,7 @@ class _MainPageState extends State<MainPage> {
           '[MAIN] title start pos=${box.localToGlobal(Offset.zero)} size=${box.size}');
     }
 
-    performCast(context).then((_) {
+    performCast(context).then((_) async {
       if (!mounted) return;
       final ctx = _titleKey.currentContext;
       if (ctx != null) {
@@ -145,8 +146,20 @@ class _MainPageState extends State<MainPage> {
         debugPrint(
             '[MAIN] title end pos=${box.localToGlobal(Offset.zero)} size=${box.size}');
       }
-      context.read<NavigationService>().goResult();
+      await context.read<NavigationService>().goResult();
+      if (mounted) setState(() => _startAnim = false);
     });
+  }
+
+  @override
+  void didPopNext() {
+    setState(() => _startAnim = false);
+  }
+
+  @override
+  void dispose() {
+    routeObserver.unsubscribe(this);
+    super.dispose();
   }
 
   /* ───────────────────────── */
