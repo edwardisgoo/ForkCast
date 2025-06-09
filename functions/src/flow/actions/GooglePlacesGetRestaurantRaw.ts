@@ -98,6 +98,7 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
       photos: details.photos,
       types: details.types,
       url: details.url,
+      phoneNumber:details.internationalPhoneNumber,
       priceLevel: details.priceLevel,
       dineIn: details.dineIn,
       takeout: details.takeout,

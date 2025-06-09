@@ -163,8 +163,10 @@ async function convertRawToInput(
 
   return {
     id:raw.id,
+    URL:raw.url || "",
+    address:raw.address,
+    phoneNumber:raw.phoneNumber||"",
     distance: distance,
-    opening: isOpen,
     rating: raw.rating || 0,
     reviews: processedReviews,
     photoInformation: photoInfo.message,
@@ -173,6 +175,7 @@ async function convertRawToInput(
     types: typeStrings,
     priceInformation: priceInfo,
     extraInformation: extraInfo,
+    opening: isOpen,
     openingHours:raw.openingHours,
     photoURL:photoInfo.imageUrls
   };

@@ -3,6 +3,9 @@ import { z } from "genkit";
 // 定義 RestaurantInput schema
 export const RestaurantInputSchema = z.object({
     id: z.string(),
+    address:z.string(),
+    URL:z.string(),
+    phoneNumber:z.string(),
     distance: z.number(),
     opening: z.boolean(),
     rating: z.number(),
