@@ -161,6 +161,7 @@ class _ResultPageState extends State<ResultPage> {
     return Scaffold(
       body: Stack(
         children: [
+          // go back button
           Positioned(
             top: 16,
             left: 16,
@@ -172,6 +173,7 @@ class _ResultPageState extends State<ResultPage> {
               ),
             ),
           ),
+          
           Align(
             alignment: Alignment(0, titleY),
             child: TitleText(key: _titleKey, fontSize: titleMainFontSize),
