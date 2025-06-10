@@ -58,20 +58,40 @@ class _MainPageState extends State<MainPage> with RouteAware {
 
   double _castEndY(BuildContext ctx) {
     final size = MediaQuery.of(ctx).size;
-    final bottom = MediaQuery.of(ctx).padding.bottom;
-    return 2 * (size.height - bottom - 16 - 30) / size.height - 1;
+    final bottomInset = MediaQuery.of(ctx).padding.bottom;
+    final topPaddingForTitle = (size.height * 0.02).clamp(12.0, 20.0);
+    final buttonMinHeight = (size.height * 0.07).clamp(50.0, 70.0);
+    return 2 *
+            (size.height -
+                bottomInset -
+                topPaddingForTitle -
+                buttonMinHeight / 2) /
+            size.height -
+        1;
   }
 
-  Widget _buildCastBtn({VoidCallback? onPressed}) => ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          elevation: 0,
-          backgroundColor: Colors.black,
-          padding: const EdgeInsets.symmetric(horizontal: 60, vertical: 20),
-          textStyle: const TextStyle(fontSize: 28),
-        ),
-        child: const Text('Cast!', style: TextStyle(color: Colors.white)),
-      );
+  Widget _buildCastBtn(BuildContext ctx, {VoidCallback? onPressed}) {
+    final width = MediaQuery.of(ctx).size.width;
+    final height = MediaQuery.of(ctx).size.height;
+    final buttonPaddingHorizontal = (width * 0.15).clamp(50.0, 70.0);
+    final buttonVerticalPadding = (height * 0.025).clamp(15.0, 25.0);
+    final buttonFontSize = (width * 0.07).clamp(24.0, 32.0);
+    final buttonMinHeight = (height * 0.07).clamp(50.0, 70.0);
+
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        elevation: 0,
+        backgroundColor: Colors.black,
+        padding: EdgeInsets.symmetric(
+            horizontal: buttonPaddingHorizontal,
+            vertical: buttonVerticalPadding),
+        textStyle: TextStyle(fontSize: buttonFontSize),
+        minimumSize: Size(0, buttonMinHeight),
+      ),
+      child: const Text('Cast!', style: TextStyle(color: Colors.white)),
+    );
+  }
 
   /* ───────── rating-prompt helper ───────── */
   bool _dialogShown = false;
@@ -285,7 +305,7 @@ class _MainPageState extends State<MainPage> with RouteAware {
             child: Hero(
               tag: 'castBtn',
               flightShuttleBuilder: (_, __, ___, ____, toCtx) => toCtx.widget,
-              child: _buildCastBtn(onPressed: _onCast),
+              child: _buildCastBtn(context, onPressed: _onCast),
             ),
           ),
         ],
