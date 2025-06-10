@@ -214,8 +214,7 @@ RestaurantInput _parseRestaurantInput(Map<String, dynamic> data) {
                 period['day']));
           }
         } catch (e) {
-          throw Exception(
-              '出事了阿伯: ${e.toString()}');
+          throw Exception('出事了阿伯: ${e.toString()}');
         }
       }
     }

@@ -353,4 +353,3 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 }
-
