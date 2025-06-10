@@ -85,7 +85,7 @@ class BouncingTitle extends StatefulWidget {
 class _BouncingTitleState extends State<BouncingTitle>
     with SingleTickerProviderStateMixin {
   late final AnimationController _controller;
-  static const _letters = ['F', 'o', 'r', 'k', 'C', 'a', 's', 't'];
+  static const _letters = ['F', 'o', 'r', 'k', 'C', 'a', 's', 't','!'];
   static const _display = 'ForkCast!';
 
   @override
