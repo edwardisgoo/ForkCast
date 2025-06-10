@@ -52,8 +52,10 @@ class _ForkCastLoadingState extends State<ForkCastLoading>
               child: Text(
                 _letters[index],
                 style: const TextStyle(
-                  fontSize: 24,
+                  fontSize: 58,
                   fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                  decoration: TextDecoration.none,
                 ),
               ),
             );
