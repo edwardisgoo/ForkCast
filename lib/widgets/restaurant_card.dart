@@ -124,6 +124,7 @@ class RestaurantCard extends StatelessWidget {
                   /* ── top row ───────────────────────────────────── */
 
                   Flexible(
+                      flex: 5,
                       child: Row(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -271,21 +272,20 @@ class RestaurantCard extends StatelessWidget {
                             ),
                           ),
                         ],
-                      ),
-                      flex: 5),
+                      )),
                   SizedBox(
                       height: baseCardH * 0.02), // Reduced vertical spacing
 
                   /* bottom text */
 
                   Flexible(
+                    flex: 2,
                     child: Text(
                       description.isNotEmpty ? description : '無餐廳簡介',
                       style: TextStyle(fontSize: descriptionFont),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                     ),
-                    flex: 2,
                   )
                 ],
               ),
@@ -299,7 +299,7 @@ class RestaurantCard extends StatelessWidget {
   /// circular rating indicator
 
   Widget _ratingCircle(String rating, double size) {
-    Color _getColorFromRating(String score) {
+    Color getColorFromRating(String score) {
       switch (rating) {
         case "5":
           return Colors.green;
@@ -319,7 +319,7 @@ class RestaurantCard extends StatelessWidget {
       width: size,
       height: size,
       decoration: BoxDecoration(
-        color: _getColorFromRating(rating),
+        color: getColorFromRating(rating),
         shape: BoxShape.circle,
         border: Border.all(
             color: Colors.grey[400]!,

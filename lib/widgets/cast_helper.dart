@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/unwanted.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:flutter_app/widgets/forkcast_loading.dart';
 
 /// Performs a restaurant cast using the current user location.
 /// Displays a simple progress dialog while waiting for the
@@ -16,7 +17,8 @@ Future<void> performCast(BuildContext context) async {
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (_) => const Center(child: CircularProgressIndicator()),
+    barrierColor: Colors.transparent,
+    builder: (context) => const Center(child: ForkCastLoading()),
   );
 
   try {
@@ -47,6 +49,8 @@ Future<void> performCast(BuildContext context) async {
   } catch (e) {
     debugPrint('performCast error: $e');
   } finally {
-    Navigator.of(context, rootNavigator: true).pop();
+    if (context.mounted) {
+      Navigator.of(context, rootNavigator: true).pop();
+    }
   }
 }

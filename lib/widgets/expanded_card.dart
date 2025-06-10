@@ -294,7 +294,7 @@ class _Header extends StatelessWidget {
                   color: Colors.grey[300],
                   borderRadius: BorderRadius.circular(8),
                 ),
-                child: restaurant.input.photoUrl.length == 0
+                child: restaurant.input.photoUrl.isEmpty
                     ? Center(child: Icon(Icons.image, size: imgH * 0.5))
                     : FadeInImage(
                         placeholder: MemoryImage(kTransparentImage),
@@ -497,7 +497,7 @@ class _IntroPane extends StatelessWidget {
                     (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
             _InfoBlock(
                 title: '電話',
-                body: '${restaurant.input.phoneNumber}',
+                body: restaurant.input.phoneNumber,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight),
             SizedBox(
@@ -505,7 +505,7 @@ class _IntroPane extends StatelessWidget {
                     (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
             _InfoBlock(
                 title: '地址',
-                body: '${restaurant.input.address}',
+                body: restaurant.input.address,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight),
             SizedBox(
@@ -513,7 +513,7 @@ class _IntroPane extends StatelessWidget {
                     (screenHeight * 0.01).clamp(6.0, 12.0)), // Dynamic spacing
             _InfoBlock(
                 title: 'Google地圖網址',
-                body: '${restaurant.input.url}',
+                body: restaurant.input.url,
                 screenWidth: screenWidth,
                 screenHeight: screenHeight), // // Pass screenHeight
           ],
