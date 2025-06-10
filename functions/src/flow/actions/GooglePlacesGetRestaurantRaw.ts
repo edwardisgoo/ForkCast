@@ -3,6 +3,7 @@ import { z } from 'zod';
 import { GooglePlacesService } from '../services/GooglePlacesService';
 import * as functions from 'firebase-functions';
 import { RestaurantRawSchema } from "../services/GooglePlacesSchemas";
+import  {restaurantKeywords} from "../services/restaurantKeyword";
 
 import {
   PriceLevel
@@ -10,7 +11,7 @@ import {
 
 const service = new GooglePlacesService(API);
 
-// Update the input schema to include unwanted_restaurants
+// Updated Input Schema
 export const RestaurantQuerySchema = z.object({
   latitude: z.number().min(-90).max(90),
   longitude: z.number().min(-180).max(180),
@@ -20,10 +21,21 @@ export const RestaurantQuerySchema = z.object({
   maxDistance: z.number().min(0).optional(),
   requirement: z.string().optional(),
   note: z.string().optional(),
-  unwanted_restaurants: z.array(z.string()).optional().default([]) // Add this line
+  unwanted_restaurants: z.array(z.string()).optional().default([])
 });
 
-// Update the flow implementation
+function extractRestaurantKeyword(requirement?: string): string {
+  if (!requirement) return "";
+
+  for (const keyword of restaurantKeywords) {
+    if (requirement.includes(keyword)) {
+      return keyword;
+    }
+  }
+  return "";
+}
+
+// Updated flow implementation
 export const placesGetRestaurantRawFlow = ai.defineFlow(
   {
     name: 'placesGetRestaurantRaw',
@@ -34,6 +46,9 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
     // Convert NTD to Google's price level (0-4)
     const priceLevels = convertNtdToPriceLevel(params.minPrice, params.maxPrice);
 
+    // Extract keyword from requirement
+    const keyword = extractRestaurantKeyword(params.requirement);
+
     // Perform nearby search
     const nearbyParams = {
       latitude: params.latitude,
@@ -42,10 +57,10 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
       minprice: priceLevels.min,
       maxprice: priceLevels.max,
       type: 'restaurant',
+      keyword: keyword === "" ? undefined : keyword, // Add the extracted keyword here
       maxResults: 60,
-      opennow:true
+      opennow: true
     };
-
 
     let results = await service.nearbySearch(nearbyParams);
     let numNearbysearch = results.length;
@@ -74,8 +89,9 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
       throw new Error(
         `placesGetRestaurantRawFlow內將${numNearbysearch}家餐廳filter到剩下0家餐廳\n` +
         `過濾條件:\n` +
-        `- 最小距離: ${params.minDistance}km\n` +
-        `- 排除餐廳數量: ${params.unwanted_restaurants?.length || 0}`
+        `- 最小距離: ${params.minDistance || '未指定'}km\n` +
+        `- 排除餐廳數量: ${params.unwanted_restaurants?.length || 0}\n` +
+        `- 搜尋關鍵字: ${keyword === "" ? '無' : keyword}`
       );
     }
 
@@ -87,7 +103,6 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
         service.detailsSearch({ placeId: place.id })
       )
     );
-
 
     return detailedResults.map(details => ({
       id: details.id,
@@ -114,11 +129,12 @@ export const placesGetRestaurantRawFlow = ai.defineFlow(
     }));
   }
 );
+
 // Helper function to convert NTD to Google's price level
 function convertNtdToPriceLevel(min?: number, max?: number): { min: PriceLevel, max: PriceLevel } {
   // Simple conversion - adjust based on your needs
   const convert = (amount?: number): PriceLevel => {
-    if (!amount) return PriceLevel.MODERATE;
+    if (amount === undefined || amount === null) return PriceLevel.MODERATE; // Default to moderate if undefined
     if (amount <= 20) return PriceLevel.FREE;
     if (amount <= 50) return PriceLevel.INEXPENSIVE;
     if (amount <= 1000) return PriceLevel.MODERATE;
