@@ -6,6 +6,7 @@ import 'package:provider/provider.dart';
 import 'package:flutter_app/models/fetchedResults.dart';
 import 'package:flutter_app/models/unwanted.dart';
 import 'package:geolocator/geolocator.dart';
+import 'title_text.dart';
 
 /// Performs a restaurant cast using the current user location.
 /// Displays a simple progress dialog while waiting for the
@@ -16,7 +17,7 @@ Future<void> performCast(BuildContext context) async {
   showDialog(
     context: context,
     barrierDismissible: false,
-    builder: (_) => const Center(child: CircularProgressIndicator()),
+    builder: (_) => const Center(child: BouncingTitle(fontSize: 60)),
   );
 
   try {
