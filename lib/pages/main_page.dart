@@ -43,10 +43,17 @@ class _MainPageState extends State<MainPage> with RouteAware {
   }
 
   /* ─ helpers (unchanged) ─ */
+  double _targetTitleFontSize(BuildContext ctx) {
+    final width = MediaQuery.of(ctx).size.width;
+    return (width * 0.075).clamp(26.0, 34.0);
+  }
+
   double _titleEndY(BuildContext ctx) {
     final size = MediaQuery.of(ctx).size;
     final top = MediaQuery.of(ctx).padding.top;
-    return 2 * (top + 16 + 15) / size.height - 1;
+    final topPaddingForTitle = (size.height * 0.02).clamp(12.0, 20.0);
+    final titleHeight = _targetTitleFontSize(ctx);
+    return 2 * (top + topPaddingForTitle + titleHeight / 2) / size.height - 1;
   }
 
   double _castEndY(BuildContext ctx) {
@@ -257,7 +264,9 @@ class _MainPageState extends State<MainPage> with RouteAware {
             duration: const Duration(milliseconds: 600),
             curve: Curves.easeInOutSine,
             builder: (context, value, child) {
-              final fontSize = 58 - (28 * value); // 58 → 30
+              final endSize = _targetTitleFontSize(context);
+              final startSize = 58.0;
+              final fontSize = startSize - ((startSize - endSize) * value);
               final y =
                   titleStart.y + ((_titleEndY(context) - titleStart.y) * value);
               return Align(
