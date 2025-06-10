@@ -4,8 +4,6 @@ import 'package:flutter/material.dart';
 const TextStyle _baseTitleStyle = TextStyle(
   fontFamily: 'Courier',
   fontWeight: FontWeight.bold,
-  color: Colors.black,
-  decoration: TextDecoration.none,
   height: 1, // exact line-height → predictable height = fontSize
 );
 

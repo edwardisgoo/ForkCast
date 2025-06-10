@@ -30,7 +30,7 @@ Future<Map<String, dynamic>> fetchRestaurant(
   try {
     final HttpsCallable callableFindRestaurants =
         FirebaseFunctions.instance.httpsCallable(
-      'restaurantRecommendation',
+      'restaurantRecommendationMock',
       options: HttpsCallableOptions(
         timeout: const Duration(seconds: 40), // 增加Timeout
       ),
@@ -214,8 +214,7 @@ RestaurantInput _parseRestaurantInput(Map<String, dynamic> data) {
                 period['day']));
           }
         } catch (e) {
-          throw Exception(
-              '出事了阿伯: ${e.toString()}');
+          throw Exception('出事了阿伯: ${e.toString()}');
         }
       }
     }
