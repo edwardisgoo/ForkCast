@@ -137,4 +137,10 @@ UI improvements and additional filtering options
 
 ## Authors
 
+[陳光齊](https://github.com/meepoo397)
+
+[林益弘](https://github.com/Yi-Hung-Lin)
+
+[梁皓翔](https://github.com/HodsonLiang)
+
 Developed as a group course project.
